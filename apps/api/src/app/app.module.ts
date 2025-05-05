@@ -211,6 +211,7 @@ import { VerdictsClientConfig } from '@island.is/clients/verdicts'
 import { VerdictsModule } from '@island.is/api/domains/verdicts'
 import { SecondarySchoolClientConfig } from '@island.is/clients/secondary-school'
 import { SecondarySchoolApiModule } from '@island.is/api/domains/secondary-school'
+import { ApiDomainsSkattskilModule } from '@island.is/api/domains/skattskil';
 
 const environment = getConfig
 
@@ -350,6 +351,7 @@ const environment = getConfig
     HealthDirectorateModule,
     VerdictsModule,
     SecondarySchoolApiModule,
+    ApiDomainsSkattskilModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [
