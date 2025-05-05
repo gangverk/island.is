@@ -36,6 +36,9 @@
       "@island.is/api/domains/api-catalogue": [
         "libs/api/domains/api-catalogue/src/index.ts"
       ],
+      "@island.is/api/domains/skattskil": [
+        "libs/api/domains/skattskil/src/index.ts"
+      ],
       "@island.is/api/domains/application": [
         "libs/api/domains/application/src/index.ts"
       ],
@@ -1186,6 +1189,7 @@
       "api/domains/financial-statement-cemetery": [
         "libs/api/domains/financial-statement-cemetery/src/index.ts"
       ],
+      "api/domains/skattskil": ["libs/api/domains/skattskil/src/index.ts"],
       "application/templates/examples/example-no-inputs": [
         "libs/application/templates/examples/example-no-inputs/src/index.ts"
       ],
