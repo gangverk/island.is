@@ -1,0 +1,82 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: AI-Assisted Markdown Planning for Cursor Rules
+globs: *.mdc
+---
+# AI-Assisted Markdown Planning for Cursor Rules
+
+Rules to enforce writing a markdown specification before AI-generated code.
+
+<rule>
+name: markdown_specification_requirement
+description: Ensure that AI-generated code is preceded by a markdown planning document
+filters:
+  # Match any source code files
+  - type: file_extension
+    pattern: "\\.(js|ts|py|java|swift|go|rs|cpp|cs|rb|php)$"
+  # Match file creation events
+  - type: event
+    pattern: "file_create"
+
+actions:
+  - type: reject
+    conditions:
+      - pattern: "^(?!\.\/docs\/specs\/.*\.md$)"
+        message: "All AI-generated code must have a corresponding markdown specification file in docs/specs/"
+
+  - type: suggest
+    message: |
+      Before writing AI-generated code, ensure that:
+      
+      1. A markdown file exists in `docs/specs/` with a structured plan:
+         ```
+         docs/specs/
+         ├── feature-name.md
+         ├── module-name.md
+         └── ...
+         ```
+      
+      2. The markdown file must contain:
+         - A clear description of the feature/module
+         - Expected inputs and outputs
+         - Constraints and edge cases
+         - Any relevant design decisions
+      
+      3. Example markdown structure:
+         ```markdown
+         # Feature: User Authentication
+         
+         ## Description
+         This feature enables secure user authentication.
+         
+         ## Inputs
+         - Email
+         - Password
+         
+         ## Outputs
+         - JWT Token on success
+         - Error messages on failure
+         ```
+      
+      4. AI-generated code should reference the corresponding markdown spec.
+      
+      5. Never write AI-generated code without an explicit markdown plan.
+
+examples:
+  - input: |
+      # Bad: AI-generated code without a markdown plan
+      src/auth.js
+      
+      # Good: Markdown plan exists before AI-generated code
+      docs/specs/auth.md
+      src/auth.js
+    output: "Correctly structured AI-driven development workflow"
+
+metadata:
+  priority: high
+  version: 1.0
+</rule>

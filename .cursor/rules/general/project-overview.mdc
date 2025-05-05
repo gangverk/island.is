@@ -1,0 +1,55 @@
+---
+description: Project Overview
+globs: "**/*.{ts,tsx,js,jsx}"
+---
+
+# Project Overview
+
+This rule provides an overview of the project and its architecture.
+
+<rule>
+name: project_overview
+description: Overview of the HRMS project architecture and technologies
+
+filters:
+  # Match any TypeScript/JavaScript files
+  - type: file_extension
+    pattern: "\\.(ts|tsx|js|jsx)$"
+
+actions:
+  - type: suggest
+    message: |
+      # Project Overview
+
+      A modern Human Resources Management System (HRMS) built with Next.js 15, TypeScript, and Shadcn UI. The system provides comprehensive HR functionality including:
+      
+      - Employee management
+      - Time tracking
+      - Payroll
+      - Performance monitoring
+      
+      ## Key Features
+      
+      - Type-safe architecture
+      - Server-side rendering
+      - Internationalization support (English and Icelandic)
+      - Strict TypeScript practices
+      - Accessibility focus
+      - Future Supabase integration
+
+      ## Technology Stack
+      
+      - **Frontend**: Next.js 15, React, TypeScript
+      - **UI**: Shadcn UI, Radix UI, Tailwind CSS
+      - **State Management**: React Hooks, Context API
+      - **Data Fetching**: Next.js Server Components, next-safe-action
+      - **URL State**: nuqs
+      - **Internationalization**: next-intl
+      - **Testing**: Vitest, Testing Library
+      - **Linting/Formatting**: Biome
+
+metadata:
+  priority: high
+  version: 1.0
+  tags: ["overview", "architecture"]
+</rule> 

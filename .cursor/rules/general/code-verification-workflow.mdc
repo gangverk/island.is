@@ -1,0 +1,166 @@
+---
+description: Code Verification Workflow
+globs: "**/*.{ts,tsx,js,jsx}"
+---
+
+# Code Verification Workflow
+
+This rule provides guidance for maintaining code quality by running verification checks after making changes and following test-driven development practices.
+
+<rule>
+name: code_verification_workflow
+description: Standards for verifying code changes with Biome, TypeScript, and tests, following test-driven development
+
+filters:
+  # Match any TypeScript/JavaScript files
+  - type: file_extension
+    pattern: "\\.(ts|tsx|js|jsx)$"
+  # Match file modification events
+  - type: event
+    pattern: "(file_create|file_modify)"
+
+actions:
+  - type: suggest
+    message: |
+      # Code Verification Workflow
+
+      ## Test-Driven Development Approach
+
+      When implementing new features or making significant changes, follow the test-driven development (TDD) approach:
+
+      1. **Write tests first**: Before implementing a feature, write tests that define the expected behavior
+      2. **Run tests to see them fail**: Verify that the tests fail as expected (red phase)
+      3. **Implement the feature**: Write the minimal code needed to make the tests pass
+      4. **Run tests to see them pass**: Verify that the tests now pass (green phase)
+      5. **Refactor**: Clean up the code while ensuring tests continue to pass
+
+      ## Verification Steps
+
+      After making changes to the codebase, always run the following verification steps to ensure code quality:
+
+      ### 1. Run Biome for formatting and linting
+
+      ```bash
+      # Check and fix formatting/linting issues
+      pnpm check
+      ```
+
+      ### 2. Verify TypeScript types
+
+      ```bash
+      # Check for TypeScript errors
+      pnpm tsc --noEmit
+      ```
+
+      ### 3. Run appropriate tests
+
+      For component changes:
+      ```bash
+      # Run tests for the specific component
+      pnpm test "ComponentName"
+      ```
+
+      For utility function changes:
+      ```bash
+      # Run tests for the specific utility
+      pnpm test "utilityName"
+      ```
+
+      For server action changes:
+      ```bash
+      # Run tests for the specific action
+      pnpm test "actionName"
+      ```
+
+      ### 4. Run the combined verification script (optional)
+
+      ```bash
+      # Run all verification steps
+      pnpm verify
+      ```
+
+      ## Testing Guidelines
+
+      - **Always add tests for new features**: Every new feature should have corresponding tests
+      - **Test edge cases**: Consider boundary conditions, error states, and unusual inputs
+      - **Test behavior, not implementation**: Focus on what the code does, not how it does it
+      - **Keep tests focused**: Each test should verify one specific aspect of behavior
+      - **Maintain test coverage**: Aim for high test coverage, especially for critical paths
+      - **Update tests when changing behavior**: If you change how something works, update its tests
+
+      ## Best Practices
+
+      1. **Run verification after each logical change**: Do not wait until you have made multiple changes
+      2. **Fix issues immediately**: Address any errors or warnings as soon as they appear
+      3. **Run specific tests**: Only run tests related to your changes to save time
+      4. **Commit only after verification passes**: Never commit code that does not pass all checks
+      5. **Use the verification script before PRs**: Run `pnpm verify` before creating a pull request
+
+      ## Common Issues and Solutions
+
+      ### Biome formatting issues
+      - Run `pnpm check` to automatically fix most formatting issues
+      - For complex issues, check the Biome documentation
+
+      ### TypeScript errors
+      - Address type errors immediately to prevent them from accumulating
+      - Use proper type definitions instead of `any`
+      - Consider using more specific types to improve code quality
+
+      ### Test failures
+      - Ensure your changes do not break existing functionality
+      - Update tests when changing component/function behavior
+      - Add new tests for new functionality
+
+examples:
+  - input: |
+      // Bad: Implementing feature without tests
+      function calculateTotal(items) {
+        return items.reduce((sum, item) => sum + item.price, 0);
+      }
+
+      // Good: Test-driven development approach
+      // 1. Write test first
+      it('should calculate total price of all items', () => {
+        const items = [{ price: 10 }, { price: 20 }, { price: 30 }];
+        expect(calculateTotal(items)).toBe(60);
+      });
+      
+      // 2. Implement the feature to make the test pass
+      function calculateTotal(items) {
+        return items.reduce((sum, item) => sum + item.price, 0);
+      }
+    output: "Following test-driven development approach"
+
+  - input: |
+      // After modifying a component
+      // Bad: Skipping verification
+      git add components/ui/Button.tsx
+      git commit -m "Update Button component"
+
+      // Good: Running verification
+      pnpm check
+      pnpm tsc --noEmit
+      pnpm test "Button"
+      git add components/ui/Button.tsx
+      git commit -m "Update Button component"
+    output: "Proper verification workflow before committing changes"
+
+  - input: |
+      // After modifying a server action
+      // Bad: Running all tests
+      pnpm check
+      pnpm tsc --noEmit
+      pnpm test
+
+      // Good: Running only relevant tests
+      pnpm check
+      pnpm tsc --noEmit
+      pnpm test "createUserAction"
+    output: "Efficient verification by running only relevant tests"
+
+metadata:
+  priority: high
+  version: 1.0
+  tags: ["workflow", "quality", "testing", "verification", "tdd"]
+</rule> 

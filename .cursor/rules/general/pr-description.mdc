@@ -1,0 +1,71 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# PR Description Rule
+
+## Rule: Generating PR Descriptions
+
+When asked to create a PR description, use the following template and fill it in with all relevant details about the changes made. The description should be clear, concise, and accurately reflect the work done in the PR.
+
+---
+
+### Title
+
+feat(<scope>): <short summary of the change>
+
+---
+
+## What
+
+_A clear, bullet-point or paragraph summary of what was done in this PR. List features, fixes, refactors, or other changes._
+
+## Why
+
+_Explain the motivation for these changes. Why were they needed? What problem do they solve or what value do they add?_
+
+## Checklist:
+
+- [] I have performed a self-review of my own code
+- [] I have made corresponding changes to the documentation
+- [] My changes generate no new warnings
+- [] I have added tests that prove my fix is effective or that my feature works
+- [] Formatting passes locally with my changes
+- [] I have rebased against main before asking for a review
+
+---
+
+## Usage
+- When prompted to create a PR description, always use this template.
+- Fill in the 'What' and 'Why' sections with specific details about the work done in the PR.
+- Ensure the checklist is included and left for the reviewer/author to check off as appropriate.
+- The title should follow the format: `feat(<scope>): <summary>` or another relevant conventional commit prefix (e.g., `fix`, `chore`, `refactor`).
+
+## Example
+
+### Title
+
+feat(skattframtal): generate Next.js app with App Router and Playwright E2E tests
+
+---
+
+## What
+
+- Generated a new Next.js app for skattframtal
+- Set up the App Router structure
+- Added Playwright E2E test configuration and example tests
+
+## Why
+
+- To provide a modern, scalable frontend for skattframtal
+- To ensure robust E2E testing from the start
+
+## Checklist:
+
+- [] I have performed a self-review of my own code
+- [] I have made corresponding changes to the documentation
+- [] My changes generate no new warnings
+- [] I have added tests that prove my fix is effective or that my feature works
+- [] Formatting passes locally with my changes
+- [] I have rebased against main before asking for a review

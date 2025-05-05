@@ -1,0 +1,92 @@
+---
+description: Next.js Rendering Guidelines
+globs: "**/*.{ts,tsx}"
+---
+
+# Next.js Rendering Guidelines
+
+This rule provides guidance on rendering strategies in Next.js applications.
+
+<rule>
+name: nextjs_rendering
+description: Standards for Next.js rendering strategies
+
+filters:
+  # Match any TypeScript files
+  - type: file_extension
+    pattern: "\\.(ts|tsx)$"
+
+actions:
+  - type: suggest
+    message: |
+      # Next.js Rendering Guidelines
+
+      ## Server Components
+
+      - Use React Server Components (RSC) as the default approach
+      - Minimize 'use client' directives
+      - Keep client components small and focused
+      - Use server components for:
+        - Data fetching
+        - Access to backend resources
+        - Keeping sensitive information on the server
+        - Large dependencies
+      
+      ## Client Components
+
+      - Use 'use client' only when necessary:
+        - Interactivity and event listeners
+        - React hooks (useState, useEffect, etc.)
+        - Browser-only APIs
+        - Custom hooks that use client-only features
+      - Keep client components small and focused
+      - Wrap client components in Suspense with fallback
+
+      ## Example Implementation
+
+      ```typescript
+      // Server Component (default)
+      export default async function Page() {
+        const data = await fetchData();
+        
+        return (
+          <div>
+            <h1>Server Component</h1>
+            <DataDisplay data={data} />
+            <Suspense fallback={<LoadingUI />}>
+              <ClientInteraction />
+            </Suspense>
+          </div>
+        );
+      }
+
+      // Client Component
+      'use client'
+      
+      import { useState } from 'react';
+      
+      export function ClientInteraction() {
+        const [state, setState] = useState(false);
+        
+        return (
+          <button onClick={() => setState(!state)}>
+            Toggle: {state ? 'On' : 'Off'}
+          </button>
+        );
+      }
+      ```
+
+      ## Performance Optimization
+
+      - Use dynamic imports for non-critical client components
+      - Implement proper loading states with Suspense
+      - Use streaming for progressive rendering
+      - Implement proper error boundaries
+      - Use Image component for optimized images
+      - Implement proper caching strategies
+
+metadata:
+  priority: high
+  version: 1.0
+  tags: ["nextjs", "rendering"]
+</rule> 

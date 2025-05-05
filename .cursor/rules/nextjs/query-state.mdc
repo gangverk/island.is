@@ -1,0 +1,77 @@
+---
+description: Next.js Query State Management Guidelines
+globs: "**/*.{ts,tsx}"
+---
+
+# Next.js Query State Management Guidelines
+
+This rule provides guidance on managing query state in Next.js applications.
+
+<rule>
+name: nextjs_query_state
+description: Standards for Next.js query state management
+
+filters:
+  # Match any TypeScript files
+  - type: file_extension
+    pattern: "\\.(ts|tsx)$"
+
+actions:
+  - type: suggest
+    message: |
+      # Next.js Query State Management Guidelines
+
+      ## Implementation with nuqs
+
+      - Use useQueryState for all query state management
+      - Implement type-safe query parameters
+      - Use query state for filter, sort, and pagination parameters
+      - Ensure query state is synchronized with UI components
+
+      ## Example Implementation
+
+      ```typescript
+      "use client";
+
+      import { useQueryState } from "nuqs";
+
+      export function FilterComponent() {
+        const [filter, setFilter] = useQueryState("filter");
+        const [page, setPage] = useQueryState("page", { 
+          defaultValue: "1",
+          parse: (value) => parseInt(value, 10),
+          serialize: (value) => value.toString(),
+        });
+        
+        return (
+          <div>
+            <input 
+              value={filter || ""} 
+              onChange={(e) => setFilter(e.target.value || null)} 
+            />
+            <button onClick={() => setFilter(null)}>Clear</button>
+            <div>
+              <button onClick={() => setPage(Math.max(1, page - 1))}>Previous</button>
+              <span>Page {page}</span>
+              <button onClick={() => setPage(page + 1)}>Next</button>
+            </div>
+          </div>
+        );
+      }
+      ```
+
+      ## Best Practices
+
+      - Use query state for shareable URLs
+      - Implement proper parsing and serialization for non-string values
+      - Set appropriate default values
+      - Handle null values properly
+      - Use query state for filter, sort, and pagination parameters
+      - Ensure query state is synchronized with UI components
+      - Implement proper error handling for invalid query parameters
+
+metadata:
+  priority: high
+  version: 1.0
+  tags: ["nextjs", "query-state"]
+</rule> 
