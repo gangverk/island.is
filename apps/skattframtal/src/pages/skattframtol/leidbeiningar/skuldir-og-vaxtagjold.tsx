@@ -17,6 +17,7 @@ const SkuldirOgVaxtagjold = () => {
           <GridColumn
             span={['12/12', '12/12', '12/12', '8/12']}
             offset={['0', '0', '0', '2/12']}
+            paddingTop={[4, 4, 6]}
           >
             <Text variant="h1" as="h1" marginBottom={5}>
               Skuldir og vaxtagjöld
