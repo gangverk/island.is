@@ -1,0 +1,98 @@
+{
+  "name": "services-skattskil",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/services/skattskil/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/services/skattskil",
+        "main": "apps/services/skattskil/src/main.ts",
+        "tsConfig": "apps/services/skattskil/tsconfig.app.json",
+        "assets": [
+          "apps/services/skattskil/src/assets",
+          {
+            "glob": "*",
+            "input": "apps/services/skattskil/migrations",
+            "output": "./migrations"
+          },
+          {
+            "glob": ".sequelizerc",
+            "input": "apps/services/skattskil",
+            "output": "./"
+          },
+          {
+            "glob": "sequelize.config.js",
+            "input": "apps/services/skattskil",
+            "output": "./"
+          }
+
+        ],
+        "webpackConfig": "apps/services/skattskil/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "services-skattskil:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "services-skattskil:build:development"
+        },
+        "production": {
+          "buildTarget": "services-skattskil:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/services/skattskil/jest.config.ts"
+      }
+    },
+    "dev-services": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker compose up -d",
+        "cwd": "apps/services/skattskil"
+      }
+    },
+    "codegen/backend-schema": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cross-env INIT_SCHEMA=true yarn ts-node -P apps/reference-backend/tsconfig.app.json apps/reference-backend/src/buildOpenApi.ts"
+      },
+      "outputs": ["{projectRoot}/src/openapi.yaml"]
+    },
+    "migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "../../../node_modules/.bin/sequelize-cli db:migrate",
+        "cwd": "apps/services/skattskil"
+      }
+    },
+    "migrate/generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "../../../node_modules/.bin/sequelize-cli migration:generate --name $(whoami)",
+        "cwd": "apps/services/skattskil"
+      }
+    }
+  }
+}
