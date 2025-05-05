@@ -1,89 +1,79 @@
 ---
 description: Next.js Rendering Guidelines
 globs: "**/*.{ts,tsx}"
+alwaysApply: false
 ---
 
-# Next.js Rendering Guidelines
+# Next.js Rendering Guidelines (Pages Router)
 
-This rule provides guidance on rendering strategies in Next.js applications.
+## Scope
+This rule applies to all code using the **Next.js Pages Router** (not the App Router).
 
-<rule>
-name: nextjs_rendering
-description: Standards for Next.js rendering strategies
+## Rendering Methods in Pages Router
+- **Static Generation (SSG):** Use `getStaticProps` (and optionally `getStaticPaths`) for pages that can be pre-rendered at build time.
+- **Server-side Rendering (SSR):** Use `getServerSideProps` for pages that need to fetch data on every request.
+- **Client-side Rendering (CSR):** Use React hooks (`useEffect`, `useState`) for data that must be fetched on the client only.
+- **Legacy:** `getInitialProps` is supported but should be avoided in new code in favor of `getStaticProps`/`getServerSideProps`.
 
-filters:
-  # Match any TypeScript files
-  - type: file_extension
-    pattern: "\\.(ts|tsx)$"
+## Best Practices
+- Prefer SSG for performance and scalability when possible.
+- Use SSR only when data must be up-to-date on every request.
+- Use CSR for user-specific or highly dynamic data that does not need to be indexed by search engines.
+- Do not use App Router features (e.g., Server Components, `app/` directory, or App Router-specific hooks).
+- Reference: [Next.js Pages Router Rendering Docs](mdc:https:/nextjs.org/docs/pages/building-your-application/data-fetching/get-static-props)
 
-actions:
-  - type: suggest
-    message: |
-      # Next.js Rendering Guidelines
+## Example: Static Generation
+```js
+// pages/posts/[id].js
+export async function getStaticProps(context) {
+  const { id } = context.params
+  // fetch data
+  return { props: { id } }
+}
 
-      ## Server Components
+export async function getStaticPaths() {
+  // fetch all ids
+  return { paths: [{ params: { id: '1' } }], fallback: false }
+}
 
-      - Use React Server Components (RSC) as the default approach
-      - Minimize 'use client' directives
-      - Keep client components small and focused
-      - Use server components for:
-        - Data fetching
-        - Access to backend resources
-        - Keeping sensitive information on the server
-        - Large dependencies
-      
-      ## Client Components
+export default function Post({ id }) {
+  return <div>Post {id}</div>
+}
+```
 
-      - Use 'use client' only when necessary:
-        - Interactivity and event listeners
-        - React hooks (useState, useEffect, etc.)
-        - Browser-only APIs
-        - Custom hooks that use client-only features
-      - Keep client components small and focused
-      - Wrap client components in Suspense with fallback
+## Example: Server-side Rendering
+```js
+// pages/profile.js
+export async function getServerSideProps(context) {
+  // fetch data
+  return { props: { user: { name: 'Alice' } } }
+}
 
-      ## Example Implementation
+export default function Profile({ user }) {
+  return <div>Hello, {user.name}</div>
+}
+```
 
-      ```typescript
-      // Server Component (default)
-      export default async function Page() {
-        const data = await fetchData();
-        
-        return (
-          <div>
-            <h1>Server Component</h1>
-            <DataDisplay data={data} />
-            <Suspense fallback={<LoadingUI />}>
-              <ClientInteraction />
-            </Suspense>
-          </div>
-        );
-      }
+## Example: Client-side Rendering
+```js
+import { useEffect, useState } from 'react'
 
-      // Client Component
-      'use client'
-      
-      import { useState } from 'react';
-      
-      export function ClientInteraction() {
-        const [state, setState] = useState(false);
-        
-        return (
-          <button onClick={() => setState(!state)}>
-            Toggle: {state ? 'On' : 'Off'}
-          </button>
-        );
-      }
-      ```
+export default function Dashboard() {
+  const [data, setData] = useState(null)
+  useEffect(() => {
+    fetch('/api/data').then(res => res.json()).then(setData)
+  }, [])
+  if (!data) return <div>Loading...</div>
+  return <div>Data: {data.value}</div>
+}
+```
 
-      ## Performance Optimization
+## Anti-Patterns
+- Do not use App Router features (e.g., `app/` directory, Server Components, or App Router-specific hooks).
+- Do not mix Pages Router and App Router patterns in the same project or file.
 
-      - Use dynamic imports for non-critical client components
-      - Implement proper loading states with Suspense
-      - Use streaming for progressive rendering
-      - Implement proper error boundaries
-      - Use Image component for optimized images
-      - Implement proper caching strategies
+## Migration
+- If migrating from App Router, refactor to use `pages/` directory and the data fetching methods above.
 
 metadata:
   priority: high

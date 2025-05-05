@@ -1,6 +1,7 @@
 ---
 description: Next.js Query State Management Guidelines
 globs: "**/*.{ts,tsx}"
+alwaysApply: false
 ---
 
 # Next.js Query State Management Guidelines
