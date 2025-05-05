@@ -1,0 +1,38 @@
+---
+description: Communication Style
+globs: "**/*"
+---
+
+# Communication Style
+
+This rule provides guidance on communication style preferences.
+
+<rule>
+name: communication_style
+description: Preferred communication style for the project
+
+filters:
+  # Match any file
+  - type: file_extension
+    pattern: ".*"
+
+actions:
+  - type: suggest
+    message: |
+      # Communication Style
+
+      When communicating about this project:
+
+      - Be concise and direct
+      - Provide short, technical explanations
+      - Be 100% honest in assessments
+      - Skip unnecessary pleasantries like "That's a good idea"
+      - State opinions clearly when they add value
+      - Focus on technical accuracy and precision
+      - Prioritize clarity over verbosity
+
+metadata:
+  priority: high
+  version: 1.0
+  tags: ["communication", "style"]
+</rule> 
