@@ -4,7 +4,6 @@ import {
   ID,
   InputType,
   registerEnumType,
-  createUnionType,
 } from '@nestjs/graphql';
 
 @ObjectType()
@@ -76,7 +75,7 @@ export class TaxReturn {
 @ObjectType()
 export class TaxReturnIncome {
   @Field(() => ID)
-  taxReturnIncomeID!: string;
+  incomeID!: string;
 
   @Field(() => TaxReturnIncomeCategory)
   category!: TaxReturnIncomeCategory;
@@ -122,7 +121,7 @@ export class TaxReturnVehicle {
 @ObjectType()
 export class TaxReturnGenericLiability {
   @Field(() => ID)
-  taxReturnLiabilityID!: string;
+  liabilityID!: string;
 
   @Field()
   description!: string;
@@ -137,7 +136,7 @@ export class TaxReturnGenericLiability {
 @ObjectType()
 export class TaxReturnResidentialLoan {
   @Field(() => ID)
-  taxReturnResidentialLoanID!: string;
+  residentialLoanID!: string;
 
   @Field()
   yearOfPurchase!: string;

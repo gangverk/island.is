@@ -1,5 +1,14 @@
 import { Injectable } from '@nestjs/common'
-import { TaxPayer, TaxReturn, Money, TaxReturnIcelandicRealEstate, TaxReturnVehicle, TaxReturnIncome, TaxReturnIncomeCategory, TaxReturnResidentialLoan, TaxReturnGenericLiability } from './model'
+import {
+  TaxPayer,
+  TaxReturn,
+  TaxReturnIcelandicRealEstate,
+  TaxReturnVehicle,
+  TaxReturnIncome,
+  TaxReturnIncomeCategory,
+  TaxReturnResidentialLoan,
+  TaxReturnGenericLiability,
+} from './model'
 import { uuid } from 'uuidv4'
 
 @Injectable()
@@ -47,7 +56,7 @@ export class SkattskilService {
     // Implement your logic to fetch income by tax return ID
     return [
       {
-        taxReturnIncomeID: uuid(),
+        incomeID: uuid(),
         category: TaxReturnIncomeCategory.SALARY,
         amount: { amount: '600000' },
         description: 'Laun',
@@ -83,7 +92,7 @@ export class SkattskilService {
     // Implement your logic to fetch residential loans by tax return ID
     return [
       {
-        taxReturnResidentialLoanID: uuid(),
+        residentialLoanID: uuid(),
         amountPaidInFiscalYear: { amount: '300000' },
         yearOfPurchase: '2018',
         address: '456 Elm St',
@@ -101,7 +110,7 @@ export class SkattskilService {
     // Implement your logic to fetch liabilities by tax return ID
     return [
       {
-        taxReturnLiabilityID: uuid(),
+        liabilityID: uuid(),
         amountRemaining: { amount: '50000' },
         interestPaid: { amount: '2000' },
         description: 'Credit Card Debt',
