@@ -8,7 +8,7 @@ import {
   Icon,
   Navigation,
 } from '@island.is/island-ui/core'
-import SidebarLayout from '../../../../screens/Layouts/SidebarLayout'
+import SidebarLayout from '../../../screens/Layouts/SidebarLayout'
 
 import NextLink from 'next/link'
 

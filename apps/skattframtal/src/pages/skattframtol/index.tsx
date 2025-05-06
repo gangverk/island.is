@@ -11,7 +11,7 @@ import {
   Breadcrumbs,
   Icon,
 } from '@island.is/island-ui/core'
-import SidebarLayout from '../../../screens/Layouts/SidebarLayout'
+import SidebarLayout from '../../screens/Layouts/SidebarLayout'
 import InstitutionPanel from '../../components/InstitutionPanel/InstitutionPanel'
 export default function Skattframtal() {
   return (
