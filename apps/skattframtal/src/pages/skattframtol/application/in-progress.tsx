@@ -48,6 +48,13 @@ export default function ApplicationsInProgress() {
               items={navigationItems}
               baseId="skattframtal-application"
               title="Skattframtal"
+              renderLink={(link, item) => {
+                return (
+                  <Link href={item?.href ?? '#'} skipTab>
+                    {link}
+                  </Link>
+                )
+              }}
             />
           </Stack>
         }
