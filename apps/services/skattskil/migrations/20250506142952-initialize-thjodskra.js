@@ -21,7 +21,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      postalCode: {
+      postal_code: {
         type: Sequelize.STRING,
         allowNull: true,
       },
@@ -57,7 +57,7 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
       },
-      licene_plate_number: {
+      license_plate_number: {
         type: Sequelize.STRING,
         allowNull: false,
       },
