@@ -14,7 +14,7 @@ import NextLink from 'next/link'
 
 const navigationItems = [
   {
-    title: 'Mín framtöl',
+    title: 'Nýjasta framtal',
     href: '/skattframtol/application',
     active: true,
   },
@@ -76,7 +76,7 @@ export default function Applications() {
                   title: 'Skattframtal',
                 },
                 {
-                  title: 'Mín framtöl',
+                  title: 'Nýjasta framtal',
                 },
               ]}
               renderLink={(link) => {
@@ -127,7 +127,7 @@ export default function Applications() {
         <Box display="flex" flexDirection="column" rowGap={8}>
           <Stack space={4}>
             <Text variant="h1" as="h1">
-              Mín framtöl
+              Nýjasta framtal
             </Text>
 
             <Text>

@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test'
 
-test('mín framtöl', async ({ page }) => {
+test('Nýjasta framtal', async ({ page }) => {
   await page.goto('/skattframtol/application')
 
   // Expect h1 to contain a substring.
-  expect(await page.locator('h1').innerText()).toContain('Mín framtöl')
+  expect(await page.locator('h1').innerText()).toContain('Nýjasta framtal')
 })
 
 test('framtöl í vinnslu', async ({ page }) => {

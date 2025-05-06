@@ -13,7 +13,7 @@ import SidebarLayout from '../../../screens/Layouts/SidebarLayout'
 
 const navigationItems = [
   {
-    title: 'Mín framtöl',
+    title: 'Nýjasta framtal',
     href: '/skattframtol/application',
     active: false,
   },
