@@ -10,6 +10,8 @@ import {
 } from '@island.is/island-ui/core'
 import SidebarLayout from '../../../../screens/Layouts/SidebarLayout'
 
+import NextLink from 'next/link'
+
 const navigationItems = [
   {
     title: 'Mín framtöl',
@@ -50,9 +52,9 @@ export default function Applications() {
               title="Skattframtal"
               renderLink={(link, item) => {
                 return (
-                  <Link href={item?.href ?? '#'} skipTab>
+                  <NextLink href={item?.href ?? '#'} passHref legacyBehavior>
                     {link}
-                  </Link>
+                  </NextLink>
                 )
               }}
             />
@@ -112,6 +114,13 @@ export default function Applications() {
             baseId="skattframtal-application"
             title="Skattframtal"
             isMenuDialog
+            renderLink={(link, item) => {
+              return (
+                <NextLink href={item?.href ?? '#'} passHref legacyBehavior>
+                  {link}
+                </NextLink>
+              )
+            }}
           />
         </Box>
 
