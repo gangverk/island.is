@@ -14,7 +14,6 @@ import {
 import Header from '../../../components/Header/Header'
 import SidebarLayout from '../../../screens/Layouts/SidebarLayout'
 import InstitutionPanel from '../../../components/InstitutionPanel/InstitutionPanel'
-
 export default function Leidbeiningar() {
   return (
     <>
