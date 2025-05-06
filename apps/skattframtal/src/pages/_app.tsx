@@ -7,17 +7,17 @@ import { globalStyles } from '@island.is/island-ui/core'
 
 globalStyles()
 
-const CustomApp = ({ Component, pageProps }: AppProps) => {
+const CustomApp = ({ Component, pageProps, router }: AppProps) => {
   return (
     <>
       <Head>
         <title>Welcome to skattframtal!</title>
       </Head>
-      <Header />
+      {router.pathname !== '/auth' && <Header />}
       <main className="app">
         <Component {...pageProps} />
       </main>
-      <Footer />
+      {router.pathname !== '/auth' && <Footer />}
     </>
   )
 }
