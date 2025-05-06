@@ -14,7 +14,7 @@ const navigationItems = [
   {
     title: 'Mín framtöl',
     href: '/skattframtol/application',
-    active: true,
+    active: false,
   },
   {
     title: 'Framtöl í vinnslu',
@@ -24,11 +24,11 @@ const navigationItems = [
   {
     title: 'Eldri framtöl',
     href: '/skattframtol/application/older',
-    active: false,
+    active: true,
   },
 ]
 
-export default function Applications() {
+export default function ApplicationsOlder() {
   return (
     <>
       <SidebarLayout
@@ -67,7 +67,7 @@ export default function Applications() {
                   title: 'Skattframtal',
                 },
                 {
-                  title: 'Mín framtöl',
+                  title: 'Eldri framtöl',
                 },
               ]}
               renderLink={(link) => {
@@ -108,10 +108,10 @@ export default function Applications() {
           />
         </Box>
 
-        <Box display="flex" flexDirection="column" rowGap={8}>
+        <Box display="flex" flexDirection="column" marginBottom={8}>
           <Stack space={4}>
             <Text variant="h1" as="h1">
-              Mín framtöl
+              Eldri framtöl
             </Text>
 
             <Text>
@@ -121,7 +121,8 @@ export default function Applications() {
               nisi ut aliquip ex ea commodo consequat.
             </Text>
           </Stack>
-
+        </Box>
+        <Box display="flex" flexDirection="column" rowGap={4}>
           <Box
             display="flex"
             justifyContent="spaceBetween"
@@ -136,8 +137,7 @@ export default function Applications() {
             rowGap={[3, 3, 0]}
           >
             <Box>
-              <Text variant="h3">Skattaframtal 2025</Text>
-              <Text>Skattframtal 2025 er núna opið til skila</Text>
+              <Text variant="h3">Skattframtal 2024</Text>
             </Box>
             <Box>
               <Button
@@ -147,7 +147,63 @@ export default function Applications() {
                 nowrap
                 variant="primary"
               >
-                Hefja skattframtal
+                Opna framtal
+              </Button>
+            </Box>
+          </Box>
+          <Box
+            display="flex"
+            justifyContent="spaceBetween"
+            alignItems="center"
+            padding={3}
+            columnGap={4}
+            borderColor="blue200"
+            border="standard"
+            borderRadius="large"
+            flexWrap="wrap"
+            flexDirection={['column', 'column', 'row']}
+            rowGap={[3, 3, 0]}
+          >
+            <Box>
+              <Text variant="h3">Skattframtal 2023</Text>
+            </Box>
+            <Box>
+              <Button
+                size="medium"
+                icon="open"
+                iconType="outline"
+                nowrap
+                variant="primary"
+              >
+                Opna framtal
+              </Button>
+            </Box>
+          </Box>
+          <Box
+            display="flex"
+            justifyContent="spaceBetween"
+            alignItems="center"
+            padding={3}
+            columnGap={4}
+            borderColor="blue200"
+            border="standard"
+            borderRadius="large"
+            flexWrap="wrap"
+            flexDirection={['column', 'column', 'row']}
+            rowGap={[3, 3, 0]}
+          >
+            <Box>
+              <Text variant="h3">Skattframtal 2022</Text>
+            </Box>
+            <Box>
+              <Button
+                size="medium"
+                icon="open"
+                iconType="outline"
+                nowrap
+                variant="primary"
+              >
+                Opna framtal
               </Button>
             </Box>
           </Box>

@@ -14,12 +14,12 @@ const navigationItems = [
   {
     title: 'Mín framtöl',
     href: '/skattframtol/application',
-    active: true,
+    active: false,
   },
   {
     title: 'Framtöl í vinnslu',
     href: '/skattframtol/application/in-progress',
-    active: false,
+    active: true,
   },
   {
     title: 'Eldri framtöl',
@@ -28,7 +28,7 @@ const navigationItems = [
   },
 ]
 
-export default function Applications() {
+export default function ApplicationsInProgress() {
   return (
     <>
       <SidebarLayout
@@ -67,7 +67,7 @@ export default function Applications() {
                   title: 'Skattframtal',
                 },
                 {
-                  title: 'Mín framtöl',
+                  title: 'Framtöl í vinnslu',
                 },
               ]}
               renderLink={(link) => {
@@ -111,7 +111,7 @@ export default function Applications() {
         <Box display="flex" flexDirection="column" rowGap={8}>
           <Stack space={4}>
             <Text variant="h1" as="h1">
-              Mín framtöl
+              Framtöl í vinnslu
             </Text>
 
             <Text>
@@ -122,34 +122,20 @@ export default function Applications() {
             </Text>
           </Stack>
 
+          {/* No applications in progress */}
           <Box
             display="flex"
-            justifyContent="spaceBetween"
+            justifyContent="center"
             alignItems="center"
-            padding={3}
-            columnGap={4}
+            padding={6}
             borderColor="blue200"
             border="standard"
             borderRadius="large"
-            flexWrap="wrap"
-            flexDirection={['column', 'column', 'row']}
-            rowGap={[3, 3, 0]}
+            background="blue100"
           >
-            <Box>
-              <Text variant="h3">Skattaframtal 2025</Text>
-              <Text>Skattframtal 2025 er núna opið til skila</Text>
-            </Box>
-            <Box>
-              <Button
-                size="medium"
-                icon="open"
-                iconType="outline"
-                nowrap
-                variant="primary"
-              >
-                Hefja skattframtal
-              </Button>
-            </Box>
+            <Text variant="h4" as="p">
+              Engin framtöl í vinnslu
+            </Text>
           </Box>
         </Box>
       </SidebarLayout>
