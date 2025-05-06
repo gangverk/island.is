@@ -3,6 +3,10 @@ import Head from 'next/head'
 import { Footer } from '../../components/Footer'
 import './styles.css'
 
+import { globalStyles } from '@island.is/island-ui/core'
+
+globalStyles()
+
 const CustomApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>

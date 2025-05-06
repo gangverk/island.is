@@ -73,7 +73,9 @@ export const Button = forwardRef<
             [styles.loading]: loading,
           },
         )}
-        display={variant === 'text' ? 'inline' : inline ? 'inlineFlex' : 'flex'}
+        display={
+          variant === 'text' ? 'inlineFlex' : inline ? 'inlineFlex' : 'flex'
+        }
         disabled={disabled || loading}
         {...(unfocusable && { tabIndex: -1 })}
         {...buttonProps}
