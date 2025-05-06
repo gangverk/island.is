@@ -11,13 +11,11 @@ import {
   Breadcrumbs,
   Icon,
 } from '@island.is/island-ui/core'
-import Header from '../../components/Header/Header'
 import SidebarLayout from '../../../screens/Layouts/SidebarLayout'
 import InstitutionPanel from '../../components/InstitutionPanel/InstitutionPanel'
 export default function Leidbeiningar() {
   return (
     <>
-      <Header />
       <SidebarLayout
         sidebarContent={
           <Stack space={3}>
@@ -139,7 +137,7 @@ export default function Leidbeiningar() {
                 ),
               }}
             >
-              <Link href="https://skatturinn.is/">
+              <Link href="/skattframtol/application">
                 <Button
                   size="medium"
                   icon="open"
