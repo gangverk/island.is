@@ -436,7 +436,7 @@ export const institutionMapper = {
   },
   [ApplicationTypes.TAX_RETURN]: {
     nationalId: InstitutionNationalIds.INNHEIMTUMADUR,
-    slug: InstitutionTypes.INNHEIMTUMADUR,
-    contentfulId: InstitutionContentfulIds.INNHEIMTUMADUR,
+    slug: InstitutionTypes.SKATTURINN,
+    contentfulId: InstitutionContentfulIds.SKATTURINN,
   },
 }
