@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common'
 import { SkattskilService } from './skattskil.service';
-import { SkattskilResolver } from './skattskil.resolver';
+import { SkattskilResolver, TaxPayerResolver, TaxReturnResolver } from './skattskil.resolver';
 
 
 @Module({
   imports: [],
-  providers: [SkattskilResolver, SkattskilService],
+  providers: [SkattskilResolver, TaxPayerResolver, TaxReturnResolver, SkattskilService],
   exports: [],
 })
 export class ApiDomainsSkattskilModule {}
