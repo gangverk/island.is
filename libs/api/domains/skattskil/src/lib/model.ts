@@ -3,14 +3,22 @@ import {
   Field,
   ID,
   InputType,
+  Float,
   registerEnumType,
 } from '@nestjs/graphql';
 
 @ObjectType()
 export class Money {
-  @Field(() => Number)
+  @Field(() => Float)
   amount!: number;
 }
+
+@InputType()
+export class MoneyInput {
+  @Field(() => Float)
+  amount!: number;
+}
+
 
 // Enums
 export enum TaxReturnIncomeCategory {
@@ -164,12 +172,6 @@ export class TaxReturnResidentialLoan {
 
   @Field(() => Money)
   interestPaidInFiscalYear!: Money;
-}
-
-@InputType()
-export class MoneyInput {
-  @Field(() => Number)
-  amount!: number;
 }
 
 @InputType()
