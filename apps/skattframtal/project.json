@@ -53,6 +53,13 @@
     "lint": {
       "executor": "@nx/eslint:lint"
     },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["yarn nx run api:dev", "yarn start skattframtal"],
+        "parallel": true
+      }
+    },
     "codegen/frontend-client": {
       "executor": "nx:run-commands",
       "options": {

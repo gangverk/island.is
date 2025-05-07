@@ -38,6 +38,13 @@ export class TaxPayerResolver {
 export class TaxReturnResolver {
   constructor(private skattskilService: SkattskilService) {}
 
+  @Query(() => TaxReturn, { name: 'taxReturnById' })
+  async getTaxReturnById(
+    @Args('taxReturnId') taxReturnId: string,
+  ): Promise<TaxReturn> {
+    return this.skattskilService.getTaxReturnById(taxReturnId)
+  }
+
   @ResolveField('income', () => [TaxReturnIncome])
   async getIncome(@Parent() taxReturn: TaxReturn): Promise<TaxReturnIncome[]> {
     return this.skattskilService.getIncome(taxReturn.taxReturnID)

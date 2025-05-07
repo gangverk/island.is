@@ -62,6 +62,19 @@ export class SkattskilService {
     ]
   }
 
+  async getTaxReturnById(taxReturnId: string): Promise<TaxReturn> {
+    // Implement your logic to fetch tax return by ID
+    return {
+      taxReturnID: taxReturnId,
+      fiscalYear: '2025',
+      income: [],
+      realEstateAssets: [],
+      vehicleAssets: [],
+      residentialLoans: [],
+      liabilities: [],
+    }
+  }
+
   async getIncome(taxReturnId: string): Promise<TaxReturnIncome[]> {
     // Implement your logic to fetch income by tax return ID
     return [
