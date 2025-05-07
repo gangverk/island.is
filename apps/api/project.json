@@ -70,7 +70,10 @@
         "commands": [
           "yarn nx run services-skattskil:dev-services",
           "yarn nx run services-skattskil:migrate",
-          "yarn nx run services-skattskil:seed"
+          "yarn nx run services-skattskil:seed",
+          "yarn nx run services-thjodskra:dev-services",
+          "yarn nx run services-thjodskra:migrate",
+          "yarn nx run services-thjodskra:seed"
         ],
         "parallel": false
       }
@@ -86,6 +89,7 @@
       "options": {
         "commands": [
           "yarn start services-skattskil",
+          "yarn start services-thjodskra",
           "yarn start api"
         ],
         "parallel": true
