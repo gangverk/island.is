@@ -6,7 +6,6 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     // Create UUIDs to use for relationships
     const taxPayerId1 = uuidv4();
-    const taxPayerId2 = uuidv4();
     
     const taxReturnId1 = uuidv4();
     const taxReturnId2 = uuidv4();
@@ -19,12 +18,6 @@ module.exports = {
         phone: '5551234',
         email: 'jokull@example.is',
       },
-      {
-        id: taxPayerId2,
-        person_id: '0102852539',
-        phone: '5556789',
-        email: 'anna@example.is',
-      }
     ]);
 
     // Seed data for Tax Return
@@ -33,14 +26,8 @@ module.exports = {
         id: taxReturnId1,
         tax_payer_id: taxPayerId1,
         fiscal_year: 2024,
-        completed: true
+        completed: false,
       },
-      {
-        id: taxReturnId2,
-        tax_payer_id: taxPayerId2,
-        fiscal_year: 2024,
-        completed: false
-      }
     ]);
 
     // Seed data for Income
@@ -49,24 +36,32 @@ module.exports = {
         id: uuidv4(),
         tax_return_id: taxReturnId1,
         category: 'salary',
-        description: 'Monthly salary',
-        amount: 9500000, // 9,500,000 ISK
-        payer: 'Island.is'
+        description: 'Tekjur',
+        amount: 936000000, // 9360000 ISK
+        payer: 'Norðurljós Software ehf'
       },
       {
         id: uuidv4(),
         tax_return_id: taxReturnId1,
-        category: 'investment',
-        description: 'Dividend income',
-        amount: 1200000, // 1,200,000 ISK
-        payer: 'Arion Bank'
+        category: 'salary',
+        description: 'Tekjur',
+        amount: 90000000, // 900000 ISK
+        payer: 'Mús & Merki ehf'
       },
       {
         id: uuidv4(),
-        tax_return_id: taxReturnId2,
-        category: 'salary',
-        description: 'Annual salary',
-        amount: 8200000, // 8,200,000 ISK
+        tax_return_id: taxReturnId1,
+        category: 'benefit',
+        description: 'Dagpeningar',
+        amount: 12000000, // 120000 ISK
+        payer: 'University of Iceland'
+      },
+      {
+        id: uuidv4(),
+        tax_return_id: taxReturnId1,
+        category: 'grant',
+        description: 'Íþróttastyrkur',
+        amount: 7500000, // 75000 ISK
         payer: 'University of Iceland'
       }
     ]);
@@ -98,23 +93,37 @@ module.exports = {
       {
         id: uuidv4(),
         tax_return_id: taxReturnId1,
-        description: 'Student loan',
-        interest_paid: 150000, // 150,000 ISK
-        amount_remaining: 2500000 // 2,500,000 ISK
+        description: 'Eftirstöðvar á korti númer: 4469 88XX XXXX 4567',
+        interest_paid: 3920000,
+        amount_remaining: 21700000
       },
       {
         id: uuidv4(),
         tax_return_id: taxReturnId1,
-        description: 'Credit card debt',
-        interest_paid: 35000, // 35,000 ISK
-        amount_remaining: 420000 // 420,000 ISK
+        description: 'Aukalán',
+        interest_paid: 8600000,
+        amount_remaining: 98000000 
       },
       {
         id: uuidv4(),
-        tax_return_id: taxReturnId2,
-        description: 'Personal loan',
-        interest_paid: 80000, // 80,000 ISK
-        amount_remaining: 1200000 // 1,200,000 ISK
+        tax_return_id: taxReturnId1,
+        description: '0142-26-732645 Varðan',
+        interest_paid: 1450000,
+        amount_remaining: 6200000
+      },
+      {
+        id: uuidv4(),
+        tax_return_id: taxReturnId1,
+        description: 'Kílómetragjald, Skatturinn',
+        interest_paid: 0,
+        amount_remaining: 237000
+      },
+      {
+        id: uuidv4(),
+        tax_return_id: taxReturnId1,
+        description: 'Þing- og sveitarsjóðsgjöld, Skatturinn',
+        interest_paid: 22400,
+        amount_remaining: 0
       }
     ]);
 
@@ -123,25 +132,14 @@ module.exports = {
       {
         id: uuidv4(),
         tax_return_id: taxReturnId1,
-        asset_id: '210-9876', // Property number
-        lender_id: 'ARION',
-        issue_date: '2020-06-15',
-        remaining_term_years: 35,
-        interest_paid_in_fiscal_year: 850000, // 850,000 ISK
-        principal_paid_in_fiscal_year: 650000, // 650,000 ISK
-        remaining_principal: 42500000 // 42,500,000 ISK
+        asset_id: '210-9876',
+        lender_id: 'Íslandsbanki hf',
+        issue_date: '2021',
+        remaining_term_years: 30,
+        interest_paid_in_fiscal_year: 92000000,
+        principal_paid_in_fiscal_year: 136000000,
+        remaining_principal: 2854000000
       },
-      {
-        id: uuidv4(),
-        tax_return_id: taxReturnId2,
-        asset_id: '111-2345', // Another property
-        lender_id: 'ISLANDSBANKI',
-        issue_date: '2018-03-10',
-        remaining_term_years: 28,
-        interest_paid_in_fiscal_year: 780000, // 780,000 ISK
-        principal_paid_in_fiscal_year: 720000, // 720,000 ISK
-        remaining_principal: 38600000 // 38,600,000 ISK
-      }
     ]);
   },
 
