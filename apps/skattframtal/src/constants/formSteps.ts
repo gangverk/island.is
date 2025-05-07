@@ -5,9 +5,7 @@ export const stepKeys = [
   'personalInfo',
   'income',
   'assetsAndLiabilities',
-  'liabilities',
-  'review',
-  'confirmAndSubmit',
+  'debtsAndInterest',
 ] as const
 
 export const stepLabels: Record<typeof stepKeys[number], string> = {
@@ -15,9 +13,7 @@ export const stepLabels: Record<typeof stepKeys[number], string> = {
   personalInfo: 'Mínar upplýsingar',
   income: 'Tekjur',
   assetsAndLiabilities: 'Eignir og skuldir',
-  liabilities: 'Skuldir',
-  review: 'Yfirfara',
-  confirmAndSubmit: 'Staðfesta og senda',
+  debtsAndInterest: 'Skuldir',
 }
 
 export const goToStep = (

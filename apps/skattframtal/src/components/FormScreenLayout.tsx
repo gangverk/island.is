@@ -8,13 +8,18 @@ import {
   Button,
   FormStepperV2,
   Section,
+  toast,
 } from '@island.is/island-ui/core'
+
+type NextButtonIcon = 'arrowForward' | 'checkmark'
 
 interface FormScreenLayoutProps {
   currentStep: number
   stepLabels: string[]
   onStepChange: (stepIdx: number) => void
   children: React.ReactNode
+  nextButtonLabel?: string
+  nextButtonIcon?: NextButtonIcon
 }
 
 const FormScreenLayout: React.FC<FormScreenLayoutProps> = ({
@@ -22,6 +27,8 @@ const FormScreenLayout: React.FC<FormScreenLayoutProps> = ({
   stepLabels,
   onStepChange,
   children,
+  nextButtonLabel = 'Halda áfram',
+  nextButtonIcon = 'arrowForward',
 }) => {
   const handleBack = () => {
     onStepChange(currentStep - 1)
@@ -80,21 +87,80 @@ const FormScreenLayout: React.FC<FormScreenLayoutProps> = ({
                 style={{ minHeight: '70vh' }}
               >
                 <Box flexGrow={1}>{children}</Box>
+                {/* Responsive button bar: mobile (column, Halda áfram first), desktop (row, Til baka left) */}
+                {/* Mobile layout: column, Halda áfram, Vista, Til baka */}
                 <Box
-                  display="flex"
-                  justifyContent="spaceBetween"
+                  display={['flex', 'none', 'none']}
+                  flexDirection="column"
+                  rowGap={2}
                   marginTop={14}
                 >
-                  <Button variant="ghost" onClick={handleBack}>
-                    Til baka
-                  </Button>
                   <Button
-                    icon="arrowForward"
+                    icon={nextButtonIcon}
                     iconType="filled"
                     onClick={handleNext}
+                    fluid={true}
                   >
-                    Halda áfram
+                    {nextButtonLabel}
                   </Button>
+                  {currentStep > 1 && (
+                    <Button
+                      variant="ghost"
+                      onClick={() => {
+                        toast.success('Framtal vistað')
+                      }}
+                      fluid={true}
+                    >
+                      Vista
+                    </Button>
+                  )}
+                  <Button variant="ghost" onClick={handleBack} fluid={true}>
+                    Til baka
+                  </Button>
+                </Box>
+                {/* Desktop/tablet layout: row, Til baka left, Vista/Halda áfram right */}
+                <Box
+                  display={['none', 'flex', 'flex']}
+                  flexDirection="row"
+                  justifyContent="spaceBetween"
+                  alignItems="center"
+                  marginTop={14}
+                  columnGap={2}
+                >
+                  {/* Left: Til baka */}
+                  <Box style={{ minWidth: 120 }}>
+                    <Button variant="ghost" onClick={handleBack} fluid={true}>
+                      Til baka
+                    </Button>
+                  </Box>
+                  {/* Spacer */}
+                  <Box flexGrow={1} />
+                  {/* Right: Vista + Halda áfram */}
+                  <Box display="flex" flexDirection="row" columnGap={2}>
+                    {currentStep > 1 && (
+                      <Box style={{ minWidth: 120 }}>
+                        <Button
+                          variant="ghost"
+                          onClick={() => {
+                            toast.success('Framtal vistað')
+                          }}
+                          fluid={true}
+                        >
+                          Vista
+                        </Button>
+                      </Box>
+                    )}
+                    <Box style={{ minWidth: 160 }}>
+                      <Button
+                        icon={nextButtonIcon}
+                        iconType="filled"
+                        onClick={handleNext}
+                        fluid={true}
+                      >
+                        {nextButtonLabel}
+                      </Button>
+                    </Box>
+                  </Box>
                 </Box>
               </Box>
             </Box>
@@ -110,21 +176,80 @@ const FormScreenLayout: React.FC<FormScreenLayoutProps> = ({
                 style={{ minHeight: '70vh' }}
               >
                 <Box flexGrow={1}>{children}</Box>
+                {/* Responsive button bar: mobile (column, Halda áfram first), desktop (row, Til baka left) */}
+                {/* Mobile layout: column, Halda áfram, Vista, Til baka */}
                 <Box
-                  display="flex"
-                  justifyContent="spaceBetween"
+                  display={['flex', 'none', 'none']}
+                  flexDirection="column"
+                  rowGap={2}
                   marginTop={14}
                 >
-                  <Button variant="ghost" onClick={handleBack}>
-                    Til baka
-                  </Button>
                   <Button
-                    icon="arrowForward"
+                    icon={nextButtonIcon}
                     iconType="filled"
                     onClick={handleNext}
+                    fluid={true}
                   >
-                    Halda áfram
+                    {nextButtonLabel}
                   </Button>
+                  {currentStep > 1 && (
+                    <Button
+                      variant="ghost"
+                      onClick={() => {
+                        toast.success('Framtal vistað')
+                      }}
+                      fluid={true}
+                    >
+                      Vista
+                    </Button>
+                  )}
+                  <Button variant="ghost" onClick={handleBack} fluid={true}>
+                    Til baka
+                  </Button>
+                </Box>
+                {/* Desktop/tablet layout: row, Til baka left, Vista/Halda áfram right */}
+                <Box
+                  display={['none', 'flex', 'flex']}
+                  flexDirection="row"
+                  justifyContent="spaceBetween"
+                  alignItems="center"
+                  marginTop={14}
+                  columnGap={2}
+                >
+                  {/* Left: Til baka */}
+                  <Box style={{ minWidth: 120 }}>
+                    <Button variant="ghost" onClick={handleBack} fluid={true}>
+                      Til baka
+                    </Button>
+                  </Box>
+                  {/* Spacer */}
+                  <Box flexGrow={1} />
+                  {/* Right: Vista + Halda áfram */}
+                  <Box display="flex" flexDirection="row" columnGap={2}>
+                    {currentStep > 1 && (
+                      <Box style={{ minWidth: 120 }}>
+                        <Button
+                          variant="ghost"
+                          onClick={() => {
+                            toast.success('Framtal vistað')
+                          }}
+                          fluid={true}
+                        >
+                          Vista
+                        </Button>
+                      </Box>
+                    )}
+                    <Box style={{ minWidth: 160 }}>
+                      <Button
+                        icon={nextButtonIcon}
+                        iconType="filled"
+                        onClick={handleNext}
+                        fluid={true}
+                      >
+                        {nextButtonLabel}
+                      </Button>
+                    </Box>
+                  </Box>
                 </Box>
               </Box>
             </Box>
