@@ -5,6 +5,7 @@ import {
   TaxReturnIcelandicRealEstate,
   TaxReturnVehicle,
   TaxReturnIncome,
+  TaxReturnIncomeInput,
   TaxReturnIncomeCategory,
   TaxReturnResidentialLoan,
   TaxReturnGenericLiability,
@@ -116,5 +117,28 @@ export class SkattskilService {
         description: 'Credit Card Debt',
       },
     ]
+  }
+
+  async addTaxReturnIncome(taxReturnId: string, input: TaxReturnIncomeInput): Promise<TaxReturnIncome> {
+    // Implement your logic to add taxable income
+    return {
+      ...input,
+      amount: { amount: input.amount },
+      incomeID: uuid(),
+    }
+  }
+
+  async updateTaxReturnIncome(incomeId: string, input: TaxReturnIncomeInput): Promise<TaxReturnIncome> {
+    // Implement your logic to update taxable income
+    return {
+      ...input,
+      amount: { amount: input.amount },
+      incomeID: incomeId,
+    }
+  }
+
+  async deleteTaxReturnIncome(incomeId: string): Promise<boolean> {
+    // Implement your logic to delete taxable income
+    return true
   }
 }

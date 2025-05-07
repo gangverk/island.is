@@ -1,8 +1,9 @@
-import { Resolver, Query, Args, ResolveField, Parent } from '@nestjs/graphql'
+import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql'
 import { SkattskilService } from './skattskil.service'
 import {
   TaxPayer, TaxReturn, TaxReturnGenericLiability,
-  TaxReturnResidentialLoan, TaxReturnIcelandicRealEstate, TaxReturnIncome, TaxReturnVehicle
+  TaxReturnResidentialLoan, TaxReturnIcelandicRealEstate, TaxReturnIncome, TaxReturnVehicle,
+  TaxReturnIncomeInput,
 } from './model'
 
 @Resolver()
@@ -60,5 +61,33 @@ export class TaxReturnResolver {
   @ResolveField('liabilities', () => [TaxReturnGenericLiability])
   async getLiabilities(@Parent() taxReturn: TaxReturn): Promise<TaxReturnGenericLiability[]> {
     return this.skattskilService.getLiabilities(taxReturn.taxReturnID)
+  }
+}
+
+@Resolver(() => TaxReturnIncome)
+export class TaxReturnIncomeResolver {
+  constructor(private skattskilService: SkattskilService) {}
+
+  @Mutation(() => TaxReturnIncome)
+  async addTaxReturnIncome(
+    @Args('taxReturnId') taxReturnId: string,
+    @Args('input') input: TaxReturnIncomeInput,
+  ): Promise<TaxReturnIncome> {
+    return this.skattskilService.addTaxReturnIncome(taxReturnId, input)
+  }
+
+  @Mutation(() => TaxReturnIncome)
+  async updateTaxReturnIncome(
+    @Args('incomeId') incomeId: string,
+    @Args('input') input: TaxReturnIncomeInput,
+  ): Promise<TaxReturnIncome> {
+    return this.skattskilService.updateTaxReturnIncome(incomeId, input)
+  }
+
+  @Mutation(() => Boolean)
+  async deleteTaxReturnIncome(
+    @Args('incomeId') incomeId: string,
+  ): Promise<boolean> {
+    return this.skattskilService.deleteTaxReturnIncome(incomeId)
   }
 }
