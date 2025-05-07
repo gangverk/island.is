@@ -13,3 +13,13 @@ export const formatMoney = (money: Money) => {
     maximumFractionDigits: 0,
   })
 }
+
+/**
+ * Parse a string to a Money object
+ * @param money - The string to parse
+ * @returns The parsed Money object
+ */
+export const parseMoney = (money: string) => {
+  const cleanedMoney = money.replace(/[^0-9]/g, '')
+  return { amount: parseInt(cleanedMoney) * 100 }
+}
