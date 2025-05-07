@@ -61,7 +61,7 @@ const incomeData = [
     rows: [
       {
         left: (
-          <Box background="blue100" padding={2} borderRadius="large">
+          <Box>
             <Text fontWeight="semiBold">Norðurljós Software ehf</Text>
             <Text color="dark400" variant="small">
               123456-7890

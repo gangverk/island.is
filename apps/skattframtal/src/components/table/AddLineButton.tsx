@@ -11,6 +11,7 @@ const AddLineButton = ({ onClick }: AddLineButtonProps) => (
     colorScheme="default"
     icon="add"
     iconType="outline"
+    size="small"
   >
     Bæta við línu
   </Button>
