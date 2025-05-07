@@ -14,7 +14,7 @@ import NextLink from 'next/link'
 
 const navigationItems = [
   {
-    title: 'Mín framtöl',
+    title: 'Nýjasta framtal',
     href: '/skattframtol/application',
     active: true,
   },
@@ -122,7 +122,7 @@ export default function Applications() {
         <Box display="flex" flexDirection="column" rowGap={8}>
           <Stack space={4}>
             <Text variant="h1" as="h1">
-              Mín framtöl
+              Nýjasta framtal
             </Text>
 
             <Text>
@@ -151,13 +151,7 @@ export default function Applications() {
               <Text>Skattframtal 2025 er núna opið til skila</Text>
             </Box>
             <Box>
-              <Button
-                size="medium"
-                icon="open"
-                iconType="outline"
-                nowrap
-                variant="primary"
-              >
+              <Button size="medium" nowrap variant="primary">
                 Hefja skattframtal
               </Button>
             </Box>

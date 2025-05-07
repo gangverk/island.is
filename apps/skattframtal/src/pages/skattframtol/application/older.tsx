@@ -13,7 +13,7 @@ import SidebarLayout from '../../../screens/Layouts/SidebarLayout'
 
 const navigationItems = [
   {
-    title: 'Mín framtöl',
+    title: 'Nýjasta framtal',
     href: '/skattframtol/application',
     active: false,
   },
@@ -152,12 +152,12 @@ export default function ApplicationsOlder() {
             <Box>
               <Button
                 size="medium"
-                icon="open"
+                icon="attach"
                 iconType="outline"
                 nowrap
                 variant="primary"
               >
-                Opna framtal
+                Sækja afrit
               </Button>
             </Box>
           </Box>
@@ -180,12 +180,12 @@ export default function ApplicationsOlder() {
             <Box>
               <Button
                 size="medium"
-                icon="open"
+                icon="attach"
                 iconType="outline"
                 nowrap
                 variant="primary"
               >
-                Opna framtal
+                Sækja afrit
               </Button>
             </Box>
           </Box>
@@ -208,12 +208,12 @@ export default function ApplicationsOlder() {
             <Box>
               <Button
                 size="medium"
-                icon="open"
+                icon="attach"
                 iconType="outline"
                 nowrap
                 variant="primary"
               >
-                Opna framtal
+                Sækja afrit
               </Button>
             </Box>
           </Box>
