@@ -1,4 +1,4 @@
-/*import request from 'supertest'
+import request from 'supertest'
 import { TestApp, testServer, useDatabase } from '@island.is/testing/nest'
 import { AppModule } from '../app.module'
 import { ThjodskraService } from './thjodskra.service'
@@ -91,9 +91,9 @@ describe('ThjodskraController', () => {
       expect(response.status).toBe(200)
       expect(response.body).toEqual({
         licensePlateNumber: 'ABC123',
-        purchaseYear: 2020,
+        purchaseYear: "2020",
         purchasePrice: 3000000,
       })
     })
   })
-})*/
+})
