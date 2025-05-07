@@ -193,7 +193,251 @@ const tableData = [
       },
     ],
   },
-  // ... Add more sections/rows as needed for the rest of the screen ...
+  {
+    section: {
+      title: 'Aðrar skuldir og vaxtagjöld',
+      sectionNumber: '5.5',
+    },
+    rows: [
+      // Block 1: Eftirstöðvar á korti
+      {
+        left: (
+          <>
+            <Text color="dark400" variant="small">
+              Eftirstöðvar á korti
+            </Text>
+            <Text color="dark400" variant="small">
+              123456-7890
+            </Text>
+          </>
+        ),
+      },
+      {
+        multi: [
+          { content: null },
+          { content: null },
+          {
+            content: (
+              <Input
+                name="kort-vaxtagjold"
+                value="39.200"
+                size="xs"
+                backgroundColor="blue"
+                label="Vaxtagjöld"
+              />
+            ),
+          },
+          {
+            content: (
+              <Input
+                name="kort-eftirstodvar"
+                value="217.000"
+                size="xs"
+                backgroundColor="blue"
+                label="Eftirstöðvar skulda"
+              />
+            ),
+          },
+        ],
+      },
+      // Block 2: Aukalán
+      {
+        left: (
+          <>
+            <Text color="dark400" variant="small">
+              Aukalán
+            </Text>
+          </>
+        ),
+      },
+      {
+        multi: [
+          { content: null },
+          { content: null },
+          {
+            content: (
+              <Input
+                name="aukalán-vaxtagjold"
+                value="86.000"
+                size="xs"
+                backgroundColor="blue"
+                label="Vaxtagjöld"
+              />
+            ),
+          },
+          {
+            content: (
+              <Input
+                name="aukalán-eftirstodvar"
+                value="980.000"
+                size="xs"
+                backgroundColor="blue"
+                label="Eftirstöðvar skulda"
+              />
+            ),
+          },
+        ],
+      },
+      // Block 3: Varðan
+      {
+        left: (
+          <>
+            <Text color="dark400" variant="small">
+              Varðan
+            </Text>
+            <Text color="dark400" variant="small">
+              0142-26-732645
+            </Text>
+          </>
+        ),
+      },
+      {
+        multi: [
+          { content: null },
+          { content: null },
+          {
+            content: (
+              <Input
+                name="vardan-vaxtagjold"
+                value="14.500"
+                size="xs"
+                backgroundColor="blue"
+                label="Vaxtagjöld"
+              />
+            ),
+          },
+          {
+            content: (
+              <Input
+                name="vardan-eftirstodvar"
+                value="62.000"
+                size="xs"
+                backgroundColor="blue"
+                label="Eftirstöðvar skulda"
+              />
+            ),
+          },
+        ],
+      },
+      // Block 4: Kilómetragjald
+      {
+        left: (
+          <>
+            <Text color="dark400" variant="small">
+              Kilómetragjald
+            </Text>
+            <Text color="dark400" variant="small">
+              Skatturinn
+            </Text>
+          </>
+        ),
+      },
+      {
+        multi: [
+          { content: null },
+          { content: null },
+          {
+            content: (
+              <Input
+                name="km-vaxtagjold"
+                value="0"
+                size="xs"
+                backgroundColor="blue"
+                label="Vaxtagjöld"
+              />
+            ),
+          },
+          {
+            content: (
+              <Input
+                name="km-eftirstodvar"
+                value="2.370"
+                size="xs"
+                backgroundColor="blue"
+                label="Eftirstöðvar skulda"
+              />
+            ),
+          },
+        ],
+      },
+      // Block 5: Þing og sveitarsjóðsgjöld
+      {
+        left: (
+          <>
+            <Text color="dark400" variant="small">
+              Þing og sveitarsjóðsgjöld
+            </Text>
+            <Text color="dark400" variant="small">
+              Skatturinn
+            </Text>
+          </>
+        ),
+      },
+      {
+        multi: [
+          { content: null },
+          { content: null },
+          {
+            content: (
+              <Input
+                name="thing-vaxtagjold"
+                value="224"
+                size="xs"
+                backgroundColor="blue"
+                label="Vaxtagjöld"
+              />
+            ),
+          },
+          {
+            content: (
+              <Input
+                name="thing-eftirstodvar"
+                value="0"
+                size="xs"
+                backgroundColor="blue"
+                label="Eftirstöðvar skulda"
+              />
+            ),
+          },
+        ],
+      },
+      // Summary row
+      {
+        multi: [
+          {
+            content: (
+              <Text fontWeight="semiBold" variant="default">
+                Samtals
+              </Text>
+            ),
+          },
+          { content: null },
+          {
+            content: (
+              <Input
+                name="summary-vaxtagjold"
+                value="139.924"
+                size="xs"
+                backgroundColor="blue"
+                label="Vaxtagjöld"
+              />
+            ),
+          },
+          {
+            content: (
+              <Input
+                name="summary-eftirstodvar"
+                value="1.261.370"
+                size="xs"
+                backgroundColor="blue"
+                label="Eftirstöðvar skulda"
+              />
+            ),
+          },
+        ],
+      },
+    ],
+  },
 ]
 
 const DebtsAndInterestPage = () => {
