@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { Documentation } from '@island.is/nest/swagger'
 import { InternalServerErrorException, NotFoundException } from '@nestjs/common'
@@ -44,24 +44,24 @@ export class SkattskilController {
   }
 
   // Get TaxPayer by kennitala
-  @Get('/taxpayers/kennitala/:id')
+  @Get('/taxpayers/by-kennitala/:kennitala')
   @Documentation({
     description: 'Retrieve a taxpayer by kennitala',
     response: { status: 200, type: TaxPayerDTO },
     request: {
       params: {
-        id: {
+        kennitala: {
           type: 'string',
           description: 'Kennitala (personal ID) of the taxpayer',
         },
       }
     },
   })
-  async getTaxPayerByKennitala(@Param('id') id: string): Promise<TaxPayerDTO> {
+  async getTaxPayerByKennitala(@Param('kennitala') kennitala: string): Promise<TaxPayerDTO> {
     try {
-      const taxPayer = await this.skattskilService.getTaxPayerByKennitala(id)
+      const taxPayer = await this.skattskilService.getTaxPayerByKennitala(kennitala)
       if (!taxPayer) {
-        throw new NotFoundException(`Taxpayer with kennitala ${id} not found`)
+        throw new NotFoundException(`Taxpayer with kennitala ${kennitala} not found`)
       }
       return taxPayer
     } catch (error) {
@@ -72,25 +72,54 @@ export class SkattskilController {
     }
   }
 
-  // Get TaxReturn by ID
-  @Get('/taxreturn/:taxPayerId')
+  // Get TaxReturn by TaxPayer ID
+  @Get('/taxpayers/:taxPayerId/tax-returns')
   @Documentation({
-    description: 'Retrieve a tax return by tax payer id',
+    description: 'Retrieve tax returns for a taxpayer',
     response: { status: 200, type: TaxReturnDTO },
     request: {
       params: {
         taxPayerId: {
           type: 'string',
-          description: 'ID of the taxpayer whose tax return to retrieve',
+          description: 'ID of the taxpayer whose tax returns to retrieve',
         },
       }
     },
   })
-  async getTaxReturnById(@Param('taxPayerId') taxPayerId: string): Promise<TaxReturnDTO> {
+  async getTaxReturnByTaxPayerId(@Param('taxPayerId') taxPayerId: string): Promise<TaxReturnDTO> {
     try {
       const taxReturn = await this.skattskilService.getTaxReturnById(taxPayerId)
       if (!taxReturn) {
-        throw new NotFoundException(`Tax return with ID ${taxPayerId} not found`)
+        throw new NotFoundException(`Tax return for taxpayer ID ${taxPayerId} not found`)
+      }
+      return taxReturn
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error
+      }
+      throw new InternalServerErrorException('An unexpected error occurred')
+    }
+  }
+
+  // Get TaxReturn by ID
+  @Get('/tax-returns/:id')
+  @Documentation({
+    description: 'Retrieve a tax return by ID',
+    response: { status: 200, type: TaxReturnDTO },
+    request: {
+      params: {
+        id: {
+          type: 'string',
+          description: 'ID of the tax return to retrieve',
+        },
+      }
+    },
+  })
+  async getTaxReturnById(@Param('id') id: string): Promise<TaxReturnDTO> {
+    try {
+      const taxReturn = await this.skattskilService.getTaxReturnById(id)
+      if (!taxReturn) {
+        throw new NotFoundException(`Tax return with ID ${id} not found`)
       }
       return taxReturn
     } catch (error) {
@@ -102,7 +131,7 @@ export class SkattskilController {
   }
 
   // Get Income by TaxReturn ID
-  @Get('/income/:taxReturnId')
+  @Get('/tax-returns/:taxReturnId/income')
   @Documentation({
     description: 'Retrieve all income records for a tax return',
     response: { status: 200, type: [IncomeDTO] },
@@ -130,66 +159,60 @@ export class SkattskilController {
     }
   }
 
-  // Get real estate assets by TaxReturn ID
-  @Get('/realEstateAssets/:taxReturnId')
+  // Get Assets by TaxReturn ID with optional type filter
+  @Get('/tax-returns/:taxReturnId/assets')
   @Documentation({
-    description: 'Retrieve all real estate assets for a tax return',
+    description: 'Retrieve assets for a tax return, optionally filtered by type',
     response: { status: 200, type: [AssetsDTO] },
     request: {
       params: {
         taxReturnId: {
           type: 'string',
-          description: 'ID of the tax return to retrieve real estate assets for',
+          description: 'ID of the tax return to retrieve assets for',
         },
-      }
-    },
-  })
-  async getRealEstateAssetsByTaxReturnId(@Param('taxReturnId') taxReturnId: string): Promise<AssetsDTO[]> {
-    try {
-      const assets = await this.skattskilService.getRealEstateAssetsByTaxReturnId(taxReturnId)
-      if (!assets || assets.length === 0) {
-        throw new NotFoundException(`No real estate assets found for tax return ID ${taxReturnId}`)
-      }
-      return assets
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error
-      }
-      throw new InternalServerErrorException('An unexpected error occurred')
-    }
-  }
-
-  // Get vehicles assets by TaxReturn ID
-  @Get('/vehicleAssets/:taxReturnId')
-  @Documentation({
-    description: 'Retrieve all vehicle assets for a tax return',
-    response: { status: 200, type: [AssetsDTO] },
-    request: {
-      params: {
-        taxReturnId: {
+      },
+      query: {
+        type: {
           type: 'string',
-          description: 'ID of the tax return to retrieve vehicle assets for',
+          description: 'Asset type to filter by (real-estate, vehicle)',
+          required: false,
         },
       }
     },
   })
-  async getVehicleAssetsByTaxReturnId(@Param('taxReturnId') taxReturnId: string): Promise<AssetsDTO[]> {
+  async getAssetsByTaxReturnId(
+    @Param('taxReturnId') taxReturnId: string,
+    @Query('type') type?: string
+  ): Promise<AssetsDTO[]> {
     try {
-      const assets = await this.skattskilService.getVehicleAssetsByTaxReturnId(taxReturnId)
-      if (!assets || assets.length === 0) {
-        throw new NotFoundException(`No vehicle assets found for tax return ID ${taxReturnId}`)
+      let assets: AssetsDTO[] = [];
+      
+      if (type === 'real-estate') {
+        assets = await this.skattskilService.getRealEstateAssetsByTaxReturnId(taxReturnId);
+      } else if (type === 'vehicle') {
+        assets = await this.skattskilService.getVehicleAssetsByTaxReturnId(taxReturnId);
+      } else {
+        // Get all assets regardless of type
+        const realEstateAssets = await this.skattskilService.getRealEstateAssetsByTaxReturnId(taxReturnId).catch(() => []);
+        const vehicleAssets = await this.skattskilService.getVehicleAssetsByTaxReturnId(taxReturnId).catch(() => []);
+        assets = [...realEstateAssets, ...vehicleAssets];
       }
-      return assets
+      
+      if (!assets || assets.length === 0) {
+        throw new NotFoundException(`No assets found for tax return ID ${taxReturnId}${type ? ` with type ${type}` : ''}`);
+      }
+      
+      return assets;
     } catch (error) {
       if (error instanceof NotFoundException) {
-        throw error
+        throw error;
       }
-      throw new InternalServerErrorException('An unexpected error occurred')
+      throw new InternalServerErrorException('An unexpected error occurred');
     }
   }
 
   // Get Liabilities by TaxReturn ID
-  @Get('/liabilities/:taxReturnId')
+  @Get('/tax-returns/:taxReturnId/liabilities')
   @Documentation({
     description: 'Retrieve all liabilities for a tax return',
     response: { status: 200, type: [LiabilitiesDTO] },
@@ -218,7 +241,7 @@ export class SkattskilController {
   }
 
   // Get Residential Loans by TaxReturn ID
-  @Get('/residential-loans/:taxReturnId')
+  @Get('/tax-returns/:taxReturnId/residential-loans')
   @Documentation({
     description: 'Retrieve all residential loans for a tax return',
     response: { status: 200, type: [ResidentialLoanDTO] },
