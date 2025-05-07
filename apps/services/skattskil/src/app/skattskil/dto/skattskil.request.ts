@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger'
-import { IsString, IsNumber } from 'class-validator'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { IsString, IsNumber, IsOptional } from 'class-validator'
 
 export class IncomeInputDTO {
   @IsString()
@@ -22,4 +22,27 @@ export class IncomeInputDTO {
     type: String,
   })
   payer!: string
+}
+
+export class TaxPayerInputDTO {
+  @IsOptional()
+  @ApiPropertyOptional({
+    description: 'Tax payer phone number',
+    type: String,
+  })
+  phoneNumber?: string
+
+  @IsOptional()
+  @ApiPropertyOptional({
+    description: 'Tax payer email address',
+    type: String,
+  })
+  emailAddress?: string
+
+  @IsOptional()
+  @ApiPropertyOptional({
+    description: 'Tax payer bank account number',
+    type: String,
+  })
+  bankAccountNumber?: string
 }
