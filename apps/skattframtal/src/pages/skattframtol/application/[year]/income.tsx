@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import FormScreenLayout from '../../../../components/FormScreenLayout'
 import Table from '../../../../components/table/Table'
-import ClientOnly from '../../../../components/ClientOnly'
 import { stepKeys, stepLabels, goToStep } from '../../../../constants/formSteps'
 
 const data = [
@@ -20,15 +19,13 @@ const data = [
               <Box display="flex" alignItems="center">
                 <Text>Norðurljós Software ehf</Text>
                 <Box marginLeft={1}>
-                  <ClientOnly>
-                    <Tooltip text="Upplýsingar um launagreiðandann Norðurljós Software ehf">
-                      <Icon
-                        icon="informationCircle"
-                        color="dark200"
-                        size="small"
-                      />
-                    </Tooltip>
-                  </ClientOnly>
+                  <Tooltip text="Upplýsingar um launagreiðandann Norðurljós Software ehf">
+                    <Icon
+                      icon="informationCircle"
+                      color="dark200"
+                      size="small"
+                    />
+                  </Tooltip>
                 </Box>
               </Box>
               <Text color="dark400" variant="small">
@@ -45,15 +42,9 @@ const data = [
             <Box display="flex" alignItems="center">
               <Text>Mús og merki ehf</Text>
               <Box marginLeft={1}>
-                <ClientOnly>
-                  <Tooltip text="Upplýsingar um launagreiðandann Mús og merki ehf">
-                    <Icon
-                      icon="informationCircle"
-                      color="dark200"
-                      size="small"
-                    />
-                  </Tooltip>
-                </ClientOnly>
+                <Tooltip text="Upplýsingar um launagreiðandann Mús og merki ehf">
+                  <Icon icon="informationCircle" color="dark200" size="small" />
+                </Tooltip>
               </Box>
             </Box>
             <Text color="dark400" variant="small">
@@ -77,11 +68,9 @@ const data = [
           <Box display="flex" alignItems="center">
             <Text>Dagpeningar</Text>
             <Box marginLeft={1}>
-              <ClientOnly>
-                <Tooltip text="Dagpeningar eru greiðslur sem launþegi fær vegna ferða eða dvalar utan heimilis.">
-                  <Icon icon="informationCircle" color="dark200" size="small" />
-                </Tooltip>
-              </ClientOnly>
+              <Tooltip text="Dagpeningar eru greiðslur sem launþegi fær vegna ferða eða dvalar utan heimilis.">
+                <Icon icon="informationCircle" color="dark200" size="small" />
+              </Tooltip>
             </Box>
           </Box>
         ),
@@ -111,11 +100,9 @@ const data = [
           <Box display="flex" alignItems="center">
             <Text>Íþróttastyrkur</Text>
             <Box marginLeft={1}>
-              <ClientOnly>
-                <Tooltip text="Íþróttastyrkur er styrkur sem veittur er vegna þátttöku í íþróttum.">
-                  <Icon icon="informationCircle" color="dark200" size="small" />
-                </Tooltip>
-              </ClientOnly>
+              <Tooltip text="Íþróttastyrkur er styrkur sem veittur er vegna þátttöku í íþróttum.">
+                <Icon icon="informationCircle" color="dark200" size="small" />
+              </Tooltip>
             </Box>
           </Box>
         ),
@@ -135,11 +122,9 @@ const data = [
           <Box display="flex" alignItems="center">
             <Text>Starfsmenntastyrkur</Text>
             <Box marginLeft={1}>
-              <ClientOnly>
-                <Tooltip text="Starfsmenntastyrkur er styrkur til starfsmenntunar eða endurmenntunar.">
-                  <Icon icon="informationCircle" color="dark200" size="small" />
-                </Tooltip>
-              </ClientOnly>
+              <Tooltip text="Starfsmenntastyrkur er styrkur til starfsmenntunar eða endurmenntunar.">
+                <Icon icon="informationCircle" color="dark200" size="small" />
+              </Tooltip>
             </Box>
           </Box>
         ),
