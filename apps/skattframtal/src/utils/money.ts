@@ -8,8 +8,8 @@ import { Money } from '../graphql/schema'
  */
 export const formatMoney = (money: Money) => {
   return (money.amount / 100).toLocaleString('is-IS', {
-    style: 'currency',
-    currency: 'ISK',
-    minimumFractionDigits: 2,
+    style: 'decimal',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   })
 }
