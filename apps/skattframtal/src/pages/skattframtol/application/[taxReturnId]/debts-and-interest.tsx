@@ -1,4 +1,4 @@
-import { Box, Text, Tooltip, Icon, Input } from '@island.is/island-ui/core'
+import { Box, Text, Icon, Input } from '@island.is/island-ui/core'
 import React from 'react'
 import { useRouter } from 'next/router'
 import FormScreenLayout from '../../../../components/FormScreenLayout'
@@ -23,15 +23,6 @@ const tableData = [
                 </Text>
                 <Box display="flex" alignItems="center">
                   <Text>Bláfjallagata 12</Text>
-                  <Box marginLeft={1}>
-                    <Tooltip text="Heimilisfang fasteignar.">
-                      <Icon
-                        icon="informationCircle"
-                        color="dark200"
-                        size="small"
-                      />
-                    </Tooltip>
-                  </Box>
                 </Box>
               </Box>
             ),

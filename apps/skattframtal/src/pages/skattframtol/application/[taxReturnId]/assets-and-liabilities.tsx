@@ -4,9 +4,13 @@ import { useRouter } from 'next/router'
 import FormScreenLayout from '../../../../components/FormScreenLayout'
 import Table from '../../../../components/table/Table'
 import { stepKeys, stepLabels, goToStep } from '../../../../constants/formSteps'
-import { QUERIES } from 'apps/skattframtal/src/graphql/queries'
+import { QUERIES } from '../../../../graphql/queries'
 import { useQuery } from '@apollo/client'
-import type { Money } from '../../../../graphql/schema'
+import type {
+  Money,
+  TaxReturnIcelandicRealEstate,
+  TaxReturnVehicle,
+} from '../../../../graphql/schema'
 import { formatMoney } from '../../../../utils/money'
 
 const AssetsAndLiabilitiesPage = () => {
@@ -31,49 +35,52 @@ const AssetsAndLiabilitiesPage = () => {
 
   const realEstateAssets = assetsData?.taxReturnById?.realEstateAssets ?? []
   const vehicleAssets = assetsData?.taxReturnById?.vehicleAssets ?? []
-  const realEstateRows = realEstateAssets.map((asset) => ({
-    left: (
-      <Box>
-        <Box display="flex" alignItems="center">
-          <Text>Fastanúmer</Text>
-          <Box marginLeft={1}>
-            <Tooltip text="Sérstakt númer fasteignar.">
-              <Icon icon="informationCircle" color="dark200" size="small" />
-            </Tooltip>
+  const realEstateRows = realEstateAssets.map(
+    (asset: TaxReturnIcelandicRealEstate) => ({
+      left: (
+        <Box>
+          <Box display="flex" alignItems="center">
+            <Text>Fastanúmer</Text>
+            <Box marginLeft={1}>
+              <Tooltip text="Sérstakt númer fasteignar.">
+                <Icon icon="informationCircle" color="dark200" size="small" />
+              </Tooltip>
+            </Box>
           </Box>
+          <Text color="dark400" variant="small">
+            {asset.realEstateAssetID?.slice(0, 8)}
+          </Text>
         </Box>
-        <Text color="dark400" variant="small">
-          {/* @ts-expect-error: propertyNumber may not exist on asset type, fallback to ID */}
-          {asset.propertyNumber ?? asset.realEstateAssetID?.slice(0, 8)}
-        </Text>
-      </Box>
-    ),
-    middle: (
-      <Box>
-        <Text>{asset.address}</Text>
-        <Text color="dark400" variant="small">
-          Fasteignamat
-        </Text>
-      </Box>
-    ),
-    right: formatMoney(asset.estimatedValue),
-  }))
+      ),
+      middle: (
+        <Box>
+          <Text>{asset.address}</Text>
+          <Text color="dark400" variant="small">
+            Fasteignamat
+          </Text>
+        </Box>
+      ),
+      right: formatMoney(asset.estimatedValue),
+    }),
+  )
 
   const realEstateSum: Money = {
     amount: realEstateAssets.reduce(
-      (acc, asset) => acc + asset.estimatedValue.amount,
+      (acc: number, asset: TaxReturnIcelandicRealEstate) =>
+        acc + asset.estimatedValue.amount,
       0,
     ),
   }
 
   const vehicleSum: Money = {
     amount: vehicleAssets.reduce(
-      (acc, asset) => acc + asset.purchaseAmount.amount,
+      (acc: number, asset: TaxReturnVehicle) =>
+        acc + asset.purchaseAmount.amount,
       0,
     ),
   }
 
-  const vehicleRows = vehicleAssets.map((asset) => ({
+  const vehicleRows = vehicleAssets.map((asset: TaxReturnVehicle) => ({
     left: (
       <Box>
         <Text fontWeight="semiBold">Skráningarnúmer</Text>
