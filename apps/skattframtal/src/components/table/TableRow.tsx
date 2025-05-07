@@ -1,4 +1,4 @@
-import { Box, Text, Input, useBreakpoint } from '@island.is/island-ui/core'
+import { Box, Input, useBreakpoint } from '@island.is/island-ui/core'
 import type { ReactNode } from 'react'
 import type { BoxProps } from '@island.is/island-ui/core'
 

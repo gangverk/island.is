@@ -7,7 +7,7 @@ import { Income } from './models/income.model'
 import { Assets } from './models/assets.model'
 import { Liabilities } from './models/liabilities.model'
 import { ResidentialLoan } from './models/residentialLoan.model'
-import { TaxPayerDTO, TaxReturnDTO, IncomeDTO, AssetsDTO, LiabilitiesDTO, ResidentialLoanDTO, RealEstateDTO, VehicleDTO } from './dto/skattskil.response'
+import { TaxPayerDTO, TaxReturnDTO, IncomeDTO, LiabilitiesDTO, ResidentialLoanDTO, RealEstateDTO, VehicleDTO } from './dto/skattskil.response'
 import { ThjodskraService } from '../thjodskra/thjodskra.service'
 
 @Injectable()
@@ -52,37 +52,37 @@ export class SkattskilService {
   }
 
   async updateTaxPayer(
-    id: string, 
+    id: string,
     updateData: { phoneNumber?: string; emailAddress?: string, bankAccountNumber?: string }
   ): Promise<TaxPayerDTO | null> {
     const taxPayer = await this.taxPayerModel.findByPk(id);
-    
+
     if (!taxPayer) {
       return null;
     }
-    
+
     // Update only the fields provided
     if (updateData.phoneNumber !== undefined) {
       taxPayer.phone = updateData.phoneNumber;
     }
-    
+
     if (updateData.emailAddress !== undefined) {
       taxPayer.email = updateData.emailAddress;
     }
-  
+
     if (updateData.bankAccountNumber !== undefined) {
       taxPayer.bankAccountNumber = updateData.bankAccountNumber;
     }
-    
+
     // Save the changes
     await taxPayer.save();
-    
+
     // Fetch the updated data including information from Thjodskra
     const person = await this.thjodskra.getPersonById(taxPayer.personId);
     if (!person) {
       return null;
     }
-    
+
     // Return the complete updated DTO
     return {
       id: taxPayer.id,
@@ -140,7 +140,7 @@ export class SkattskilService {
       where: { taxPayerId },
       include: [TaxPayer],
     });
-    
+
     return taxReturns.map(taxReturn => ({
       id: taxReturn.id,
       taxPayerId: taxReturn.taxPayerId,
@@ -163,21 +163,21 @@ export class SkattskilService {
   }
 
   // Create a new income
-  async createIncome(incomeData: { 
-    taxReturnId: string; 
-    category: string; 
-    description?: string; 
-    amount: number; 
-    payer: string 
+  async createIncome(incomeData: {
+    taxReturnId: string;
+    category: string;
+    description?: string;
+    amount: number;
+    payer: string
   }): Promise<IncomeDTO> {
     // Generate a new UUID for the income record
     const id = uuid();
-    
+
     const income = await this.incomeModel.create({
       id,
       ...incomeData
     });
-    
+
     return {
       id: income.id,
       taxReturnId: income.taxReturnId,
@@ -192,11 +192,11 @@ export class SkattskilService {
     const income = await this.incomeModel.findOne({
       where: { id }
     });
-    
+
     if (!income) {
       return null;
     }
-    
+
     return {
       id: income.id,
       taxReturnId: income.taxReturnId,
@@ -208,24 +208,24 @@ export class SkattskilService {
   }
 
   async updateIncome(
-    id: string, 
-    incomeData: { 
-      category: string; 
-      description?: string; 
-      amount: number; 
-      payer: string 
+    id: string,
+    incomeData: {
+      category: string;
+      description?: string;
+      amount: number;
+      payer: string
     }
   ): Promise<IncomeDTO | null> {
     const income = await this.incomeModel.findOne({
       where: { id }
     });
-    
+
     if (!income) {
       return null;
     }
-    
+
     await income.update(incomeData);
-    
+
     return {
       id: income.id,
       taxReturnId: income.taxReturnId,
@@ -240,13 +240,13 @@ export class SkattskilService {
     const income = await this.incomeModel.findOne({
       where: { id }
     });
-    
+
     if (!income) {
       return false;
     }
-    
+
     await income.destroy();
-    
+
     return true;
   }
 
@@ -269,7 +269,7 @@ export class SkattskilService {
       if (!property) {
         return null;
       }
-      
+
       return {
         realEstateAssetId: asset.assetId,
         address: property.address,
@@ -296,7 +296,7 @@ export class SkattskilService {
         if (!vehicle) {
           return null;
         }
-        
+
         return {
           vehicleAssetId: asset.assetId,
           registrationNumber: vehicle.licensePlateNumber,

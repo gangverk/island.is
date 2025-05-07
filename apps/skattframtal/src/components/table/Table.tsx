@@ -40,13 +40,6 @@ const Table = ({ data, onChange }: TableProps) => {
     sectionIdx: number
     rowIdx: number
   } | null>(null)
-  const [hasMounted, setHasMounted] = useState(false)
-
-  useEffect(() => {
-    setHasMounted(true)
-  }, [])
-
-  if (!hasMounted) return null
 
   const handleAddRow = (sectionIdx: number) => {
     setSections((prev) => {

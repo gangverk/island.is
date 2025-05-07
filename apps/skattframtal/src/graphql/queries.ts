@@ -43,6 +43,7 @@ export const GET_TAX_PAYER_BY_KENNITALA: TypedDocumentNode<
       address
       phoneNumber
       emailAddress
+      bankAccountNumber
     }
   }
 `
