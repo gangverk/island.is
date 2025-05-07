@@ -15,6 +15,7 @@ import { ThjodskraService } from '../thjodskra/thjodskra.service'
 import { Fasteignaskra } from '../thjodskra/models/fasteignaskra.model'
 import { Thjodskra } from '../thjodskra/models/thjodskra.model'
 import { Okutaekjaskra } from '../thjodskra/models/okutaekjaskra.model'
+import { ThjodskraClientModule } from '@island.is/clients/thjodskra'
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { Okutaekjaskra } from '../thjodskra/models/okutaekjaskra.model'
       Thjodskra,
       Okutaekjaskra,
     ]),
+    ThjodskraClientModule,
   ],
   controllers: [
     SkattskilController,
