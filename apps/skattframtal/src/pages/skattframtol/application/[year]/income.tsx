@@ -112,13 +112,18 @@ const IncomePage = () => {
             title={section.section.title}
             sectionNumber={section.section.sectionNumber}
           />
-          {section.rows.map((row, rIdx) => (
-            <TableRow
-              key={`${section.section.sectionNumber}-${rIdx}`}
-              left={row.left}
-              right={row.right}
-            />
-          ))}
+          {section.rows.map((row, rIdx) => {
+            const shouldAlternate = section.rows.length > 2
+            const isStriped = shouldAlternate && rIdx % 2 === 0
+            return (
+              <TableRow
+                key={`${section.section.sectionNumber}-${rIdx}`}
+                left={row.left}
+                right={row.right}
+                background={isStriped ? 'purple100' : undefined}
+              />
+            )
+          })}
           <TableSumRow
             sumLabel="Samtals"
             sumValue={section.sum}
