@@ -18,8 +18,24 @@ const TableRow = ({ left, right, children }: TableRowProps) => (
     borderColor="blue100"
     borderStyle="solid"
   >
-    <Box>{left}</Box>
-    <Box>{right}</Box>
+    <Box>
+      {typeof left === 'string' || typeof left === 'number' ? (
+        <Text variant="default" color="dark400">
+          {left}
+        </Text>
+      ) : (
+        left
+      )}
+    </Box>
+    <Box>
+      {typeof right === 'string' || typeof right === 'number' ? (
+        <Text variant="default" color="dark400">
+          {right}
+        </Text>
+      ) : (
+        right
+      )}
+    </Box>
     {children}
   </Box>
 )

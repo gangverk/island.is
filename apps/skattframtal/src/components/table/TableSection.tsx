@@ -6,6 +6,14 @@ interface TableSectionProps {
   description?: string
 }
 
+const sectionHeaderStyle = {
+  color: '#00003C',
+  fontFamily: 'IBM Plex Sans',
+  fontSize: 14,
+  fontWeight: 600,
+  lineHeight: '16px',
+}
+
 const TableSection: React.FC<TableSectionProps> = ({
   title,
   sectionNumber,
@@ -22,11 +30,11 @@ const TableSection: React.FC<TableSectionProps> = ({
       minHeight: 48,
     }}
   >
-    <Text variant="h5" fontWeight="semiBold">
+    <Text as="span" variant="small" color="dark400" fontWeight="semiBold">
       {title}
     </Text>
     <Box marginLeft={1}>
-      <Text variant="h5" color="purple400" fontWeight="semiBold">
+      <Text as="span" variant="small" color="dark400" fontWeight="semiBold">
         {sectionNumber}
       </Text>
     </Box>

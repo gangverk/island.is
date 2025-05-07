@@ -20,8 +20,12 @@ const TableSumRow = ({ sumLabel, sumValue, left }: TableSumRowProps) => (
   >
     <Box>{left}</Box>
     <Box textAlign="right">
-      <Text fontWeight="semiBold">{sumLabel}</Text>
-      <Text fontWeight="semiBold">{sumValue}</Text>
+      <Text variant="default" color="dark400" fontWeight="semiBold">
+        {sumLabel}
+      </Text>
+      <Text variant="default" color="dark400" fontWeight="semiBold">
+        {sumValue}
+      </Text>
     </Box>
   </Box>
 )
