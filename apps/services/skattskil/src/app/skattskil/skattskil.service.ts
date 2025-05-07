@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
+import { v4 as uuid } from 'uuid'
 import { TaxPayer } from './models/taxPayer.model'
 import { TaxReturn } from './models/taxReturn.model'
 import { Income } from './models/income.model'
 import { Assets } from './models/assets.model'
 import { Liabilities } from './models/liabilities.model'
 import { ResidentialLoan } from './models/residentialLoan.model'
-import { TaxPayerDTO, TaxReturnDTO, IncomeDTO, AssetsDTO, LiabilitiesDTO, ResidentialLoanDTO } from './dto/skattskil.dto'
+import { TaxPayerDTO, TaxReturnDTO, IncomeDTO, AssetsDTO, LiabilitiesDTO, ResidentialLoanDTO } from './dto/skattskil.response'
 
 @Injectable()
 export class SkattskilService {
@@ -82,9 +83,108 @@ export class SkattskilService {
     }))
   }
 
+  // Create a new income
+  async createIncome(incomeData: { 
+    taxReturnId: string; 
+    category: string; 
+    description?: string; 
+    amount: number; 
+    payer: string 
+  }): Promise<IncomeDTO> {
+    // Generate a new UUID for the income record
+    const id = uuid();
+    
+    const income = await this.incomeModel.create({
+      id,
+      ...incomeData
+    });
+    
+    return {
+      id: income.id,
+      taxReturnId: income.taxReturnId,
+      category: income.category,
+      description: income.description,
+      amount: income.amount,
+      payer: income.payer
+    };
+  }
+
+  async getIncomeById(id: string): Promise<IncomeDTO | null> {
+    const income = await this.incomeModel.findOne({
+      where: { id }
+    });
+    
+    if (!income) {
+      return null;
+    }
+    
+    return {
+      id: income.id,
+      taxReturnId: income.taxReturnId,
+      category: income.category,
+      description: income.description,
+      amount: income.amount,
+      payer: income.payer
+    };
+  }
+
+  async updateIncome(
+    id: string, 
+    incomeData: { 
+      taxReturnId: string; 
+      category: string; 
+      description?: string; 
+      amount: number; 
+      payer: string 
+    }
+  ): Promise<IncomeDTO | null> {
+    const income = await this.incomeModel.findOne({
+      where: { id }
+    });
+    
+    if (!income) {
+      return null;
+    }
+    
+    await income.update(incomeData);
+    
+    return {
+      id: income.id,
+      taxReturnId: income.taxReturnId,
+      category: income.category,
+      description: income.description,
+      amount: income.amount,
+      payer: income.payer
+    };
+  }
+
+  async deleteIncome(id: string): Promise<boolean> {
+    const income = await this.incomeModel.findOne({
+      where: { id }
+    });
+    
+    if (!income) {
+      return false;
+    }
+    
+    await income.destroy();
+    
+    return true;
+  }
+
+  // Get Assets by TaxReturn ID
+  async getAllAssetsByTaxReturnId(taxReturnId: string): Promise<AssetsDTO[]> {
+    const assets = await this.assetsModel.findAll({ where: { taxReturnId } })
+    return assets.map((asset) => ({
+      id: asset.id,
+      taxReturnId: asset.taxReturnId,
+      assetId: asset.assetId,
+    }))
+  }
+
   // Get Assets by TaxReturn ID
   async getRealEstateAssetsByTaxReturnId(taxReturnId: string): Promise<AssetsDTO[]> {
-    const assets = await this.assetsModel.findAll({ where: { taxReturnId, assetType: "RealEstate"  } })
+    const assets = await this.assetsModel.findAll({ where: { taxReturnId, assetType: "real_estate"  } })
     return assets.map((asset) => ({
       id: asset.id,
       taxReturnId: asset.taxReturnId,
@@ -93,7 +193,7 @@ export class SkattskilService {
   }
 
   async getVehicleAssetsByTaxReturnId(taxReturnId: string): Promise<AssetsDTO[]> {
-    const assets = await this.assetsModel.findAll({ where: { taxReturnId, assetType: "Vehicle" } })
+    const assets = await this.assetsModel.findAll({ where: { taxReturnId, assetType: "vehicle" } })
     return assets.map((asset) => ({
       id: asset.id,
       taxReturnId: asset.taxReturnId,
