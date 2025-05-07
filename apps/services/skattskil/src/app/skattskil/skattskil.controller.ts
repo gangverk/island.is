@@ -67,14 +67,14 @@ export class SkattskilController {
       if (!existingTaxPayer) {
         throw new NotFoundException(`Taxpayer with ID ${id} not LOL`);
       }
-      
+
       // Update the taxpayer record
       const updatedTaxPayer = await this.skattskilService.updateTaxPayer(id, taxPayerInput);
-      
+
       if (!updatedTaxPayer) {
         throw new NotFoundException(`Taxpayer with ID ${id} could not be updated`);
       }
-      
+
       return updatedTaxPayer;
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -219,14 +219,14 @@ export class SkattskilController {
       if (!taxReturn) {
         throw new NotFoundException(`Tax return with ID ${taxReturnId} not found`);
       }
-      
+
       // Create the salary income record
       const newIncome = await this.skattskilService.createIncome({
         ...incomeInput,
         category: 'salary',
         taxReturnId
       });
-      
+
       return newIncome;
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -237,20 +237,20 @@ export class SkattskilController {
   }
 
   // Create Per Diem Income for a TaxReturn
-  @Post('/tax-returns/:taxReturnId/income/per-diem')
+  @Post('/tax-returns/:taxReturnId/income/benefit')
   @Documentation({
-    description: 'Create a new per diem income record for a tax return',
+    description: 'Create a new benefit income record for a tax return',
     response: { status: 201, type: IncomeDTO },
     request: {
       params: {
         taxReturnId: {
           type: 'string',
-          description: 'ID of the tax return to create a per diem income record for',
+          description: 'ID of the tax return to create a benefit income record for',
         },
       },
     },
   })
-  async createPerDiemIncome(
+  async createBenefitIncome(
     @Param('taxReturnId') taxReturnId: string,
     @Body() incomeInput: IncomeInputDTO
   ): Promise<IncomeDTO> {
@@ -260,20 +260,19 @@ export class SkattskilController {
       if (!taxReturn) {
         throw new NotFoundException(`Tax return with ID ${taxReturnId} not found`);
       }
-      
-      // Create the per diem income record
+
       const newIncome = await this.skattskilService.createIncome({
         ...incomeInput,
-        category: 'per_diem',
+        category: 'benefit',
         taxReturnId
       });
-      
+
       return newIncome;
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw error;
       }
-      throw new InternalServerErrorException('An unexpected error occurred when creating per diem income record');
+      throw new InternalServerErrorException('An unexpected error occurred when creating benefit income record');
     }
   }
 
@@ -301,14 +300,14 @@ export class SkattskilController {
       if (!taxReturn) {
         throw new NotFoundException(`Tax return with ID ${taxReturnId} not found`);
       }
-      
+
       // Create the grant income record
       const newIncome = await this.skattskilService.createIncome({
         ...incomeInput,
         category: 'grant',
         taxReturnId
       });
-      
+
       return newIncome;
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -342,11 +341,11 @@ export class SkattskilController {
       if (!existingIncome) {
         throw new NotFoundException(`Income record with ID ${id} not found`);
       }
-      
+
       if (existingIncome.category !== 'salary') {
         throw new BadRequestException(`Income record with ID ${id} is not a salary income`);
       }
-      
+
       // Update the income record
       const updatedIncome = await this.skattskilService.updateIncome(id, {
         ...incomeInput,
@@ -356,7 +355,7 @@ export class SkattskilController {
       if (!updatedIncome) {
         throw new InternalServerErrorException('Failed to update income record');
       }
-      
+
       return updatedIncome;
     } catch (error) {
       if (error instanceof NotFoundException || error instanceof BadRequestException) {
@@ -367,20 +366,20 @@ export class SkattskilController {
   }
 
   // Update Per Diem Income
-  @Put('/tax-returns/income/per-diem/:id')
+  @Put('/tax-returns/income/benefit/:id')
   @Documentation({
-    description: 'Update an existing per diem income record',
+    description: 'Update an existing benefit income record',
     response: { status: 200, type: IncomeDTO },
     request: {
       params: {
         id: {
           type: 'string',
-          description: 'ID of the per diem income record to update',
+          description: 'ID of the per benefit record to update',
         },
       },
     },
   })
-  async updatePerDiemIncome(
+  async updateBenefitIncome(
     @Param('id') id: string,
     @Body() incomeInput: IncomeInputDTO
   ): Promise<IncomeDTO> {
@@ -390,17 +389,17 @@ export class SkattskilController {
       if (!existingIncome) {
         throw new NotFoundException(`Income record with ID ${id} not found`);
       }
-      
-      if (existingIncome.category !== 'per_diem') {
-        throw new BadRequestException(`Income record with ID ${id} is not a per diem income`);
+
+      if (existingIncome.category !== 'benefit') {
+        throw new BadRequestException(`Income record with ID ${id} is not a benefit income`);
       }
-      
+
       // Update the income record
       const updatedIncome = await this.skattskilService.updateIncome(id, {
         ...incomeInput,
-        category: 'per_diem', // Ensure category remains per_diem
+        category: 'benefit', // Ensure category remains benefit
       });
-      
+
       if (!updatedIncome) {
         throw new InternalServerErrorException('Failed to update income record');
       }
@@ -410,7 +409,7 @@ export class SkattskilController {
       if (error instanceof NotFoundException || error instanceof BadRequestException) {
         throw error;
       }
-      throw new InternalServerErrorException('An unexpected error occurred when updating per diem income record');
+      throw new InternalServerErrorException('An unexpected error occurred when updating benefit income record');
     }
   }
 
@@ -438,11 +437,11 @@ export class SkattskilController {
       if (!existingIncome) {
         throw new NotFoundException(`Income record with ID ${id} not found`);
       }
-      
+
       if (existingIncome.category !== 'grant') {
         throw new BadRequestException(`Income record with ID ${id} is not a grant income`);
       }
-      
+
       // Update the income record
       const updatedIncome = await this.skattskilService.updateIncome(id, {
         ...incomeInput,
@@ -452,7 +451,7 @@ export class SkattskilController {
       if (!updatedIncome) {
         throw new InternalServerErrorException('Failed to update income record');
       }
-      
+
       return updatedIncome;
     } catch (error) {
       if (error instanceof NotFoundException || error instanceof BadRequestException) {
@@ -485,10 +484,10 @@ export class SkattskilController {
       if (!existingIncome) {
         throw new NotFoundException(`Income record with ID ${id} not found`);
       }
-      
+
       // Delete the income record
       const deleted = await this.skattskilService.deleteIncome(id);
-      
+
       if (!deleted) {
         throw new NotFoundException(`Income record with ID ${id} could not be deleted or was already removed`);
       }

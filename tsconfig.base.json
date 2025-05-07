@@ -36,9 +36,6 @@
       "@island.is/api/domains/api-catalogue": [
         "libs/api/domains/api-catalogue/src/index.ts"
       ],
-      "@island.is/api/domains/skattskil": [
-        "libs/api/domains/skattskil/src/index.ts"
-      ],
       "@island.is/api/domains/application": [
         "libs/api/domains/application/src/index.ts"
       ],
@@ -214,6 +211,9 @@
       ],
       "@island.is/api/domains/signature-collection": [
         "libs/api/domains/signature-collection/src/index.ts"
+      ],
+      "@island.is/api/domains/skattskil": [
+        "libs/api/domains/skattskil/src/index.ts"
       ],
       "@island.is/api/domains/social-insurance": [
         "libs/api/domains/social-insurance/src/index.ts"
@@ -800,9 +800,7 @@
       "@island.is/clients/signature-collection": [
         "libs/clients/signature-collection/src/index.ts"
       ],
-      "@island.is/clients/skattskil": [
-        "libs/clients/skattskil/src/index.ts"
-      ],
+      "@island.is/clients/skattskil": ["libs/clients/skattskil/src/index.ts"],
       "@island.is/clients/smart-solutions-v2": [
         "libs/clients/smart-solutions-v2/src/index.ts"
       ],
