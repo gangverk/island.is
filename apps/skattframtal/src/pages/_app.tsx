@@ -1,7 +1,6 @@
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Footer } from '../components/Footer'
-import './styles.css'
 import Header from '../components/Header/Header'
 import { globalStyles } from '@island.is/island-ui/core'
 import { ApolloProvider } from '@apollo/client'
