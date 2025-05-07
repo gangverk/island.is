@@ -5,9 +5,10 @@ import TableSumRow from './TableSumRow'
 import AddLineButton from './AddLineButton'
 import AnimatedTableRowWrapper from './AnimatedTableRowWrapper'
 import MultiColumnRow from './MultiColumnRow'
-import { Box } from '@island.is/island-ui/core'
+import { BoxProps } from '@island.is/island-ui/core'
 
 export interface TableRowData {
+  backgroundColor?: BoxProps['background']
   left?: React.ReactNode
   right?: React.ReactNode
   middle?: React.ReactNode
@@ -68,8 +69,6 @@ const Table = ({ data, onChange }: TableProps) => {
             sectionNumber={section.section.sectionNumber}
           />
           {section.rows.map((row, rIdx) => {
-            const shouldAlternate = section.rows.length > 2
-            const isStriped = shouldAlternate && rIdx % 2 === 0
             const isNew =
               animatingRow &&
               animatingRow.sectionIdx === sectionIdx &&
@@ -91,7 +90,7 @@ const Table = ({ data, onChange }: TableProps) => {
                   left={row.left}
                   middle={row.middle}
                   right={row.right}
-                  background={isStriped ? 'purple100' : undefined}
+                  background={row.backgroundColor}
                 />
               </AnimatedTableRowWrapper>
             )
