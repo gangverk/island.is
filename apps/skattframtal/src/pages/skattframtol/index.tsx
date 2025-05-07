@@ -137,14 +137,8 @@ export default function Skattframtal() {
                 ),
               }}
             >
-              <Link href="/skattframtol/application">
-                <Button
-                  size="medium"
-                  icon="open"
-                  iconType="outline"
-                  nowrap
-                  variant="primary"
-                >
+              <Link href="/auth">
+                <Button size="medium" nowrap variant="primary">
                   Opna skattframtal
                 </Button>
               </Link>
