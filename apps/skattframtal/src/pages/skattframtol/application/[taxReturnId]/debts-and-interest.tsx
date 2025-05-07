@@ -442,7 +442,7 @@ const tableData = [
 
 const DebtsAndInterestPage = () => {
   const router = useRouter()
-  const { year } = router.query
+  const taxReturnId = router.query.taxReturnId as string
   const currentStep = stepKeys.indexOf('debtsAndInterest')
   const stepLabelList = stepKeys.map((key) => stepLabels[key])
 
@@ -450,12 +450,9 @@ const DebtsAndInterestPage = () => {
     <FormScreenLayout
       currentStep={currentStep}
       stepLabels={stepLabelList}
-      onBack={() => {
-        goToStep(router, String(year), currentStep - 1, stepKeys)
-      }}
-      onNext={() => {
-        goToStep(router, String(year), currentStep + 1, stepKeys)
-      }}
+      onStepChange={(stepIdx) =>
+        goToStep(router, taxReturnId, stepIdx, stepKeys)
+      }
       nextButtonLabel={
         currentStep === stepKeys.length - 1 ? 'Senda inn framtal' : undefined
       }
