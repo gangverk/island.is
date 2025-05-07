@@ -1,0 +1,28 @@
+{
+  "name": "clients-skattskil",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/clients/skattskil/src",
+  "projectType": "library",
+  "tags": ["lib:client", "scope:client"],
+  "implicitDependencies": ["services-skattskil"],
+  "generators": {},
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/clients/skattskil/jest.config.ts"
+      },
+      "outputs": ["{workspaceRoot}/coverage/libs/clients/skattskil"]
+    },
+    "codegen/backend-client": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn openapi-generator -o libs/clients/skattskil/gen/fetch -i apps/services/skattskil/src/openapi.yaml"
+      },
+      "outputs": ["{projectRoot}/gen/fetch"]
+    }
+  }
+}

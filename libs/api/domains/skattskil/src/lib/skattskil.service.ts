@@ -10,10 +10,13 @@ import {
   TaxReturnResidentialLoan,
   TaxReturnGenericLiability,
 } from './model'
+
+import { SkattskilClientService } from '@island.is/clients/skattskil'
 import { uuid } from 'uuidv4'
 
 @Injectable()
 export class SkattskilService {
+  constructor(private readonly skattskilClientService: SkattskilClientService) {}
   async helloWorld(): Promise<string> {
     return 'Hello world'
   }
