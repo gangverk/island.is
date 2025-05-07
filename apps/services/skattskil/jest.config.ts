@@ -7,7 +7,7 @@ export default {
   detectLeaks: false,
   globalSetup: `${__dirname}/test/globalSetup.ts`,
   globalTeardown: `${__dirname}/test/globalTeardown.ts`,
-  setupFiles: [`${__dirname}/test/environment.ts`],
+  setupFiles: [],
   setupFilesAfterEnv: [`${__dirname}/test/setup.ts`],
   moduleFileExtensions: ['ts', 'js', 'html', 'json'],
   globals: {},
@@ -21,5 +21,10 @@ export default {
       },
     ],
   },
+  collectCoverageFrom: [
+    '<rootDir>/apps/services/skattskil/**/*.ts',
+    '!<rootDir>/apps/services/skattskil/**/*.spec.ts',
+  ],
+  coverageReporters: ['json', 'text', 'html'],
   coverageDirectory: '<rootDir>/coverage/apps/services/skattskil',
 }
