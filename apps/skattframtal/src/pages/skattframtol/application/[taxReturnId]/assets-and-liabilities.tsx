@@ -8,7 +8,7 @@ import { stepKeys, stepLabels, goToStep } from '../../../../constants/formSteps'
 const data = [
   {
     section: {
-      title: 'Inn­lendar fasteignir',
+      title: 'Innlendar fasteignir',
       sectionNumber: '4.1',
     },
     rows: [
@@ -92,7 +92,7 @@ const data = [
 
 const AssetsAndLiabilitiesPage = () => {
   const router = useRouter()
-  const year = '2024' // or get from router/query if needed
+  const taxReturnId = router.query.taxReturnId as string
   const currentStep = stepKeys.indexOf('assetsAndLiabilities')
   const stepLabelList = stepKeys.map((key) => stepLabels[key])
 
@@ -100,12 +100,9 @@ const AssetsAndLiabilitiesPage = () => {
     <FormScreenLayout
       currentStep={currentStep}
       stepLabels={stepLabelList}
-      onBack={() => {
-        goToStep(router, String(year), currentStep - 1, stepKeys)
-      }}
-      onNext={() => {
-        goToStep(router, String(year), currentStep + 1, stepKeys)
-      }}
+      onStepChange={(stepIdx) =>
+        goToStep(router, taxReturnId, stepIdx, stepKeys)
+      }
     >
       <Text as="h1" variant="h1" marginBottom={6}>
         Eignir í árslok

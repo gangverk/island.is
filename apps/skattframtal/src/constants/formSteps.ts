@@ -20,15 +20,15 @@ export const stepLabels: Record<typeof stepKeys[number], string> = {
   confirmAndSubmit: 'Staðfesta og senda',
 }
 
-export function goToStep(
+export const goToStep = (
   router: NextRouter,
-  year: string,
+  taxReturnId: string,
   stepIdx: number,
   stepKeys: readonly string[],
-) {
+) => {
   if (stepIdx >= 0 && stepIdx < stepKeys.length) {
     const stepKey = stepKeys[stepIdx]
-    let path = `/skattframtol/application/${year}/`
+    let path = `/skattframtol/application/${taxReturnId}/`
     if (stepKey === 'introduction') {
       path += 'introduction'
     } else if (stepKey === 'personalInfo') {

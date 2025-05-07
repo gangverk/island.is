@@ -170,9 +170,13 @@ export default function Applications() {
                 </Text>
               </Box>
               <Box>
-                <Button size="medium" nowrap variant="primary">
-                  Hefja skattframtal
-                </Button>
+                <NextLink
+                  href={`/skattframtol/application/${taxReturn.taxReturnID}/introduction`}
+                >
+                  <Button size="medium" nowrap variant="primary">
+                    Hefja skattframtal
+                  </Button>
+                </NextLink>
               </Box>
             </Box>
           ))}
