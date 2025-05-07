@@ -140,15 +140,9 @@ export default function Skattframtal() {
                 ),
               }}
             >
-              <Link href={`/skattframtol/application/${currentYear}`} skipTab>
-                <Button
-                  size="medium"
-                  icon="open"
-                  iconType="outline"
-                  nowrap
-                  variant="primary"
-                >
-                  Hefja skattframtal
+              <Link href="/auth">
+                <Button size="medium" nowrap variant="primary">
+                  Opna skattframtal
                 </Button>
               </Link>
             </LinkContext.Provider>

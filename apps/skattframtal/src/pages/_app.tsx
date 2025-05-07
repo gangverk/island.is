@@ -9,18 +9,18 @@ import { client } from '@island.is/application/graphql'
 
 globalStyles()
 
-const CustomApp = ({ Component, pageProps }: AppProps) => {
+const CustomApp = ({ Component, pageProps, router }: AppProps) => {
   return (
     <>
       <ApolloProvider client={client}>
         <Head>
           <title>Welcome to skattframtal!</title>
         </Head>
-        <Header />
+        {router.pathname !== '/auth' && <Header />}
         <main className="app">
           <Component {...pageProps} />
         </main>
-        <Footer />
+        {router.pathname !== '/auth' && <Footer />}
       </ApolloProvider>
     </>
   )
