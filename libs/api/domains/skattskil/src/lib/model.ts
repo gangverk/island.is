@@ -52,6 +52,9 @@ export class TaxPayer {
   @Field({ nullable: true })
   emailAddress?: string;
 
+  @Field({ nullable: true })
+  bankAccountNumber?: string;
+
   @Field(() => [TaxReturn])
   taxReturns!: TaxReturn[];
 }

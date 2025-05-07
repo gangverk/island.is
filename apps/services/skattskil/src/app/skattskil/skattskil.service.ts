@@ -51,6 +51,50 @@ export class SkattskilService {
     }
   }
 
+  async updateTaxPayer(
+    id: string, 
+    updateData: { phoneNumber?: string; emailAddress?: string, bankAccountNumber?: string }
+  ): Promise<TaxPayerDTO | null> {
+    const taxPayer = await this.taxPayerModel.findByPk(id);
+    
+    if (!taxPayer) {
+      return null;
+    }
+    
+    // Update only the fields provided
+    if (updateData.phoneNumber !== undefined) {
+      taxPayer.phone = updateData.phoneNumber;
+    }
+    
+    if (updateData.emailAddress !== undefined) {
+      taxPayer.email = updateData.emailAddress;
+    }
+  
+    if (updateData.bankAccountNumber !== undefined) {
+      taxPayer.bankAccountNumber = updateData.bankAccountNumber;
+    }
+    
+    // Save the changes
+    await taxPayer.save();
+    
+    // Fetch the updated data including information from Thjodskra
+    const person = await this.thjodskra.getPersonById(taxPayer.personId);
+    if (!person) {
+      return null;
+    }
+    
+    // Return the complete updated DTO
+    return {
+      id: taxPayer.id,
+      name: person.name,
+      personId: taxPayer.personId,
+      address: `${person.legalDomicile}, ${person.postalCode} ${person.city}`,
+      phoneNumber: taxPayer.phone,
+      emailAddress: taxPayer.email,
+      bankAccountNumber: taxPayer.bankAccountNumber,
+    };
+  }
+
   // Get TaxPayer by kennitala
   async getTaxPayerByKennitala(kennitala: string): Promise<TaxPayerDTO | null> {
     const taxPayer = await this.taxPayerModel.findOne({ where : { personId: kennitala } })

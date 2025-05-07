@@ -3,7 +3,7 @@ import { SkattskilService } from './skattskil.service'
 import {
   TaxPayer, TaxReturn, TaxReturnGenericLiability,
   TaxReturnResidentialLoan, TaxReturnIcelandicRealEstate, TaxReturnIncome, TaxReturnVehicle,
-  TaxReturnIncomeInput, TaxReturnIncomeCategory,
+  TaxReturnIncomeInput, TaxReturnIncomeCategory, MutationSuccess,
 } from './model'
 
 @Resolver()
@@ -31,6 +31,16 @@ export class TaxPayerResolver {
   @ResolveField('taxReturns', () => [TaxReturn])
   async getTaxReturns(@Parent() taxPayer: TaxPayer): Promise<TaxReturn[]> {
     return this.skattskilService.getTaxReturnsByTaxPayerId(taxPayer.taxPayerID)
+  }
+
+  @Mutation(() => TaxPayer)
+  async updateTaxPayer(
+    @Args('id') id: string,
+    @Args('phoneNumber') phoneNumber: string,
+    @Args('emailAddress') emailAddress: string,
+    @Args('bankAccountNumber') bankAccountNumber: string,
+  ): Promise<TaxPayer> {
+    return this.skattskilService.updateTaxPayer(id, phoneNumber, emailAddress, bankAccountNumber)
   }
 }
 
@@ -103,7 +113,7 @@ export class TaxReturnIncomeResolver {
   @Mutation(() => Boolean)
   async deleteTaxReturnIncome(
     @Args('incomeId') incomeId: string,
-  ): Promise<boolean> {
+  ): Promise<MutationSuccess> {
     return this.skattskilService.deleteTaxReturnIncome(incomeId)
   }
 }
