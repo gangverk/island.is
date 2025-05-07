@@ -1,4 +1,5 @@
 import { Box, Text } from '@island.is/island-ui/core'
+import { Tag } from '@island.is/island-ui/core'
 
 interface TableSectionProps {
   title: string
@@ -34,9 +35,7 @@ const TableSection: React.FC<TableSectionProps> = ({
       {title}
     </Text>
     <Box marginLeft={1}>
-      <Text as="span" variant="small" color="dark400" fontWeight="semiBold">
-        {sectionNumber}
-      </Text>
+      <Tag variant="purple">{sectionNumber}</Tag>
     </Box>
     {description && (
       <Box marginLeft={2}>
