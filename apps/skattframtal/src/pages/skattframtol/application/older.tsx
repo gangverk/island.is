@@ -18,11 +18,6 @@ const navigationItems = [
     active: false,
   },
   {
-    title: 'Framtöl í vinnslu',
-    href: '/skattframtol/application/in-progress',
-    active: false,
-  },
-  {
     title: 'Eldri framtöl',
     href: '/skattframtol/application/older',
     active: true,
