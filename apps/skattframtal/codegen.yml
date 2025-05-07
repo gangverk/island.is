@@ -1,0 +1,27 @@
+schema:
+  - apps/api/src/api.graphql
+documents:
+  - apps/skattframtal/src/graphql/queries.ts
+  - apps/skattframtal/src/graphql/mutations.ts
+generates:
+  apps/skattframtal/src/graphql/schema.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      exportFragmentSpreadSubTypes: true
+      scalars:
+        DateTime: Date
+        JSON: '{ [key: string]: any }'
+      namingConvention:
+        typeNames: change-case#pascalCase
+  apps/skattframtal/src/graphql/fragmentTypes.json:
+    plugins:
+      - fragment-matcher
+    config:
+      module: commonjs
+      apolloClientVersion: 3
+hooks:
+  afterAllFileWrite:
+    - prettier --write

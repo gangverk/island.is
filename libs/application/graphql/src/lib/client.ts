@@ -23,7 +23,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 })
 
 const httpLink = new HttpLink({
-  uri: ({ operationName }) => `/bff/api/graphql?op=${operationName}`,
+  uri: `http://localhost:4444/api/graphql`,
   fetch,
 })
 

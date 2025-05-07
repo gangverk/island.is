@@ -3,7 +3,7 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/services/skattskil/src",
   "projectType": "application",
-  "tags": [],
+  "tags": ["scope:nest"],
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",
@@ -63,7 +63,9 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/services/skattskil/jest.config.ts"
+        "jestConfig": "apps/services/skattskil/jest.config.ts",
+        "passWithNoTests": false,
+        "runInBand": true
       }
     },
     "dev-services": {
@@ -76,7 +78,7 @@
     "codegen/backend-schema": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cross-env INIT_SCHEMA=true yarn ts-node -P apps/reference-backend/tsconfig.app.json apps/reference-backend/src/buildOpenApi.ts"
+        "command": "cross-env INIT_SCHEMA=true yarn ts-node -P apps/services/skattskil/tsconfig.app.json apps/services/skattskil/src/buildOpenApi.ts"
       },
       "outputs": ["{projectRoot}/src/openapi.yaml"]
     },
@@ -91,6 +93,13 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "../../../node_modules/.bin/sequelize-cli migration:generate --name $(whoami)",
+        "cwd": "apps/services/skattskil"
+      }
+    },
+    "seed": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "sequelize-cli db:seed:all",
         "cwd": "apps/services/skattskil"
       }
     }

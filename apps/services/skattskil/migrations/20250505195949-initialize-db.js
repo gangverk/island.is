@@ -167,15 +167,11 @@ module.exports = {
         type: Sequelize.SMALLINT,
         allowNull: false
       },
-      amount_paid_in_fiscal_year: {
+      interest_paid_in_fiscal_year: {
         type: Sequelize.BIGINT,
         allowNull: false
       },
-      interest_component: {
-        type: Sequelize.BIGINT,
-        allowNull: false
-      },
-      principal_component: {
+      principal_paid_in_fiscal_year: {
         type: Sequelize.BIGINT,
         allowNull: false
       },

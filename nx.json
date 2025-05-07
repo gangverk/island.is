@@ -14,7 +14,7 @@
           "generateDevIndexHTML"
         ],
         "cacheDirectory": ".cache/nx",
-        "parallel": 1
+        "parallel": 6
       }
     },
     "ci": {

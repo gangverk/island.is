@@ -10,16 +10,13 @@ import {
 } from '@island.is/island-ui/core'
 import NextLink from 'next/link'
 import SidebarLayout from '../../../screens/Layouts/SidebarLayout'
+import { useQuery } from '@apollo/client'
+import { QUERIES } from '../../../graphql/queries'
 
 const navigationItems = [
   {
-    title: 'Mín framtöl',
+    title: 'Nýjasta framtal',
     href: '/skattframtol/application',
-    active: false,
-  },
-  {
-    title: 'Framtöl í vinnslu',
-    href: '/skattframtol/application/in-progress',
     active: false,
   },
   {
@@ -30,6 +27,19 @@ const navigationItems = [
 ]
 
 export default function ApplicationsOlder() {
+  const { data, loading, error } = useQuery(
+    QUERIES.GET_ALL_TAX_RETURNS_BY_KENNITALA,
+    {
+      variables: {
+        kennitala: '1234567890',
+      },
+    },
+  )
+
+  const taxReturns = data?.taxPayerByKennitala?.taxReturns.filter(
+    (taxReturn) => taxReturn.fiscalYear !== new Date().getFullYear().toString(),
+  )
+
   return (
     <>
       <SidebarLayout
@@ -137,92 +147,44 @@ export default function ApplicationsOlder() {
             </Text>
           </Stack>
         </Box>
-        <Box display="flex" flexDirection="column" rowGap={4}>
-          <Box
-            display="flex"
-            justifyContent="spaceBetween"
-            alignItems="center"
-            padding={3}
-            columnGap={4}
-            borderColor="blue200"
-            border="standard"
-            borderRadius="large"
-            flexWrap="wrap"
-            flexDirection={['column', 'column', 'row']}
-            rowGap={[3, 3, 0]}
-          >
-            <Box>
-              <Text variant="h3">Skattframtal 2024</Text>
-            </Box>
-            <Box>
-              <Button
-                size="medium"
-                icon="open"
-                iconType="outline"
-                nowrap
-                variant="primary"
+
+        {loading && <Text>Hleður gögnum...</Text>}
+        {error && <Text>Villa kom upp: {error.message}</Text>}
+
+        <ul>
+          {taxReturns?.map((taxReturn) => (
+            <li key={taxReturn.taxReturnID}>
+              <Box
+                display="flex"
+                justifyContent="spaceBetween"
+                alignItems="center"
+                padding={3}
+                columnGap={4}
+                borderColor="blue200"
+                border="standard"
+                borderRadius="large"
+                flexWrap="wrap"
+                flexDirection={['column', 'column', 'row']}
+                rowGap={[3, 3, 0]}
               >
-                Opna framtal
-              </Button>
-            </Box>
-          </Box>
-          <Box
-            display="flex"
-            justifyContent="spaceBetween"
-            alignItems="center"
-            padding={3}
-            columnGap={4}
-            borderColor="blue200"
-            border="standard"
-            borderRadius="large"
-            flexWrap="wrap"
-            flexDirection={['column', 'column', 'row']}
-            rowGap={[3, 3, 0]}
-          >
-            <Box>
-              <Text variant="h3">Skattframtal 2023</Text>
-            </Box>
-            <Box>
-              <Button
-                size="medium"
-                icon="open"
-                iconType="outline"
-                nowrap
-                variant="primary"
-              >
-                Opna framtal
-              </Button>
-            </Box>
-          </Box>
-          <Box
-            display="flex"
-            justifyContent="spaceBetween"
-            alignItems="center"
-            padding={3}
-            columnGap={4}
-            borderColor="blue200"
-            border="standard"
-            borderRadius="large"
-            flexWrap="wrap"
-            flexDirection={['column', 'column', 'row']}
-            rowGap={[3, 3, 0]}
-          >
-            <Box>
-              <Text variant="h3">Skattframtal 2022</Text>
-            </Box>
-            <Box>
-              <Button
-                size="medium"
-                icon="open"
-                iconType="outline"
-                nowrap
-                variant="primary"
-              >
-                Opna framtal
-              </Button>
-            </Box>
-          </Box>
-        </Box>
+                <Box>
+                  <Text variant="h3">Skattframtal {taxReturn.fiscalYear}</Text>
+                </Box>
+                <Box>
+                  <Button
+                    size="medium"
+                    icon="attach"
+                    iconType="outline"
+                    nowrap
+                    variant="primary"
+                  >
+                    Sækja afrit
+                  </Button>
+                </Box>
+              </Box>
+            </li>
+          ))}
+        </ul>
       </SidebarLayout>
     </>
   )
