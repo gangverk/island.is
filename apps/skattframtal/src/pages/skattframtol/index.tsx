@@ -13,7 +13,10 @@ import {
 } from '@island.is/island-ui/core'
 import SidebarLayout from '../../screens/Layouts/SidebarLayout'
 import InstitutionPanel from '../../components/InstitutionPanel/InstitutionPanel'
+
 export default function Skattframtal() {
+  const currentYear = new Date().getFullYear()
+
   return (
     <>
       <SidebarLayout

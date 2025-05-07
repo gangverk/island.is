@@ -32,11 +32,13 @@ export class SkattskilService {
   }
 
   async getTaxPayerByKennitala(kennitala: string): Promise<TaxPayer> {
-    // Implement your logic to fetch the tax payer by kennitala
+    const taxPayer = await this.skattskilClientService.getTaxPayerByKennitala(kennitala)
     return {
-      taxPayerID: uuid(),
-      kennitala: kennitala,
-      name: 'John Doe',
+      taxPayerID: taxPayer.id,
+      kennitala: taxPayer.personId,
+      emailAddress: taxPayer.email,
+      phoneNumber: taxPayer.phone,
+      name: "Addi", // FIXME
       taxReturns: [],
     }
   }
@@ -66,10 +68,11 @@ export class SkattskilService {
   }
 
   async getTaxReturnById(taxReturnId: string): Promise<TaxReturn> {
+    const taxReturn = await this.skattskilClientService.getTaxReturnById(taxReturnId)
     // Implement your logic to fetch tax return by ID
     return {
-      taxReturnID: taxReturnId,
-      fiscalYear: '2025',
+      taxReturnID: taxReturn.id,
+      fiscalYear: String(taxReturn.fiscalYear),
       income: [],
       realEstateAssets: [],
       vehicleAssets: [],
@@ -79,16 +82,25 @@ export class SkattskilService {
   }
 
   async getIncome(taxReturnId: string): Promise<TaxReturnIncome[]> {
-    // Implement your logic to fetch income by tax return ID
-    return [
-      {
-        incomeID: uuid(),
-        category: TaxReturnIncomeCategory.SALARY,
-        amount: { amount: '600000' },
-        description: 'Laun',
-        payer: 'Company A',
-      },
-    ]
+    const incomeLines = await this.skattskilClientService.getIncomeByTaxReturnId(taxReturnId)
+    return incomeLines.map((income) => ({
+      incomeID: income.id,
+      category: ((cat: string): TaxReturnIncomeCategory => {
+        switch (cat) {
+          case 'salary':
+            return TaxReturnIncomeCategory.SALARY
+          case 'investment':
+            return TaxReturnIncomeCategory.GRANT
+          case 'per_diem':
+            return TaxReturnIncomeCategory.PER_DIEM
+          default:
+            throw new Error(`Unknown income category: ${cat}`)
+        }
+      })(income.category),
+      amount: { amount: income.amount },
+      description: income.description || '',
+      payer: income.payer,
+    }))
   }
 
   async getRealEstateAssets(taxReturnId: string): Promise<TaxReturnIcelandicRealEstate[]> {
@@ -96,7 +108,7 @@ export class SkattskilService {
     return [
       {
         realEstateAssetID: uuid(),
-        estimatedValue: { amount: "1000000" },
+        estimatedValue: { amount: 1000000 },
         address: '123 Main St',
       },
     ]
@@ -107,7 +119,7 @@ export class SkattskilService {
     return [
       {
         vehicleAssetID: uuid(),
-        purchaseAmount: { amount: '150000' },
+        purchaseAmount: { amount: 150000 },
         registrationNumber: 'ABC123',
         yearOfPurchase: '2020',
       },
@@ -119,11 +131,11 @@ export class SkattskilService {
     return [
       {
         residentialLoanID: uuid(),
-        amountPaidInFiscalYear: { amount: '300000' },
+        amountPaidInFiscalYear: { amount: 300000 },
         yearOfPurchase: '2018',
         address: '456 Elm St',
         dateOfIssuance: '2018-03-01',
-        interestPaidInFiscalYear: { amount: '1500' },
+        interestPaidInFiscalYear: { amount: 1500 },
         lenderKennitala: "0987654321",
         lenderName: "Lender A",
         loanNumber: "45678123",
@@ -137,8 +149,8 @@ export class SkattskilService {
     return [
       {
         liabilityID: uuid(),
-        amountRemaining: { amount: '50000' },
-        interestPaid: { amount: '2000' },
+        amountRemaining: { amount: 50000 },
+        interestPaid: { amount: 2000 },
         description: 'Credit Card Debt',
       },
     ]
@@ -148,7 +160,7 @@ export class SkattskilService {
     // Implement your logic to add taxable income
     return {
       ...input,
-      amount: { amount: input.amount },
+      amount: input.amount,
       incomeID: uuid(),
     }
   }
@@ -157,7 +169,7 @@ export class SkattskilService {
     // Implement your logic to update taxable income
     return {
       ...input,
-      amount: { amount: input.amount },
+      amount: input.amount,
       incomeID: incomeId,
     }
   }
