@@ -801,6 +801,7 @@
         "libs/clients/signature-collection/src/index.ts"
       ],
       "@island.is/clients/skattskil": ["libs/clients/skattskil/src/index.ts"],
+      "@island.is/clients/thjodskra": ["libs/clients/thjodskra/src/index.ts"],
       "@island.is/clients/smart-solutions-v2": [
         "libs/clients/smart-solutions-v2/src/index.ts"
       ],

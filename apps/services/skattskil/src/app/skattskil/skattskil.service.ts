@@ -8,7 +8,7 @@ import { Assets } from './models/assets.model'
 import { Liabilities } from './models/liabilities.model'
 import { ResidentialLoan } from './models/residentialLoan.model'
 import { TaxPayerDTO, TaxReturnDTO, IncomeDTO, LiabilitiesDTO, ResidentialLoanDTO, RealEstateDTO, VehicleDTO } from './dto/skattskil.response'
-import { ThjodskraService } from '../thjodskra/thjodskra.service'
+import { ThjodskraClientService } from '@island.is/clients/thjodskra'
 
 @Injectable()
 export class SkattskilService {
@@ -25,7 +25,7 @@ export class SkattskilService {
     private readonly liabilitiesModel: typeof Liabilities,
     @InjectModel(ResidentialLoan)
     private readonly residentialLoanModel: typeof ResidentialLoan,
-    private thjodskra: ThjodskraService
+    private thjodskra: ThjodskraClientService
   ) {}
 
   // Get TaxPayer by ID
@@ -253,18 +253,16 @@ export class SkattskilService {
   // Get Assets by TaxReturn ID
   async getRealEstateAssetsByTaxReturnId(taxReturnId: string): Promise<RealEstateDTO[]> {
     const assets = await this.assetsModel.findAll({ where: { taxReturnId, assetType: "real_estate"  } })
-    const realEstates = await this.thjodskra.getPropertiesByIds(assets.map((asset) => asset.assetId))
+    // FIXME: refactor to use allSettled
+    const realEstates = await Promise.all(assets.map(async (asset) => (
+      await this.thjodskra.getPropertyById(asset.assetId)
+    )))
     if (!realEstates) {
       return []
     }
 
-    const propertyMap = realEstates.reduce((map, property) => {
-      map[property.propertyNumber] = property;
-      return map;
-    }, {} as Record<string, any>);
-
     return assets.map(asset => {
-      const property = propertyMap[asset.assetId];
+      const property = realEstates.find((property) => property.propertyNumber === asset.assetId);
 
       if (!property) {
         return null;
@@ -276,22 +274,18 @@ export class SkattskilService {
         estimatedValue: property.appraisal,
       };
     })
-    .filter((vehicle): vehicle is RealEstateDTO => vehicle !== null);;
+    .filter((realEstate): realEstate is RealEstateDTO => realEstate !== null);
   }
 
   async getVehicleAssetsByTaxReturnId(taxReturnId: string): Promise<VehicleDTO[]> {
     const assets = await this.assetsModel.findAll({ where: { taxReturnId, assetType: "vehicle" } })
-    const vehicles = await this.thjodskra.getVehiclesByIds(assets.map(asset => asset.assetId));
+    // FIXME: refactor to use allSettled
+    const vehicles = await Promise.all(assets.map(async (asset) => (
+      await this.thjodskra.getVehicleById(asset.assetId)
+    )))
 
-    const vehicleMap = vehicles.reduce((map, vehicle) => {
-      map[vehicle.licensePlateNumber] = vehicle;
-      return map;
-    }, {} as Record<string, any>);
-
-
-    return assets
-      .map(asset => {
-        const vehicle = vehicleMap[asset.assetId];
+    return assets.map(asset => {
+        const vehicle = vehicles.find((vehicle) => vehicle.licensePlateNumber === asset.assetId);
 
         if (!vehicle) {
           return null;
@@ -334,167 +328,4 @@ export class SkattskilService {
       remainingPrincipal: loan.remainingPrincipal,
     }))
   }
-  /*
-  // Update an existing TaxPayer
-  async updateTaxPayer(id: string, data: Partial<TaxPayerDTO>): Promise<TaxPayerDTO | null> {
-    const taxPayer = await this.taxPayerModel.findByPk(id)
-    if (!taxPayer) {
-      return null
-    }
-    await taxPayer.update(data)
-    return {
-      id: taxPayer.id,
-      personId: taxPayer.personId,
-      phone: taxPayer.phone,
-      email: taxPayer.email,
-    }
-  }
-
-  // Create a new TaxReturn
-  async createTaxReturn(data: TaxReturnDTO): Promise<TaxReturnDTO> {
-    const taxReturn = await this.taxReturnModel.create(data)
-    return {
-      id: taxReturn.id,
-      taxPayerId: taxReturn.taxPayerId,
-      fiscalYear: taxReturn.fiscalYear,
-      completed: taxReturn.completed,
-    }
-  }
-
-  // Update an existing TaxReturn
-  async updateTaxReturn(id: string, data: Partial<TaxReturnDTO>): Promise<TaxReturnDTO | null> {
-    const taxReturn = await this.taxReturnModel.findByPk(id)
-    if (!taxReturn) {
-      return null
-    }
-    await taxReturn.update(data)
-    return {
-      id: taxReturn.id,
-      taxPayerId: taxReturn.taxPayerId,
-      fiscalYear: taxReturn.fiscalYear,
-      completed: taxReturn.completed,
-    }
-  }
-
-  // Create a new Income
-  async createIncome(data: IncomeDTO): Promise<IncomeDTO> {
-    const income = await this.incomeModel.create(data)
-    return {
-      id: income.id,
-      taxReturnId: income.taxReturnId,
-      category: income.category,
-      description: income.description,
-      amount: income.amount,
-      payer: income.payer,
-    }
-  }
-
-  // Update an existing Income
-  async updateIncome(id: string, data: Partial<IncomeDTO>): Promise<IncomeDTO | null> {
-    const income = await this.incomeModel.findByPk(id)
-    if (!income) {
-      return null
-    }
-    await income.update(data)
-    return {
-      id: income.id,
-      taxReturnId: income.taxReturnId,
-      category: income.category,
-      description: income.description,
-      amount: income.amount,
-      payer: income.payer,
-    }
-  }
-
-  // Create a new Asset
-  async createAsset(data: AssetsDTO): Promise<AssetsDTO> {
-    const asset = await this.assetsModel.create(data)
-    return {
-      id: asset.id,
-      taxReturnId: asset.taxReturnId,
-      assetType: asset.assetType,
-      assetId: asset.assetId,
-    }
-  }
-
-  // Update an existing Asset
-  async updateAsset(id: string, data: Partial<AssetsDTO>): Promise<AssetsDTO | null> {
-    const asset = await this.assetsModel.findByPk(id)
-    if (!asset) {
-      return null
-    }
-    await asset.update(data)
-    return {
-      id: asset.id,
-      taxReturnId: asset.taxReturnId,
-      assetType: asset.assetType,
-      assetId: asset.assetId,
-    }
-  }
-
-  // Create a new Liability
-  async createLiability(data: LiabilitiesDTO): Promise<LiabilitiesDTO> {
-    const liability = await this.liabilitiesModel.create(data)
-    return {
-      id: liability.id,
-      taxReturnId: liability.taxReturnId,
-      description: liability.description,
-      interestPaid: liability.interestPaid,
-      amountRemaining: liability.amountRemaining,
-    }
-  }
-
-  // Update an existing Liability
-  async updateLiability(id: string, data: Partial<LiabilitiesDTO>): Promise<LiabilitiesDTO | null> {
-    const liability = await this.liabilitiesModel.findByPk(id)
-    if (!liability) {
-      return null
-    }
-    await liability.update(data)
-    return {
-      id: liability.id,
-      taxReturnId: liability.taxReturnId,
-      description: liability.description,
-      interestPaid: liability.interestPaid,
-      amountRemaining: liability.amountRemaining,
-    }
-  }
-
-  // Create a new Residential Loan
-  async createResidentialLoan(data: ResidentialLoanDTO): Promise<ResidentialLoanDTO> {
-    const loan = await this.residentialLoanModel.create(data)
-    return {
-      id: loan.id,
-      taxReturnId: loan.taxReturnId,
-      assetId: loan.assetId,
-      lenderId: loan.lenderId,
-      issueDate: loan.issueDate,
-      remainingTermYears: loan.remainingTermYears,
-      amountPaidInFiscalYear: loan.amountPaidInFiscalYear,
-      interestComponent: loan.interestComponent,
-      principalComponent: loan.principalComponent,
-      remainingPrincipal: loan.remainingPrincipal,
-    }
-  }
-
-  // Update an existing Residential Loan
-  async updateResidentialLoan(id: string, data: Partial<ResidentialLoanDTO>): Promise<ResidentialLoanDTO | null> {
-    const loan = await this.residentialLoanModel.findByPk(id)
-    if (!loan) {
-      return null
-    }
-    await loan.update(data)
-    return {
-      id: loan.id,
-      taxReturnId: loan.taxReturnId,
-      assetId: loan.assetId,
-      lenderId: loan.lenderId,
-      issueDate: loan.issueDate,
-      remainingTermYears: loan.remainingTermYears,
-      amountPaidInFiscalYear: loan.amountPaidInFiscalYear,
-      interestComponent: loan.interestComponent,
-      principalComponent: loan.principalComponent,
-      remainingPrincipal: loan.remainingPrincipal,
-    }
-  }*/
 }
