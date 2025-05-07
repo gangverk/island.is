@@ -58,6 +58,7 @@ const TableRow = ({
         width={isMobile ? 'full' : undefined}
         flexGrow={isMobile ? undefined : 1}
         textAlign={isMobile ? 'left' : 'right'}
+        paddingRight={isMobile ? 0 : 2}
       >
         {typeof right === 'string' || typeof right === 'number' ? (
           <Box
