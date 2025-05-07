@@ -1,13 +1,12 @@
 import { Box, Text, Tooltip, Icon } from '@island.is/island-ui/core'
+import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import FormScreenLayout from '../../../../components/FormScreenLayout'
-import TableSection from '../../../../components/table/TableSection'
-import TableRow from '../../../../components/table/TableRow'
-import TableSumRow from '../../../../components/table/TableSumRow'
-import AddLineButton from '../../../../components/table/AddLineButton'
+import Table from '../../../../components/table/Table'
+import ClientOnly from '../../../../components/ClientOnly'
 import { stepKeys, stepLabels, goToStep } from '../../../../constants/formSteps'
 
-const incomeData = [
+const data = [
   {
     section: {
       title: 'Launatekjur og starfsgreindar greiðslur',
@@ -21,13 +20,15 @@ const incomeData = [
               <Box display="flex" alignItems="center">
                 <Text>Norðurljós Software ehf</Text>
                 <Box marginLeft={1}>
-                  <Tooltip text="Upplýsingar um launagreiðandann Norðurljós Software ehf">
-                    <Icon
-                      icon="informationCircle"
-                      color="dark200"
-                      size="small"
-                    />
-                  </Tooltip>
+                  <ClientOnly>
+                    <Tooltip text="Upplýsingar um launagreiðandann Norðurljós Software ehf">
+                      <Icon
+                        icon="informationCircle"
+                        color="dark200"
+                        size="small"
+                      />
+                    </Tooltip>
+                  </ClientOnly>
                 </Box>
               </Box>
               <Text color="dark400" variant="small">
@@ -44,9 +45,15 @@ const incomeData = [
             <Box display="flex" alignItems="center">
               <Text>Mús og merki ehf</Text>
               <Box marginLeft={1}>
-                <Tooltip text="Upplýsingar um launagreiðandann Mús og merki ehf">
-                  <Icon icon="informationCircle" color="dark200" size="small" />
-                </Tooltip>
+                <ClientOnly>
+                  <Tooltip text="Upplýsingar um launagreiðandann Mús og merki ehf">
+                    <Icon
+                      icon="informationCircle"
+                      color="dark200"
+                      size="small"
+                    />
+                  </Tooltip>
+                </ClientOnly>
               </Box>
             </Box>
             <Text color="dark400" variant="small">
@@ -70,9 +77,11 @@ const incomeData = [
           <Box display="flex" alignItems="center">
             <Text>Dagpeningar</Text>
             <Box marginLeft={1}>
-              <Tooltip text="Dagpeningar eru greiðslur sem launþegi fær vegna ferða eða dvalar utan heimilis.">
-                <Icon icon="informationCircle" color="dark200" size="small" />
-              </Tooltip>
+              <ClientOnly>
+                <Tooltip text="Dagpeningar eru greiðslur sem launþegi fær vegna ferða eða dvalar utan heimilis.">
+                  <Icon icon="informationCircle" color="dark200" size="small" />
+                </Tooltip>
+              </ClientOnly>
             </Box>
           </Box>
         ),
@@ -102,9 +111,11 @@ const incomeData = [
           <Box display="flex" alignItems="center">
             <Text>Íþróttastyrkur</Text>
             <Box marginLeft={1}>
-              <Tooltip text="Íþróttastyrkur er styrkur sem veittur er vegna þátttöku í íþróttum.">
-                <Icon icon="informationCircle" color="dark200" size="small" />
-              </Tooltip>
+              <ClientOnly>
+                <Tooltip text="Íþróttastyrkur er styrkur sem veittur er vegna þátttöku í íþróttum.">
+                  <Icon icon="informationCircle" color="dark200" size="small" />
+                </Tooltip>
+              </ClientOnly>
             </Box>
           </Box>
         ),
@@ -124,9 +135,11 @@ const incomeData = [
           <Box display="flex" alignItems="center">
             <Text>Starfsmenntastyrkur</Text>
             <Box marginLeft={1}>
-              <Tooltip text="Starfsmenntastyrkur er styrkur til starfsmenntunar eða endurmenntunar.">
-                <Icon icon="informationCircle" color="dark200" size="small" />
-              </Tooltip>
+              <ClientOnly>
+                <Tooltip text="Starfsmenntastyrkur er styrkur til starfsmenntunar eða endurmenntunar.">
+                  <Icon icon="informationCircle" color="dark200" size="small" />
+                </Tooltip>
+              </ClientOnly>
             </Box>
           </Box>
         ),
@@ -157,31 +170,7 @@ const IncomePage = () => {
       <Text as="h1" variant="h1" marginBottom={6}>
         Tekjur ársins 2024
       </Text>
-      {incomeData.map((section) => (
-        <Box key={section.section.sectionNumber} marginBottom={4}>
-          <TableSection
-            title={section.section.title}
-            sectionNumber={section.section.sectionNumber}
-          />
-          {section.rows.map((row, rIdx) => {
-            const shouldAlternate = section.rows.length > 2
-            const isStriped = shouldAlternate && rIdx % 2 === 0
-            return (
-              <TableRow
-                key={`${section.section.sectionNumber}-${rIdx}`}
-                left={row.left}
-                right={row.right}
-                background={isStriped ? 'purple100' : undefined}
-              />
-            )
-          })}
-          <TableSumRow
-            sumLabel="Samtals"
-            sumValue={section.sum}
-            left={<AddLineButton onClick={() => {}} />}
-          />
-        </Box>
-      ))}
+      <Table data={data} />
     </FormScreenLayout>
   )
 }

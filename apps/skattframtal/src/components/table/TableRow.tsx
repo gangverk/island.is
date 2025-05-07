@@ -7,9 +7,16 @@ interface TableRowProps {
   right: ReactNode
   children?: ReactNode
   background?: BoxProps['background']
+  className?: string
 }
 
-const TableRow = ({ left, right, children, background }: TableRowProps) => (
+const TableRow = ({
+  left,
+  right,
+  children,
+  background,
+  className,
+}: TableRowProps) => (
   <Box
     display="flex"
     alignItems="center"
@@ -20,6 +27,7 @@ const TableRow = ({ left, right, children, background }: TableRowProps) => (
     borderColor="blue100"
     borderStyle="solid"
     background={background}
+    className={className}
   >
     <Box>
       {typeof left === 'string' || typeof left === 'number' ? (
