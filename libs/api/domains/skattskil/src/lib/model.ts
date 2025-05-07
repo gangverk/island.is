@@ -167,7 +167,7 @@ export class TaxReturnResidentialLoan {
 }
 
 @InputType()
-export class TaxableIncomeInput {
+export class TaxReturnIncomeInput {
   @Field(() => TaxReturnIncomeCategory)
   category!: TaxReturnIncomeCategory;
 
