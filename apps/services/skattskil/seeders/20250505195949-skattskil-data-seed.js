@@ -8,7 +8,6 @@ module.exports = {
     const taxPayerId1 = uuidv4();
     
     const taxReturnId1 = uuidv4();
-    const taxReturnId2 = uuidv4();
     
     // Seed data for Tax Payer
     await queryInterface.bulkInsert('tax_payer', [
@@ -82,7 +81,7 @@ module.exports = {
       },
       {
         id: uuidv4(),
-        tax_return_id: taxReturnId2,
+        tax_return_id: taxReturnId1,
         asset_type: 'vehicle',
         asset_id: 'JU-329' // License plate from okutaekjaskra
       }
@@ -134,7 +133,7 @@ module.exports = {
         tax_return_id: taxReturnId1,
         asset_id: '210-9876',
         lender_id: 'Íslandsbanki hf',
-        issue_date: '2021',
+        issue_date: '2021-05-05',
         remaining_term_years: 30,
         interest_paid_in_fiscal_year: 92000000,
         principal_paid_in_fiscal_year: 136000000,
