@@ -1,4 +1,4 @@
-import { Box, Text } from '@island.is/island-ui/core'
+import { Box, Text, Tooltip, Icon } from '@island.is/island-ui/core'
 import { useRouter } from 'next/router'
 import FormScreenLayout from '../../../../components/FormScreenLayout'
 import TableSection from '../../../../components/table/TableSection'
@@ -17,18 +17,42 @@ const incomeData = [
       {
         left: (
           <>
-            <Text>Norðurljós Software ehf</Text>
-            <Text variant="small">123456-7890</Text>
+            <Box>
+              <Box display="flex" alignItems="center">
+                <Text>Norðurljós Software ehf</Text>
+                <Box marginLeft={1}>
+                  <Tooltip text="Upplýsingar um launagreiðandann Norðurljós Software ehf">
+                    <Icon
+                      icon="informationCircle"
+                      color="dark200"
+                      size="small"
+                    />
+                  </Tooltip>
+                </Box>
+              </Box>
+              <Text color="dark400" variant="small">
+                123456-7890
+              </Text>
+            </Box>
           </>
         ),
         right: '9.360.000',
       },
       {
         left: (
-          <>
-            <Text fontWeight="semiBold">Mús og merki ehf</Text>
-            <Text variant="small">123456-7890</Text>
-          </>
+          <Box>
+            <Box display="flex" alignItems="center">
+              <Text>Mús og merki ehf</Text>
+              <Box marginLeft={1}>
+                <Tooltip text="Upplýsingar um launagreiðandann Mús og merki ehf">
+                  <Icon icon="informationCircle" color="dark200" size="small" />
+                </Tooltip>
+              </Box>
+            </Box>
+            <Text color="dark400" variant="small">
+              123456-7890
+            </Text>
+          </Box>
         ),
         right: '900.000',
       },
@@ -42,7 +66,16 @@ const incomeData = [
     },
     rows: [
       {
-        left: <Text>Dagpeningar</Text>,
+        left: (
+          <Box display="flex" alignItems="center">
+            <Text>Dagpeningar</Text>
+            <Box marginLeft={1}>
+              <Tooltip text="Dagpeningar eru greiðslur sem launþegi fær vegna ferða eða dvalar utan heimilis.">
+                <Icon icon="informationCircle" color="dark200" size="small" />
+              </Tooltip>
+            </Box>
+          </Box>
+        ),
         right: '120.000',
       },
     ],
@@ -65,7 +98,16 @@ const incomeData = [
         right: null,
       },
       {
-        left: <Text>Íþróttastyrkur</Text>,
+        left: (
+          <Box display="flex" alignItems="center">
+            <Text>Íþróttastyrkur</Text>
+            <Box marginLeft={1}>
+              <Tooltip text="Íþróttastyrkur er styrkur sem veittur er vegna þátttöku í íþróttum.">
+                <Icon icon="informationCircle" color="dark200" size="small" />
+              </Tooltip>
+            </Box>
+          </Box>
+        ),
         right: '75.000',
       },
       {
@@ -78,7 +120,16 @@ const incomeData = [
         right: null,
       },
       {
-        left: <Text>Starfsmenntastyrkur</Text>,
+        left: (
+          <Box display="flex" alignItems="center">
+            <Text>Starfsmenntastyrkur</Text>
+            <Box marginLeft={1}>
+              <Tooltip text="Starfsmenntastyrkur er styrkur til starfsmenntunar eða endurmenntunar.">
+                <Icon icon="informationCircle" color="dark200" size="small" />
+              </Tooltip>
+            </Box>
+          </Box>
+        ),
         right: '130.000',
       },
     ],
