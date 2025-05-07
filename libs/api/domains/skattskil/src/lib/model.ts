@@ -8,8 +8,8 @@ import {
 
 @ObjectType()
 export class Money {
-  @Field(() => String)
-  amount!: string;
+  @Field(() => Number)
+  amount!: number;
 }
 
 // Enums
@@ -167,6 +167,12 @@ export class TaxReturnResidentialLoan {
 }
 
 @InputType()
+export class MoneyInput {
+  @Field(() => Number)
+  amount!: number;
+}
+
+@InputType()
 export class TaxReturnIncomeInput {
   @Field(() => TaxReturnIncomeCategory)
   category!: TaxReturnIncomeCategory;
@@ -174,8 +180,8 @@ export class TaxReturnIncomeInput {
   @Field()
   description!: string;
 
-  @Field(() => String)
-  amount!: string;
+  @Field(() => MoneyInput)
+  amount!: MoneyInput;
 
   @Field()
   payer!: string;

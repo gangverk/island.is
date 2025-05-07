@@ -28,6 +28,24 @@ export class SkattskilClientService {
     })
   }
 
+  getTaxPayerByKennitala(kennitala: string) {
+    return this.skattskilApi.skattskilControllerGetTaxPayerByKennitala({
+      kennitala,
+    })
+  }
+
+  getIncomeByTaxReturnId(taxReturnId: string) {
+    return this.skattskilApi.skattskilControllerGetIncomeByTaxReturnId({
+      taxReturnId,
+    })
+  }
+
+  getTaxReturnById(id: string) {
+    return this.skattskilApi.skattskilControllerGetTaxReturnById({
+      id,
+    })
+  }
+
   //getShippedRegulations(auth: Auth) {
   //  return this.draftRegulationsApiWithAuth(
   //    auth,
