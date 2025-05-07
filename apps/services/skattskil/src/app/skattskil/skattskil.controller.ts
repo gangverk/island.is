@@ -381,10 +381,6 @@ export class SkattskilController {
     response: { status: 200, type: IncomeDTO },
     request: {
       params: {
-        taxReturnId: {
-          type: 'string',
-          description: 'ID of the tax return containing the grant income',
-        },
         id: {
           type: 'string',
           description: 'ID of the grant income record to update',
