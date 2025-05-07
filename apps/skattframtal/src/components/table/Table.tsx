@@ -9,6 +9,7 @@ import { Box } from '@island.is/island-ui/core'
 export interface TableRowData {
   left: React.ReactNode
   right: React.ReactNode
+  middle?: React.ReactNode
 }
 
 export interface TableSectionData {
@@ -74,6 +75,7 @@ const Table = ({ data, onChange }: TableProps) => {
               >
                 <TableRow
                   left={row.left}
+                  middle={row.middle}
                   right={row.right}
                   background={isStriped ? 'purple100' : undefined}
                 />

@@ -4,6 +4,7 @@ import type { BoxProps } from '@island.is/island-ui/core'
 
 interface TableRowProps {
   left: ReactNode
+  middle?: ReactNode
   right: ReactNode
   children?: ReactNode
   background?: BoxProps['background']
@@ -12,6 +13,7 @@ interface TableRowProps {
 
 const TableRow = ({
   left,
+  middle,
   right,
   children,
   background,
@@ -22,9 +24,9 @@ const TableRow = ({
   return (
     <Box
       display="flex"
-      flexDirection={['column', 'row']}
-      alignItems={['flexStart', 'center']}
-      justifyContent="spaceBetween"
+      flexDirection={isMobile ? 'column' : 'row'}
+      alignItems={isMobile ? 'flexStart' : 'center'}
+      justifyContent="flexStart"
       paddingY={2}
       paddingLeft={2}
       borderBottomWidth="standard"
@@ -33,11 +35,38 @@ const TableRow = ({
       background={background}
       className={className}
       width="full"
+      columnGap={isMobile ? undefined : 3}
+      rowGap={isMobile ? 1 : undefined}
     >
-      <Box width="full">{left}</Box>
-      <Box width={isMobile ? 'full' : undefined} marginTop={[2, 0]}>
+      <Box
+        width={isMobile ? 'full' : undefined}
+        flexGrow={isMobile ? undefined : 1}
+        textAlign="left"
+      >
+        {left}
+      </Box>
+      {middle && (
+        <Box
+          width={isMobile ? 'full' : undefined}
+          flexGrow={isMobile ? undefined : 1}
+          textAlign="left"
+        >
+          {middle}
+        </Box>
+      )}
+      <Box
+        width={isMobile ? 'full' : undefined}
+        flexGrow={isMobile ? undefined : 1}
+        textAlign={isMobile ? 'left' : 'right'}
+      >
         {typeof right === 'string' || typeof right === 'number' ? (
-          <Box width="full">
+          <Box
+            width={isMobile ? 'full' : undefined}
+            style={{
+              maxWidth: isMobile ? '100%' : 180,
+              marginLeft: isMobile ? 0 : 'auto',
+            }}
+          >
             <Input
               name={`table-row-${left}`}
               id={`table-row-${left}`}
