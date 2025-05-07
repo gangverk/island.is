@@ -8,7 +8,6 @@ import { IntlProvider } from 'react-intl'
 import { ApolloProvider } from '@apollo/client'
 import { client } from '@island.is/application/graphql'
 import { FormProvider } from '../components/Form'
-import Header from '../components/Header/Header'
 
 globalStyles()
 
@@ -18,14 +17,14 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
       <IntlProvider locale="is">
         <ApolloProvider client={client}>
           <FormProvider>
-      <Head>
-        <title>Welcome to skattframtal!</title>
-      </Head>
-      <Header />
-      <main className="app">
-        <Component {...pageProps} />
-      </main>
-      <Footer />
+            <Head>
+              <title>Welcome to skattframtal!</title>
+            </Head>
+            <Header />
+            <main className="app">
+              <Component {...pageProps} />
+            </main>
+            <Footer />
           </FormProvider>
         </ApolloProvider>
       </IntlProvider>
