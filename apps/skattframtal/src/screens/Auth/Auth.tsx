@@ -8,7 +8,6 @@ import {
   Logo,
 } from '@island.is/island-ui/core'
 import { useRouter } from 'next/router'
-import NextLink from 'next/link'
 import DividerWithText from '../../components/DividerWithText/DividerWithText'
 import { iconContainer, formContainer } from './Auth.css'
 const Auth = () => {
@@ -18,7 +17,7 @@ const Auth = () => {
 
   const handleAuthenticate = () => {
     // Handle authentication logic here
-    router.push('/dashboard')
+    router.push('/skattframtol/application')
   }
 
   const handlePhoneNumberChange = (value: string) => {
@@ -90,16 +89,15 @@ const Auth = () => {
               </Box>
 
               <Box marginBottom={4}>
-                <NextLink href="/skattframtol/application">
-                  <Button
-                    disabled={phoneNumber.length !== 8}
-                    variant="primary"
-                    fluid
-                    onClick={handleAuthenticate}
-                  >
-                    Auðkenna
-                  </Button>
-                </NextLink>
+                <Button
+                  disabled={phoneNumber.length !== 8}
+                  variant="primary"
+                  fluid
+                  onClick={handleAuthenticate}
+                  type="submit"
+                >
+                  Auðkenna
+                </Button>
               </Box>
 
               <Box marginY={2}>
