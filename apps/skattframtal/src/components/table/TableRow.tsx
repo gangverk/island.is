@@ -1,4 +1,4 @@
-import { Box, Text } from '@island.is/island-ui/core'
+import { Box, Text, Input } from '@island.is/island-ui/core'
 import type { ReactNode } from 'react'
 
 interface TableRowProps {
@@ -27,11 +27,16 @@ const TableRow = ({ left, right, children }: TableRowProps) => (
         left
       )}
     </Box>
-    <Box>
+    <Box style={{ width: 180 }}>
       {typeof right === 'string' || typeof right === 'number' ? (
-        <Text variant="default" color="dark400">
-          {right}
-        </Text>
+        <Input
+          name={`table-row-${left}`}
+          id={`table-row-${left}`}
+          value={right}
+          rightAlign
+          size="sm"
+          backgroundColor="blue"
+        />
       ) : (
         right
       )}

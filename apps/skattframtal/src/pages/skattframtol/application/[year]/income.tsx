@@ -23,7 +23,7 @@ const incomeData = [
             </Text>
           </Box>
         ),
-        right: <Text>9.360.000</Text>,
+        right: '9.360.000',
       },
       {
         left: (
@@ -34,7 +34,7 @@ const incomeData = [
             </Text>
           </Box>
         ),
-        right: <Text>900.000</Text>,
+        right: '900.000',
       },
     ],
     sum: '10.260.000',
@@ -47,7 +47,7 @@ const incomeData = [
     rows: [
       {
         left: <Text fontWeight="semiBold">Dagpeningar</Text>,
-        right: <Text>120.000</Text>,
+        right: '120.000',
       },
     ],
     sum: '120.000',
@@ -72,7 +72,7 @@ const incomeData = [
       },
       {
         left: <Text fontWeight="semiBold">Íþróttastyrkur</Text>,
-        right: <Text>75.000</Text>,
+        right: '75.000',
       },
       {
         left: (
@@ -87,7 +87,7 @@ const incomeData = [
       },
       {
         left: <Text fontWeight="semiBold">Starfsmenntastyrkur</Text>,
-        right: <Text>130.000</Text>,
+        right: '130.000',
       },
     ],
     sum: '205.000',
