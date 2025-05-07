@@ -178,7 +178,7 @@ const tableData = [
           },
           {
             content: (
-              <Box>
+              <Box marginTop={[2, 0]}>
                 <Input
                   name="eftirstodvar-1"
                   value="28.540.000"
