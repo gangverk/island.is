@@ -32,75 +32,67 @@ export class SkattskilService {
   }
 
   async getTaxPayerByKennitala(kennitala: string): Promise<TaxPayer> {
-    const taxPayer = await this.skattskilClientService.getTaxPayerByKennitala(kennitala)
-    return {
-      taxPayerID: taxPayer.id,
-      kennitala: taxPayer.personId,
-      emailAddress: taxPayer.email,
-      phoneNumber: taxPayer.phone,
-      name: "Addi", // FIXME
-      taxReturns: [],
-    }
+    return await this.skattskilClientService.getTaxPayerByKennitala(kennitala).then((taxPayer) => {
+      return {
+        taxPayerID: taxPayer.id,
+        kennitala: taxPayer.personId,
+        emailAddress: taxPayer.emailAddress,
+        phoneNumber: taxPayer.phoneNumber,
+        name: taxPayer.name,
+        taxReturns: [],
+      }
+    })
   }
 
   async getTaxReturnsByTaxPayerId(taxPayerId: string): Promise<TaxReturn[]> {
-    // Implement your logic to fetch tax returns by tax payer ID
-    return [
-      {
-        taxReturnID: uuid(),
-        fiscalYear: '2025',
+    return await this.skattskilClientService.getTaxReturnsByTaxPayerId(taxPayerId).then((taxReturns) => {
+      return taxReturns.map((taxReturn) => ({
+        taxReturnID: taxReturn.id,
+        fiscalYear: String(taxReturn.fiscalYear),
         income: [],
         realEstateAssets: [],
         vehicleAssets: [],
         residentialLoans: [],
         liabilities: [],
-      },
-      {
-        taxReturnID: uuid(),
-        fiscalYear: '2024',
-        income: [],
-        realEstateAssets: [],
-        vehicleAssets: [],
-        residentialLoans: [],
-        liabilities: [],
-      },
-    ]
+      }))
+    })
   }
 
   async getTaxReturnById(taxReturnId: string): Promise<TaxReturn> {
-    const taxReturn = await this.skattskilClientService.getTaxReturnById(taxReturnId)
-    // Implement your logic to fetch tax return by ID
-    return {
-      taxReturnID: taxReturn.id,
-      fiscalYear: String(taxReturn.fiscalYear),
-      income: [],
-      realEstateAssets: [],
-      vehicleAssets: [],
-      residentialLoans: [],
-      liabilities: [],
-    }
+    return await this.skattskilClientService.getTaxReturnById(taxReturnId).then((taxReturn) => {
+      return {
+        taxReturnID: taxReturn.id,
+        fiscalYear: String(taxReturn.fiscalYear),
+        income: [],
+        realEstateAssets: [],
+        vehicleAssets: [],
+        residentialLoans: [],
+        liabilities: [],
+      }
+    })
   }
 
   async getIncome(taxReturnId: string): Promise<TaxReturnIncome[]> {
-    const incomeLines = await this.skattskilClientService.getIncomeByTaxReturnId(taxReturnId)
-    return incomeLines.map((income) => ({
-      incomeID: income.id,
-      category: ((cat: string): TaxReturnIncomeCategory => {
-        switch (cat) {
-          case 'salary':
-            return TaxReturnIncomeCategory.SALARY
-          case 'investment':
-            return TaxReturnIncomeCategory.GRANT
-          case 'per_diem':
-            return TaxReturnIncomeCategory.PER_DIEM
-          default:
-            throw new Error(`Unknown income category: ${cat}`)
-        }
-      })(income.category),
-      amount: { amount: income.amount },
-      description: income.description || '',
-      payer: income.payer,
-    }))
+    return await this.skattskilClientService.getIncomeByTaxReturnId(taxReturnId).then((incomeLines) => {
+      return incomeLines.map((income) => ({
+        incomeID: income.id,
+        category: ((cat: string): TaxReturnIncomeCategory => {
+          switch (cat) {
+            case 'salary':
+              return TaxReturnIncomeCategory.SALARY
+            case 'investment':
+              return TaxReturnIncomeCategory.GRANT
+            case 'per_diem':
+              return TaxReturnIncomeCategory.PER_DIEM
+            default:
+              throw new Error(`Unknown income category: ${cat}`)
+          }
+        })(income.category),
+        amount: { amount: income.amount },
+        description: income.description || '',
+        payer: income.payer,
+      }))
+    })
   }
 
   async getRealEstateAssets(taxReturnId: string): Promise<TaxReturnIcelandicRealEstate[]> {
@@ -156,21 +148,67 @@ export class SkattskilService {
     ]
   }
 
-  async addTaxReturnIncome(taxReturnId: string, input: TaxReturnIncomeInput): Promise<TaxReturnIncome> {
-    // Implement your logic to add taxable income
+  async addTaxReturnSalaryIncome(taxReturnId: string, input: TaxReturnIncomeInput): Promise<TaxReturnIncome> {
+    const income = await this.skattskilClientService.addTaxReturnSalaryIncome(taxReturnId, input.description, input.amount.amount, input.payer)
     return {
-      ...input,
-      amount: input.amount,
-      incomeID: uuid(),
+      incomeID: income.id,
+      category: TaxReturnIncomeCategory.SALARY,
+      description: income.description || '',
+      amount: { amount: income.amount },
+      payer: income.payer,
+    }
+  }
+
+  async addTaxReturnGrantIncome(taxReturnId: string, input: TaxReturnIncomeInput): Promise<TaxReturnIncome> {
+    const income = await this.skattskilClientService.addTaxReturnGrantIncome(taxReturnId, input.description, input.amount.amount, input.payer)
+    return {
+      incomeID: income.id,
+      category: TaxReturnIncomeCategory.GRANT,
+      description: income.description || '',
+      amount: { amount: income.amount },
+      payer: income.payer,
+    }
+  }
+
+  async addTaxReturnPerDiemIncome(taxReturnId: string, input: TaxReturnIncomeInput): Promise<TaxReturnIncome> {
+    const income = await this.skattskilClientService.addTaxReturnPerDiemIncome(taxReturnId, input.description, input.amount.amount, input.payer)
+    return {
+      incomeID: income.id,
+      category: TaxReturnIncomeCategory.PER_DIEM,
+      description: income.description || '',
+      amount: { amount: income.amount },
+      payer: income.payer,
     }
   }
 
   async updateTaxReturnIncome(incomeId: string, input: TaxReturnIncomeInput): Promise<TaxReturnIncome> {
-    // Implement your logic to update taxable income
-    return {
-      ...input,
-      amount: input.amount,
-      incomeID: incomeId,
+    switch (input.category) {
+      case TaxReturnIncomeCategory.SALARY:
+        return await this.skattskilClientService.updateTaxReturnSalaryIncome(incomeId, input.description, input.amount.amount, input.payer).then((income) => ({
+          incomeID: income.id,
+          category: TaxReturnIncomeCategory.SALARY,
+          description: income.description || '',
+          amount: { amount: income.amount },
+          payer: income.payer,
+        }))
+      case TaxReturnIncomeCategory.GRANT:
+        return await this.skattskilClientService.updateTaxReturnGrantIncome(incomeId, input.description, input.amount.amount, input.payer).then((income) => ({
+          incomeID: income.id,
+          category: TaxReturnIncomeCategory.GRANT,
+          description: income.description || '',
+          amount: { amount: income.amount },
+          payer: income.payer,
+        }))
+      case TaxReturnIncomeCategory.PER_DIEM:
+        return await this.skattskilClientService.updateTaxReturnPerDiemIncome(incomeId, input.description, input.amount.amount, input.payer).then((income) => ({
+          incomeID: income.id,
+          category: TaxReturnIncomeCategory.PER_DIEM,
+          description: income.description || '',
+          amount: { amount: income.amount },
+          payer: income.payer,
+        }))
+      default:
+        throw new Error('Invalid income category')
     }
   }
 

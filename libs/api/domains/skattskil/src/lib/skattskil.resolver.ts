@@ -3,7 +3,7 @@ import { SkattskilService } from './skattskil.service'
 import {
   TaxPayer, TaxReturn, TaxReturnGenericLiability,
   TaxReturnResidentialLoan, TaxReturnIcelandicRealEstate, TaxReturnIncome, TaxReturnVehicle,
-  TaxReturnIncomeInput,
+  TaxReturnIncomeInput, TaxReturnIncomeCategory,
 } from './model'
 
 @Resolver()
@@ -80,7 +80,16 @@ export class TaxReturnIncomeResolver {
     @Args('taxReturnId') taxReturnId: string,
     @Args('input') input: TaxReturnIncomeInput,
   ): Promise<TaxReturnIncome> {
-    return this.skattskilService.addTaxReturnIncome(taxReturnId, input)
+    switch (input.category) {
+      case TaxReturnIncomeCategory.SALARY:
+        return await this.skattskilService.addTaxReturnSalaryIncome(taxReturnId, input)
+      case TaxReturnIncomeCategory.GRANT:
+        return await this.skattskilService.addTaxReturnGrantIncome(taxReturnId, input)
+      case TaxReturnIncomeCategory.PER_DIEM:
+        return await this.skattskilService.addTaxReturnPerDiemIncome(taxReturnId, input)
+      default:
+        throw new Error('Invalid income category')
+    }
   }
 
   @Mutation(() => TaxReturnIncome)
