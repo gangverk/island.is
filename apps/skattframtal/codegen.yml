@@ -1,11 +1,14 @@
 schema:
   - apps/api/src/api.graphql
-documents: apps/skattframtal/src/graphql/queries.ts
+documents:
+  - apps/skattframtal/src/graphql/queries.ts
+  - apps/skattframtal/src/graphql/mutations.ts
 generates:
   apps/skattframtal/src/graphql/schema.ts:
     plugins:
       - typescript
       - typescript-operations
+      - typescript-react-apollo
     config:
       exportFragmentSpreadSubTypes: true
       scalars:
