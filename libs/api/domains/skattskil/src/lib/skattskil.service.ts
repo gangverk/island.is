@@ -43,7 +43,16 @@ export class SkattskilService {
     return [
       {
         taxReturnID: uuid(),
-        fiscalYear: '2023',
+        fiscalYear: '2025',
+        income: [],
+        realEstateAssets: [],
+        vehicleAssets: [],
+        residentialLoans: [],
+        liabilities: [],
+      },
+      {
+        taxReturnID: uuid(),
+        fiscalYear: '2024',
         income: [],
         realEstateAssets: [],
         vehicleAssets: [],
