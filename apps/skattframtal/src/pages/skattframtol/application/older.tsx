@@ -31,7 +31,7 @@ export default function ApplicationsOlder() {
     QUERIES.GET_ALL_TAX_RETURNS_BY_KENNITALA,
     {
       variables: {
-        kennitala: '1234567890',
+        kennitala: '1203894569',
       },
     },
   )
