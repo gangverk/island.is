@@ -1,0 +1,141 @@
+import { Box, Text } from '@island.is/island-ui/core'
+import { useRouter } from 'next/router'
+import FormScreenLayout from '../../../../components/FormScreenLayout'
+import TableSection from '../../../../components/table/TableSection'
+import TableRow from '../../../../components/table/TableRow'
+import TableSumRow from '../../../../components/table/TableSumRow'
+import AddLineButton from '../../../../components/table/AddLineButton'
+import { stepKeys, stepLabels, goToStep } from '../../../../constants/formSteps'
+
+const incomeData = [
+  {
+    section: {
+      title: 'Launatekjur og starfsgreindar greiðslur',
+      sectionNumber: '2.1',
+    },
+    rows: [
+      {
+        left: (
+          <Box>
+            <Text fontWeight="semiBold">Norðurljós Software ehf</Text>
+            <Text color="dark400" variant="small">
+              123456-7890
+            </Text>
+          </Box>
+        ),
+        right: <Text>9.360.000</Text>,
+      },
+      {
+        left: (
+          <Box>
+            <Text fontWeight="semiBold">Mús og merki ehf</Text>
+            <Text color="dark400" variant="small">
+              123456-7890
+            </Text>
+          </Box>
+        ),
+        right: <Text>900.000</Text>,
+      },
+    ],
+    sum: '10.260.000',
+  },
+  {
+    section: {
+      title: 'Ökutækjastyrkur',
+      sectionNumber: '2.2',
+    },
+    rows: [
+      {
+        left: <Text fontWeight="semiBold">Dagpeningar</Text>,
+        right: <Text>120.000</Text>,
+      },
+    ],
+    sum: '120.000',
+  },
+  {
+    section: {
+      title:
+        'Lífeyrisgreiðslur. Greiðslur frá Tryggingastofnun. Aðrar bótagreiðslur, styrkir o.fl.',
+      sectionNumber: '2.3',
+    },
+    rows: [
+      {
+        left: (
+          <Box background="blue100" padding={2} borderRadius="large">
+            <Text fontWeight="semiBold">Norðurljós Software ehf</Text>
+            <Text color="dark400" variant="small">
+              123456-7890
+            </Text>
+          </Box>
+        ),
+        right: null,
+      },
+      {
+        left: <Text fontWeight="semiBold">Íþróttastyrkur</Text>,
+        right: <Text>75.000</Text>,
+      },
+      {
+        left: (
+          <Box>
+            <Text fontWeight="semiBold">VR</Text>
+            <Text color="dark400" variant="small">
+              123456-7890
+            </Text>
+          </Box>
+        ),
+        right: null,
+      },
+      {
+        left: <Text fontWeight="semiBold">Starfsmenntastyrkur</Text>,
+        right: <Text>130.000</Text>,
+      },
+    ],
+    sum: '205.000',
+  },
+]
+
+const IncomePage = () => {
+  const router = useRouter()
+  const { year } = router.query
+  const currentStep = stepKeys.indexOf('income')
+  const stepLabelList = stepKeys.map((key) => stepLabels[key])
+
+  return (
+    <FormScreenLayout
+      currentStep={currentStep}
+      stepLabels={stepLabelList}
+      onBack={() => {
+        goToStep(router, String(year), currentStep - 1, stepKeys)
+      }}
+      onNext={() => {
+        goToStep(router, String(year), currentStep + 1, stepKeys)
+      }}
+    >
+      <Text as="h1" variant="h1" marginBottom={6}>
+        Tekjur ársins 2024
+      </Text>
+      {incomeData.map((section) => (
+        <Box key={section.section.sectionNumber} marginBottom={4}>
+          <TableSection
+            title={section.section.title}
+            sectionNumber={section.section.sectionNumber}
+          />
+          {section.rows.map((row, rIdx) => (
+            <TableRow
+              key={`${section.section.sectionNumber}-${rIdx}`}
+              left={row.left}
+              right={row.right}
+            />
+          ))}
+          <TableSumRow
+            sumLabel="Samtals"
+            sumValue={section.sum}
+            left={<AddLineButton onClick={() => {}} />}
+          />
+        </Box>
+      ))}
+    </FormScreenLayout>
+  )
+}
+
+export default IncomePage
