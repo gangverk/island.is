@@ -77,7 +77,7 @@ export class SkattskilController {
   @Get('/taxpayers/:taxPayerId/tax-returns')
   @Documentation({
     description: 'Retrieve tax returns for a taxpayer',
-    response: { status: 200, type: TaxReturnDTO },
+    response: { status: 200, type: [TaxReturnDTO] },
     request: {
       params: {
         taxPayerId: {
