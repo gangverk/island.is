@@ -1,17 +1,28 @@
 import { TypedDocumentNode } from '@apollo/client'
 import { gql } from '@apollo/client'
-import { QueryTaxPayerByKennitalaArgs, TaxPayer } from '@island.is/api/schema'
-
-interface TaxPayerQueryResponse {
-  taxPayerByKennitala: TaxPayer
-}
+import {
+  GetAllTaxReturnsByKennitalaQuery,
+  GetAllTaxReturnsByKennitalaQueryVariables,
+  GetTaxPayerByKennitalaQuery,
+  GetTaxPayerByKennitalaQueryVariables,
+  GetTaxPayerIncomeByKennitalaQuery,
+  GetTaxPayerIncomeByKennitalaQueryVariables,
+  GetTaxPayerLiabilitiesByKennitalaQuery,
+  GetTaxPayerLiabilitiesByKennitalaQueryVariables,
+  GetTaxPayerRealEstateAssetsByKennitalaQuery,
+  GetTaxPayerRealEstateAssetsByKennitalaQueryVariables,
+  GetTaxPayerResidentialLoansByKennitalaQuery,
+  GetTaxPayerResidentialLoansByKennitalaQueryVariables,
+  GetTaxPayerVehicleAssetsByKennitalaQuery,
+  GetTaxPayerVehicleAssetsByKennitalaQueryVariables,
+} from './schema'
 
 // Using TypedDocumentNode to provide type safety for the query
 const GET_ALL_TAX_RETURNS_BY_KENNITALA: TypedDocumentNode<
-  TaxPayerQueryResponse,
-  QueryTaxPayerByKennitalaArgs
+  GetAllTaxReturnsByKennitalaQuery,
+  GetAllTaxReturnsByKennitalaQueryVariables
 > = gql`
-  query GetTaxPayerData($kennitala: String!) {
+  query GetAllTaxReturnsByKennitala($kennitala: String!) {
     taxPayerByKennitala(kennitala: $kennitala) {
       taxPayerID
       taxReturns {
@@ -23,10 +34,10 @@ const GET_ALL_TAX_RETURNS_BY_KENNITALA: TypedDocumentNode<
 `
 
 export const GET_TAX_PAYER_BY_KENNITALA: TypedDocumentNode<
-  TaxPayerQueryResponse,
-  QueryTaxPayerByKennitalaArgs
+  GetTaxPayerByKennitalaQuery,
+  GetTaxPayerByKennitalaQueryVariables
 > = gql`
-  query GetTaxPayerData($kennitala: String!) {
+  query GetTaxPayerByKennitala($kennitala: String!) {
     taxPayerByKennitala(kennitala: $kennitala) {
       taxPayerID
       kennitala
@@ -39,11 +50,11 @@ export const GET_TAX_PAYER_BY_KENNITALA: TypedDocumentNode<
 `
 
 export const GET_TAX_PAYER_INCOME_BY_TAX_RETURN_ID: TypedDocumentNode<
-  TaxPayerQueryResponse,
-  QueryTaxPayerByKennitalaArgs
+  GetTaxPayerIncomeByKennitalaQuery,
+  GetTaxPayerIncomeByKennitalaQueryVariables
 > = gql`
-  query GetTaxPayerIncomeByTaxReturnID($taxReturnID: String!) {
-    taxPayerByKennitala(taxReturnID: $taxReturnID) {
+  query GetTaxPayerIncomeByKennitala($kennitala: String!) {
+    taxPayerByKennitala(kennitala: $kennitala) {
       taxPayerID
       taxReturns {
         taxReturnID
@@ -62,11 +73,11 @@ export const GET_TAX_PAYER_INCOME_BY_TAX_RETURN_ID: TypedDocumentNode<
 `
 
 export const GET_TAX_PAYER_REAL_ESTATE_ASSETS_BY_TAX_RETURN_ID: TypedDocumentNode<
-  TaxPayerQueryResponse,
-  QueryTaxPayerByKennitalaArgs
+  GetTaxPayerRealEstateAssetsByKennitalaQuery,
+  GetTaxPayerRealEstateAssetsByKennitalaQueryVariables
 > = gql`
-  query GetTaxPayerRealEstateAssetsByTaxReturnID($taxReturnID: String!) {
-    taxPayerByKennitala(taxReturnID: $taxReturnID) {
+  query GetTaxPayerRealEstateAssetsByKennitala($kennitala: String!) {
+    taxPayerByKennitala(kennitala: $kennitala) {
       taxPayerID
       taxReturns {
         taxReturnID
@@ -83,11 +94,11 @@ export const GET_TAX_PAYER_REAL_ESTATE_ASSETS_BY_TAX_RETURN_ID: TypedDocumentNod
 `
 
 export const GET_TAX_PAYER_VEHICLE_ASSETS_BY_TAX_RETURN_ID: TypedDocumentNode<
-  TaxPayerQueryResponse,
-  QueryTaxPayerByKennitalaArgs
+  GetTaxPayerVehicleAssetsByKennitalaQuery,
+  GetTaxPayerVehicleAssetsByKennitalaQueryVariables
 > = gql`
-  query GetTaxPayerVehicleAssetsByTaxReturnID($taxReturnID: String!) {
-    taxPayerByKennitala(taxReturnID: $taxReturnID) {
+  query GetTaxPayerVehicleAssetsByKennitala($kennitala: String!) {
+    taxPayerByKennitala(kennitala: $kennitala) {
       taxPayerID
       taxReturns {
         taxReturnID
@@ -105,11 +116,11 @@ export const GET_TAX_PAYER_VEHICLE_ASSETS_BY_TAX_RETURN_ID: TypedDocumentNode<
 `
 
 export const GET_TAX_PAYER_RESIDENTIAL_LOANS_BY_TAX_RETURN_ID: TypedDocumentNode<
-  TaxPayerQueryResponse,
-  QueryTaxPayerByKennitalaArgs
+  GetTaxPayerResidentialLoansByKennitalaQuery,
+  GetTaxPayerResidentialLoansByKennitalaQueryVariables
 > = gql`
-  query GetTaxPayerResidentialLoansByTaxReturnID($taxReturnID: String!) {
-    taxPayerByKennitala(taxReturnID: $taxReturnID) {
+  query GetTaxPayerResidentialLoansByKennitala($kennitala: String!) {
+    taxPayerByKennitala(kennitala: $kennitala) {
       taxPayerID
       taxReturns {
         taxReturnID
@@ -135,11 +146,11 @@ export const GET_TAX_PAYER_RESIDENTIAL_LOANS_BY_TAX_RETURN_ID: TypedDocumentNode
 `
 
 export const GET_TAX_PAYER_LIABILITIES_BY_TAX_RETURN_ID: TypedDocumentNode<
-  TaxPayerQueryResponse,
-  QueryTaxPayerByKennitalaArgs
+  GetTaxPayerLiabilitiesByKennitalaQuery,
+  GetTaxPayerLiabilitiesByKennitalaQueryVariables
 > = gql`
-  query GetTaxPayerLiabilitiesByTaxReturnID($taxReturnID: String!) {
-    taxPayerByKennitala(taxReturnID: $taxReturnID) {
+  query GetTaxPayerLiabilitiesByKennitala($kennitala: String!) {
+    taxPayerByKennitala(kennitala: $kennitala) {
       taxPayerID
       taxReturns {
         taxReturnID
