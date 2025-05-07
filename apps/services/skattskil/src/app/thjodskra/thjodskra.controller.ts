@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common'
+import { Controller, Get, Param, NotFoundException, InternalServerErrorException } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { Documentation } from '@island.is/nest/swagger'
 
@@ -12,30 +12,88 @@ import { GetPersonDTO, GetPropertyDTO, GetVehicleDTO } from './dto/thjodskra.dto
 })
 export class ThjodskraController {
   constructor(private readonly thjodskraServive: ThjodskraService) {}
+
   @Get('/person/:id')
   @Documentation({
     description: 'Retrieves person information by ID.',
-    response: { status: 200, type: GetPersonDTO},
+    response: { status: 200, type: GetPersonDTO },
+    request: {
+      params: {
+        id: {
+          type: 'string',
+          description: 'ID of the person to retrieve',
+        },
+      }
+    },
   })
-  getPerson(@Param('id') id: string): Promise<GetPersonDTO | null> {
-    return this.thjodskraServive.getPersonById(id)
+  async getPerson(@Param('id') id: string): Promise<GetPersonDTO> {
+    try {
+      const person = await this.thjodskraServive.getPersonById(id)
+      if (!person) {
+        throw new NotFoundException(`Person with ID ${id} not found`)
+      }
+      return person
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error
+      }
+      throw new InternalServerErrorException('An unexpected error occurred')
+    }
   }
 
   @Get('/property/:id')
   @Documentation({
     description: 'Retrieves property information by ID.',
     response: { status: 200, type: GetPropertyDTO },
+    request: {
+      params: {
+        id: {
+          type: 'string',
+          description: 'ID of the property to retrieve',
+        },
+      }
+    },
   })
-  getProperty(@Param('id') id: string): Promise<GetPropertyDTO | null> {
-    return this.thjodskraServive.getPropertyById(id)
+  async getProperty(@Param('id') id: string): Promise<GetPropertyDTO> {
+    try {
+      const property = await this.thjodskraServive.getPropertyById(id)
+      if (!property) {
+        throw new NotFoundException(`Property with ID ${id} not found`)
+      }
+      return property
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error
+      }
+      throw new InternalServerErrorException('An unexpected error occurred')
+    }
   }
 
   @Get('/vehicle/:id')
   @Documentation({
     description: 'Retrieves vehicle information by ID.',
     response: { status: 200, type: GetVehicleDTO },
+    request: {
+      params: {
+        id: {
+          type: 'string',
+          description: 'ID of the vehicle to retrieve',
+        },
+      }
+    },
   })
-  getVehicle(@Param('id') id: string): Promise<GetVehicleDTO | null> {
-    return this.thjodskraServive.getVehicleById(id)
+  async getVehicle(@Param('id') id: string): Promise<GetVehicleDTO> {
+    try {
+      const vehicle = await this.thjodskraServive.getVehicleById(id)
+      if (!vehicle) {
+        throw new NotFoundException(`Vehicle with ID ${id} not found`)
+      }
+      return vehicle
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error
+      }
+      throw new InternalServerErrorException('An unexpected error occurred')
+    }
   }
 }

@@ -39,6 +39,20 @@ export class SkattskilService {
     }
   }
 
+  // Get TaxPayer by kennitala
+  async getTaxPayerByKennitala(kennitala: string): Promise<TaxPayerDTO | null> {
+    const taxPayer = await this.taxPayerModel.findOne({ where : { personId: kennitala } })
+    if (!taxPayer) {
+      return null
+    }
+    return {
+      id: taxPayer.id,
+      personId: taxPayer.personId,
+      phone: taxPayer.phone,
+      email: taxPayer.email,
+    }
+  }
+
   // Get TaxReturn by ID
   async getTaxReturnById(id: string): Promise<TaxReturnDTO | null> {
     const taxReturn = await this.taxReturnModel.findByPk(id, {
@@ -69,12 +83,20 @@ export class SkattskilService {
   }
 
   // Get Assets by TaxReturn ID
-  async getAssetsByTaxReturnId(taxReturnId: string): Promise<AssetsDTO[]> {
-    const assets = await this.assetsModel.findAll({ where: { taxReturnId } })
+  async getRealEstateAssetsByTaxReturnId(taxReturnId: string): Promise<AssetsDTO[]> {
+    const assets = await this.assetsModel.findAll({ where: { taxReturnId, assetType: "RealEstate"  } })
     return assets.map((asset) => ({
       id: asset.id,
       taxReturnId: asset.taxReturnId,
-      assetType: asset.assetType,
+      assetId: asset.assetId,
+    }))
+  }
+
+  async getVehicleAssetsByTaxReturnId(taxReturnId: string): Promise<AssetsDTO[]> {
+    const assets = await this.assetsModel.findAll({ where: { taxReturnId, assetType: "Vehicle" } })
+    return assets.map((asset) => ({
+      id: asset.id,
+      taxReturnId: asset.taxReturnId,
       assetId: asset.assetId,
     }))
   }
@@ -101,9 +123,8 @@ export class SkattskilService {
       lenderId: loan.lenderId,
       issueDate: loan.issueDate,
       remainingTermYears: loan.remainingTermYears,
-      amountPaidInFiscalYear: loan.amountPaidInFiscalYear,
-      interestComponent: loan.interestComponent,
-      principalComponent: loan.principalComponent,
+      interestPaidInFiscalYear: loan.interestPaidInFiscalYear,
+      principalPaidInFiscalYear: loan.principalPaidInFiscalYear,
       remainingPrincipal: loan.remainingPrincipal,
     }))
   }
