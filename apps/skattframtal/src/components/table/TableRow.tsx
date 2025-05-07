@@ -1,4 +1,4 @@
-import { Box, Text, Input } from '@island.is/island-ui/core'
+import { Box, Text, Input, useBreakpoint } from '@island.is/island-ui/core'
 import type { ReactNode } from 'react'
 import type { BoxProps } from '@island.is/island-ui/core'
 
@@ -16,42 +16,44 @@ const TableRow = ({
   children,
   background,
   className,
-}: TableRowProps) => (
-  <Box
-    display="flex"
-    alignItems="center"
-    justifyContent="spaceBetween"
-    paddingY={2}
-    paddingLeft={2}
-    borderBottomWidth="standard"
-    borderColor="blue100"
-    borderStyle="solid"
-    background={background}
-    className={className}
-  >
-    <Box>
-      {typeof left === 'string' || typeof left === 'number' ? (
-        <Text>{left}</Text>
-      ) : (
-        left
-      )}
+}: TableRowProps) => {
+  const { md } = useBreakpoint()
+  const isMobile = !md
+  return (
+    <Box
+      display="flex"
+      flexDirection={['column', 'row']}
+      alignItems={['flexStart', 'center']}
+      justifyContent="spaceBetween"
+      paddingY={2}
+      paddingLeft={2}
+      borderBottomWidth="standard"
+      borderColor="blue100"
+      borderStyle="solid"
+      background={background}
+      className={className}
+      width="full"
+    >
+      <Box width="full">{left}</Box>
+      <Box width={isMobile ? 'full' : undefined} marginTop={[2, 0]}>
+        {typeof right === 'string' || typeof right === 'number' ? (
+          <Box width="full">
+            <Input
+              name={`table-row-${left}`}
+              id={`table-row-${left}`}
+              value={right}
+              rightAlign
+              size="sm"
+              backgroundColor="blue"
+            />
+          </Box>
+        ) : (
+          right
+        )}
+      </Box>
+      {children}
     </Box>
-    <Box style={{ width: 180 }}>
-      {typeof right === 'string' || typeof right === 'number' ? (
-        <Input
-          name={`table-row-${left}`}
-          id={`table-row-${left}`}
-          value={right}
-          rightAlign
-          size="sm"
-          backgroundColor="blue"
-        />
-      ) : (
-        right
-      )}
-    </Box>
-    {children}
-  </Box>
-)
+  )
+}
 
 export default TableRow

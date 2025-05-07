@@ -4,6 +4,7 @@ import TableRow from './TableRow'
 import TableSumRow from './TableSumRow'
 import AddLineButton from './AddLineButton'
 import AnimatedTableRowWrapper from './AnimatedTableRowWrapper'
+import { Box } from '@island.is/island-ui/core'
 
 export interface TableRowData {
   left: React.ReactNode

@@ -10,7 +10,8 @@ interface TableSumRowProps {
 const TableSumRow = ({ sumLabel, sumValue, left }: TableSumRowProps) => (
   <Box
     display="flex"
-    alignItems="center"
+    flexDirection={['column', 'row']}
+    alignItems={['flexStart', 'center']}
     justifyContent="spaceBetween"
     paddingY={2}
     paddingLeft={2}
@@ -18,8 +19,10 @@ const TableSumRow = ({ sumLabel, sumValue, left }: TableSumRowProps) => (
     borderColor="blue100"
     borderStyle="solid"
   >
-    <Box>{left}</Box>
-    <Box textAlign="right">
+    <Box width="full" marginBottom={[2, 0]}>
+      {left}
+    </Box>
+    <Box textAlign={['left', 'right']}>
       <Text variant="default" color="dark400" fontWeight="semiBold">
         {sumLabel}
       </Text>
