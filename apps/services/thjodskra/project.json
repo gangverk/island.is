@@ -1,0 +1,87 @@
+{
+  "name": "services-thjodskra",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/services/thjodskra/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/services/thjodskra",
+        "main": "apps/services/thjodskra/src/main.ts",
+        "tsConfig": "apps/services/thjodskra/tsconfig.app.json",
+        "assets": ["apps/services/thjodskra/src/assets"],
+        "webpackConfig": "apps/services/thjodskra/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "services-thjodskra:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "services-thjodskra:build:development"
+        },
+        "production": {
+          "buildTarget": "services-thjodskra:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/services/thjodskra/jest.config.ts"
+      }
+    },
+    "dev-services": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker compose up -d",
+        "cwd": "apps/services/thjodskra"
+      }
+    },
+    "codegen/backend-schema": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cross-env INIT_SCHEMA=true yarn ts-node -P apps/services/thjodskra/tsconfig.app.json apps/services/thjodskra/src/buildOpenApi.ts"
+      },
+      "outputs": ["{projectRoot}/src/openapi.yaml"]
+    },
+    "migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "../../../node_modules/.bin/sequelize-cli db:migrate",
+        "cwd": "apps/services/thjodskra"
+      }
+    },
+    "migrate/generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "../../../node_modules/.bin/sequelize-cli migration:generate --name $(whoami)",
+        "cwd": "apps/services/thjodskra"
+      }
+    },
+    "seed": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "sequelize-cli db:seed:all",
+        "cwd": "apps/services/thjodskra"
+      }
+    }
+  }
+}
