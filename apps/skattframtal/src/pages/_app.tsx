@@ -2,7 +2,7 @@ import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Footer } from '../components/Footer'
 import Header from '../components/Header/Header'
-import { globalStyles } from '@island.is/island-ui/core'
+import { globalStyles, ToastContainer } from '@island.is/island-ui/core'
 import { ApolloProvider } from '@apollo/client'
 import { client } from '@island.is/application/graphql'
 
@@ -24,6 +24,7 @@ const CustomApp = ({ Component, pageProps, router }: AppProps) => {
         )}
         <main className="app">
           <Component {...pageProps} />
+          <ToastContainer />
         </main>
         {router.pathname !== '/auth' && <Footer />}
       </ApolloProvider>

@@ -4,12 +4,19 @@ import TableRow from './TableRow'
 import TableSumRow from './TableSumRow'
 import AddLineButton from './AddLineButton'
 import AnimatedTableRowWrapper from './AnimatedTableRowWrapper'
+import MultiColumnRow from './MultiColumnRow'
 import { Box } from '@island.is/island-ui/core'
 
 export interface TableRowData {
-  left: React.ReactNode
-  right: React.ReactNode
+  left?: React.ReactNode
+  right?: React.ReactNode
   middle?: React.ReactNode
+  multi?: Array<{
+    content: React.ReactNode
+    width?: string
+    textAlign?: 'left' | 'center' | 'right'
+    key?: string | number
+  }>
 }
 
 export interface TableSectionData {
@@ -18,7 +25,7 @@ export interface TableSectionData {
     sectionNumber: string
   }
   rows: TableRowData[]
-  sum: string | number
+  sum?: string | number
 }
 
 interface TableProps {
@@ -44,10 +51,9 @@ const Table = ({ data, onChange }: TableProps) => {
     setSections((prev) => {
       const newSections = [...prev]
       const rows = [...newSections[sectionIdx].rows]
-      const insertIdx = rows.length
-      rows.splice(insertIdx, 0, { left: '', right: '' })
+      rows.push({ left: '', right: '' })
       newSections[sectionIdx] = { ...newSections[sectionIdx], rows }
-      setAnimatingRow({ sectionIdx, rowIdx: insertIdx })
+      setAnimatingRow({ sectionIdx, rowIdx: rows.length - 1 })
       if (onChange) onChange(newSections)
       return newSections
     })
@@ -68,6 +74,14 @@ const Table = ({ data, onChange }: TableProps) => {
               animatingRow &&
               animatingRow.sectionIdx === sectionIdx &&
               animatingRow.rowIdx === rIdx
+            if (row.multi) {
+              return (
+                <MultiColumnRow
+                  key={`${section.section.sectionNumber}-multi-${rIdx}`}
+                  columns={row.multi}
+                />
+              )
+            }
             return (
               <AnimatedTableRowWrapper
                 key={`${section.section.sectionNumber}-${rIdx}`}
@@ -82,11 +96,13 @@ const Table = ({ data, onChange }: TableProps) => {
               </AnimatedTableRowWrapper>
             )
           })}
-          <TableSumRow
-            sumLabel="Samtals"
-            sumValue={section.sum}
-            left={<AddLineButton onClick={() => handleAddRow(sectionIdx)} />}
-          />
+          {section.sum !== undefined && section.sum !== null && (
+            <TableSumRow
+              sumLabel="Samtals"
+              sumValue={section.sum}
+              left={<AddLineButton onClick={() => handleAddRow(sectionIdx)} />}
+            />
+          )}
         </div>
       ))}
     </>
