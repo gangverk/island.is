@@ -81,7 +81,7 @@ export default function MyInformation() {
                 },
                 {
                   label: 'Bankaupplýsingar',
-                  value: 'TO DO',
+                  value: data.taxPayerByKennitala.bankAccountNumber,
                   action: <ActionLink href="skra.is">Breyta</ActionLink>,
                 },
               ].map((row, idx, arr) => {
