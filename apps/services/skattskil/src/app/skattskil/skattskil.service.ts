@@ -47,7 +47,7 @@ export class SkattskilService {
       address: `${person.legalDomicile}, ${person.postalCode} ${person.city}`,
       phoneNumber: taxPayer.phone,
       emailAddress: taxPayer.email,
-      bankAccountNumber: person.bankAccountNumber,
+      bankAccountNumber: taxPayer.bankAccountNumber,
     }
   }
 
@@ -70,7 +70,7 @@ export class SkattskilService {
       address: `${person.legalDomicile}, ${person.postalCode} ${person.city}`,
       phoneNumber: taxPayer.phone,
       emailAddress: taxPayer.email,
-      bankAccountNumber: person.bankAccountNumber,
+      bankAccountNumber: taxPayer.bankAccountNumber,
     }
   }
 

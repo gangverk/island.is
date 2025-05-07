@@ -31,12 +31,6 @@ export class GetPersonDTO {
     type: String,
   })
   city?: string
-
-  @ApiPropertyOptional({
-    description: 'Bank account number',
-    type: String,
-  })
-  bankAccountNumber?: string
 }
 
 export class GetPropertyDTO {
