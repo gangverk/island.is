@@ -93,7 +93,6 @@ const Auth = () => {
                   variant="primary"
                   fluid
                   onClick={handleAuthenticate}
-                  type="submit"
                 >
                   Auðkenna
                 </Button>
