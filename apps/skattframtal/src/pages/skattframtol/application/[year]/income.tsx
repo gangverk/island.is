@@ -16,23 +16,19 @@ const incomeData = [
     rows: [
       {
         left: (
-          <Box>
-            <Text fontWeight="semiBold">Norðurljós Software ehf</Text>
-            <Text color="dark400" variant="small">
-              123456-7890
-            </Text>
-          </Box>
+          <>
+            <Text>Norðurljós Software ehf</Text>
+            <Text variant="small">123456-7890</Text>
+          </>
         ),
         right: '9.360.000',
       },
       {
         left: (
-          <Box>
+          <>
             <Text fontWeight="semiBold">Mús og merki ehf</Text>
-            <Text color="dark400" variant="small">
-              123456-7890
-            </Text>
-          </Box>
+            <Text variant="small">123456-7890</Text>
+          </>
         ),
         right: '900.000',
       },
@@ -46,7 +42,7 @@ const incomeData = [
     },
     rows: [
       {
-        left: <Text fontWeight="semiBold">Dagpeningar</Text>,
+        left: <Text>Dagpeningar</Text>,
         right: '120.000',
       },
     ],
@@ -62,31 +58,27 @@ const incomeData = [
       {
         left: (
           <Box>
-            <Text fontWeight="semiBold">Norðurljós Software ehf</Text>
-            <Text color="dark400" variant="small">
-              123456-7890
-            </Text>
+            <Text>Norðurljós Software ehf</Text>
+            <Text variant="small">123456-7890</Text>
           </Box>
         ),
         right: null,
       },
       {
-        left: <Text fontWeight="semiBold">Íþróttastyrkur</Text>,
+        left: <Text>Íþróttastyrkur</Text>,
         right: '75.000',
       },
       {
         left: (
           <Box>
-            <Text fontWeight="semiBold">VR</Text>
-            <Text color="dark400" variant="small">
-              123456-7890
-            </Text>
+            <Text>VR</Text>
+            <Text variant="small">123456-7890</Text>
           </Box>
         ),
         right: null,
       },
       {
-        left: <Text fontWeight="semiBold">Starfsmenntastyrkur</Text>,
+        left: <Text>Starfsmenntastyrkur</Text>,
         right: '130.000',
       },
     ],

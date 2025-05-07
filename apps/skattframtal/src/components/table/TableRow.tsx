@@ -20,9 +20,7 @@ const TableRow = ({ left, right, children }: TableRowProps) => (
   >
     <Box>
       {typeof left === 'string' || typeof left === 'number' ? (
-        <Text variant="default" color="dark400">
-          {left}
-        </Text>
+        <Text>{left}</Text>
       ) : (
         left
       )}
