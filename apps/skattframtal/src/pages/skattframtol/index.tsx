@@ -13,7 +13,10 @@ import {
 } from '@island.is/island-ui/core'
 import SidebarLayout from '../../screens/Layouts/SidebarLayout'
 import InstitutionPanel from '../../components/InstitutionPanel/InstitutionPanel'
+
 export default function Skattframtal() {
+  const currentYear = new Date().getFullYear()
+
   return (
     <>
       <SidebarLayout
@@ -137,7 +140,7 @@ export default function Skattframtal() {
                 ),
               }}
             >
-              <Link href="/skattframtol/application">
+              <Link href={`/skattframtol/application/${currentYear}`} skipTab>
                 <Button
                   size="medium"
                   icon="open"
@@ -145,7 +148,7 @@ export default function Skattframtal() {
                   nowrap
                   variant="primary"
                 >
-                  Opna skattframtal
+                  Hefja skattframtal
                 </Button>
               </Link>
             </LinkContext.Provider>
