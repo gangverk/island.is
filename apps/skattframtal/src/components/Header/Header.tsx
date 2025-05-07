@@ -42,7 +42,10 @@ export const Header: FC<React.PropsWithChildren<HeaderProps>> = ({
             <GridColumn span="12/12" paddingTop={4} paddingBottom={4}>
               <Columns alignY="center" space={2}>
                 <Column width="content">
-                  <FocusableBox href="/" data-testid="link-back-home">
+                  <FocusableBox
+                    href="/skattframtol"
+                    data-testid="link-back-home"
+                  >
                     <Hidden above="md">
                       <Logo
                         id="header-logo-icon"
@@ -67,7 +70,7 @@ export const Header: FC<React.PropsWithChildren<HeaderProps>> = ({
                       marginLeft={marginLeft}
                       display={['none', 'none', 'block']}
                     >
-                      <Link href="/minarsidur/" skipTab>
+                      <Link href="#" skipTab>
                         {authenticated ? (
                           <Button
                             colorScheme={buttonColorScheme}

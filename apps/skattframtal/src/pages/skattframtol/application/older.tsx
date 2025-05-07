@@ -37,7 +37,8 @@ export default function ApplicationsOlder() {
   )
 
   const taxReturns = data?.taxPayerByKennitala?.taxReturns.filter(
-    (taxReturn) => taxReturn.fiscalYear !== new Date().getFullYear().toString(),
+    (taxReturn) =>
+      taxReturn.fiscalYear !== (new Date().getFullYear() - 1).toString(),
   )
 
   return (
