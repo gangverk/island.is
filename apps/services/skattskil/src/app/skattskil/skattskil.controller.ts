@@ -5,7 +5,7 @@ import { InternalServerErrorException, NotFoundException } from '@nestjs/common'
 
 import { SkattskilService } from './skattskil.service'
 import { TaxPayerDTO, TaxReturnDTO, IncomeDTO, RealEstateDTO, VehicleDTO, LiabilitiesDTO, ResidentialLoanDTO } from './dto/skattskil.response'
-import { IncomeInputDTO } from './dto/skattskil.request'
+import { IncomeInputDTO, TaxPayerInputDTO } from './dto/skattskil.request'
 
 @ApiTags('skattskil')
 @Controller({
@@ -41,6 +41,46 @@ export class SkattskilController {
         throw error
       }
       throw new InternalServerErrorException('An unexpected error occurred')
+    }
+  }
+
+  @Put('/taxpayers/:id')
+  @Documentation({
+    description: 'Update an existing taxpayer record',
+    response: { status: 200, type: TaxPayerDTO },
+    request: {
+      params: {
+        id: {
+          type: 'string',
+          description: 'ID of the taxpayer to update',
+        },
+      },
+    },
+  })
+  async updateTaxPayer(
+    @Param('id') id: string,
+    @Body() taxPayerInput: TaxPayerInputDTO
+  ): Promise<TaxPayerDTO> {
+    try {
+      // Check if the taxpayer exists
+      const existingTaxPayer = await this.skattskilService.getTaxPayerById(id);
+      if (!existingTaxPayer) {
+        throw new NotFoundException(`Taxpayer with ID ${id} not LOL`);
+      }
+      
+      // Update the taxpayer record
+      const updatedTaxPayer = await this.skattskilService.updateTaxPayer(id, taxPayerInput);
+      
+      if (!updatedTaxPayer) {
+        throw new NotFoundException(`Taxpayer with ID ${id} could not be updated`);
+      }
+      
+      return updatedTaxPayer;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException('An unexpected error occurred when updating taxpayer');
     }
   }
 
