@@ -16,9 +16,7 @@ type NextButtonIcon = 'arrowForward' | 'checkmark'
 interface FormScreenLayoutProps {
   currentStep: number
   stepLabels: string[]
-  onBack?: () => void
-  onNext?: () => void
-  onStepChange?: (stepIdx: number) => void
+  onStepChange: (stepIdx: number) => void
   children: React.ReactNode
   nextButtonLabel?: string
   nextButtonIcon?: NextButtonIcon
@@ -27,26 +25,16 @@ interface FormScreenLayoutProps {
 const FormScreenLayout: React.FC<FormScreenLayoutProps> = ({
   currentStep,
   stepLabels,
-  onBack,
-  onNext,
   onStepChange,
   children,
   nextButtonLabel = 'Halda áfram',
   nextButtonIcon = 'arrowForward',
 }) => {
   const handleBack = () => {
-    if (onStepChange) {
-      onStepChange(currentStep - 1)
-    } else if (onBack) {
-      onBack()
-    }
+    onStepChange(currentStep - 1)
   }
   const handleNext = () => {
-    if (onStepChange) {
-      onStepChange(currentStep + 1)
-    } else if (onNext) {
-      onNext()
-    }
+    onStepChange(currentStep + 1)
   }
   return (
     <Box

@@ -7,11 +7,20 @@ export class TaxPayerDTO {
   @ApiProperty()
   personId!: string
 
-  @ApiProperty({ required: false })
-  phone?: string
+  @ApiProperty()
+  name!: string
 
   @ApiProperty({ required: false })
-  email?: string
+  address?: string
+
+  @ApiProperty({ required: false })
+  phoneNumber?: string
+
+  @ApiProperty({ required: false })
+  emailAddress?: string
+
+  @ApiProperty({ required: false })
+  bankAccountNumber?: string
 }
 
 export class TaxReturnDTO {
@@ -57,6 +66,31 @@ export class AssetsDTO {
 
   @ApiProperty()
   assetId!: string
+}
+
+export class RealEstateDTO {
+  @ApiProperty()
+  realEstateAssetId!: string
+
+  @ApiProperty()
+  address!: string
+
+  @ApiProperty()
+  estimatedValue!: number
+}
+
+export class VehicleDTO {
+  @ApiProperty()
+  vehicleAssetId!: string
+
+  @ApiProperty()
+  registrationNumber!: string
+
+  @ApiProperty()
+  yearOfPurchase!: string
+
+  @ApiProperty()
+  purchaseAmount!: number
 }
 
 export class LiabilitiesDTO {

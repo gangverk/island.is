@@ -4,7 +4,7 @@ import { Documentation } from '@island.is/nest/swagger'
 import { InternalServerErrorException, NotFoundException } from '@nestjs/common'
 
 import { SkattskilService } from './skattskil.service'
-import { TaxPayerDTO, TaxReturnDTO, IncomeDTO, AssetsDTO, LiabilitiesDTO, ResidentialLoanDTO } from './dto/skattskil.response'
+import { TaxPayerDTO, TaxReturnDTO, IncomeDTO, RealEstateDTO, VehicleDTO, LiabilitiesDTO, ResidentialLoanDTO } from './dto/skattskil.response'
 import { IncomeInputDTO } from './dto/skattskil.request'
 
 @ApiTags('skattskil')
@@ -77,7 +77,7 @@ export class SkattskilController {
   @Get('/taxpayers/:taxPayerId/tax-returns')
   @Documentation({
     description: 'Retrieve tax returns for a taxpayer',
-    response: { status: 200, type: TaxReturnDTO },
+    response: { status: 200, type: [TaxReturnDTO] },
     request: {
       params: {
         taxPayerId: {
@@ -87,9 +87,9 @@ export class SkattskilController {
       }
     },
   })
-  async getTaxReturnByTaxPayerId(@Param('taxPayerId') taxPayerId: string): Promise<TaxReturnDTO> {
+  async getTaxReturnsByTaxPayerId(@Param('taxPayerId') taxPayerId: string): Promise<TaxReturnDTO[]> {
     try {
-      const taxReturn = await this.skattskilService.getTaxReturnById(taxPayerId)
+      const taxReturn = await this.skattskilService.getTaxReturnsByTaxPayerId(taxPayerId)
       if (!taxReturn) {
         throw new NotFoundException(`Tax return for taxpayer ID ${taxPayerId} not found`)
       }
@@ -190,7 +190,7 @@ export class SkattskilController {
       return newIncome;
     } catch (error) {
       if (error instanceof NotFoundException) {
-        throw error;
+        throw error
       }
       throw new InternalServerErrorException('An unexpected error occurred when creating salary income record');
     }
@@ -278,17 +278,13 @@ export class SkattskilController {
     }
   }
 
-    // Update Salary Income
-  @Put('/tax-returns/:taxReturnId/income/salary/:id')
+  // Update Salary Income
+  @Put('/tax-returns/income/salary/:id')
   @Documentation({
     description: 'Update an existing salary income record',
     response: { status: 200, type: IncomeDTO },
     request: {
       params: {
-        taxReturnId: {
-          type: 'string',
-          description: 'ID of the tax return containing the salary income',
-        },
         id: {
           type: 'string',
           description: 'ID of the salary income record to update',
@@ -297,7 +293,6 @@ export class SkattskilController {
     },
   })
   async updateSalaryIncome(
-    @Param('taxReturnId') taxReturnId: string,
     @Param('id') id: string,
     @Body() incomeInput: IncomeInputDTO
   ): Promise<IncomeDTO> {
@@ -308,12 +303,6 @@ export class SkattskilController {
         throw new NotFoundException(`Income record with ID ${id} not found`);
       }
       
-      if (existingIncome.taxReturnId !== taxReturnId) {
-        throw new NotFoundException(
-          `Income record with ID ${id} does not belong to tax return with ID ${taxReturnId}`
-        );
-      }
-      
       if (existingIncome.category !== 'salary') {
         throw new BadRequestException(`Income record with ID ${id} is not a salary income`);
       }
@@ -322,7 +311,6 @@ export class SkattskilController {
       const updatedIncome = await this.skattskilService.updateIncome(id, {
         ...incomeInput,
         category: 'salary', // Ensure category remains salary
-        taxReturnId // Ensure tax return ID remains unchanged
       });
 
       if (!updatedIncome) {
@@ -339,16 +327,12 @@ export class SkattskilController {
   }
 
   // Update Per Diem Income
-  @Put('/tax-returns/:taxReturnId/income/per-diem/:id')
+  @Put('/tax-returns/income/per-diem/:id')
   @Documentation({
     description: 'Update an existing per diem income record',
     response: { status: 200, type: IncomeDTO },
     request: {
       params: {
-        taxReturnId: {
-          type: 'string',
-          description: 'ID of the tax return containing the per diem income',
-        },
         id: {
           type: 'string',
           description: 'ID of the per diem income record to update',
@@ -357,7 +341,6 @@ export class SkattskilController {
     },
   })
   async updatePerDiemIncome(
-    @Param('taxReturnId') taxReturnId: string,
     @Param('id') id: string,
     @Body() incomeInput: IncomeInputDTO
   ): Promise<IncomeDTO> {
@@ -368,12 +351,6 @@ export class SkattskilController {
         throw new NotFoundException(`Income record with ID ${id} not found`);
       }
       
-      if (existingIncome.taxReturnId !== taxReturnId) {
-        throw new NotFoundException(
-          `Income record with ID ${id} does not belong to tax return with ID ${taxReturnId}`
-        );
-      }
-      
       if (existingIncome.category !== 'per_diem') {
         throw new BadRequestException(`Income record with ID ${id} is not a per diem income`);
       }
@@ -382,7 +359,6 @@ export class SkattskilController {
       const updatedIncome = await this.skattskilService.updateIncome(id, {
         ...incomeInput,
         category: 'per_diem', // Ensure category remains per_diem
-        taxReturnId // Ensure tax return ID remains unchanged
       });
       
       if (!updatedIncome) {
@@ -399,7 +375,7 @@ export class SkattskilController {
   }
 
   // Update Grant Income
-  @Put('/tax-returns/:taxReturnId/income/grant/:id')
+  @Put('/tax-returns/income/grant/:id')
   @Documentation({
     description: 'Update an existing grant income record',
     response: { status: 200, type: IncomeDTO },
@@ -417,7 +393,6 @@ export class SkattskilController {
     },
   })
   async updateGrantIncome(
-    @Param('taxReturnId') taxReturnId: string,
     @Param('id') id: string,
     @Body() incomeInput: IncomeInputDTO
   ): Promise<IncomeDTO> {
@@ -428,12 +403,6 @@ export class SkattskilController {
         throw new NotFoundException(`Income record with ID ${id} not found`);
       }
       
-      if (existingIncome.taxReturnId !== taxReturnId) {
-        throw new NotFoundException(
-          `Income record with ID ${id} does not belong to tax return with ID ${taxReturnId}`
-        );
-      }
-      
       if (existingIncome.category !== 'grant') {
         throw new BadRequestException(`Income record with ID ${id} is not a grant income`);
       }
@@ -441,8 +410,7 @@ export class SkattskilController {
       // Update the income record
       const updatedIncome = await this.skattskilService.updateIncome(id, {
         ...incomeInput,
-        category: 'grant', // Ensure category remains grant
-        taxReturnId // Ensure tax return ID remains unchanged
+        category: 'grant',
       });
 
       if (!updatedIncome) {
@@ -459,16 +427,12 @@ export class SkattskilController {
   }
 
     // Delete Income by ID
-  @Delete('/tax-returns/:taxReturnId/income/:id')
+  @Delete('/tax-returns/income/:id')
   @Documentation({
     description: 'Delete an income record',
     response: { status: 204 },
     request: {
       params: {
-        taxReturnId: {
-          type: 'string',
-          description: 'ID of the tax return containing the income record',
-        },
         id: {
           type: 'string',
           description: 'ID of the income record to delete',
@@ -477,7 +441,6 @@ export class SkattskilController {
     },
   })
   async deleteIncome(
-    @Param('taxReturnId') taxReturnId: string,
     @Param('id') id: string
   ): Promise<void> {
     try {
@@ -485,12 +448,6 @@ export class SkattskilController {
       const existingIncome = await this.skattskilService.getIncomeById(id);
       if (!existingIncome) {
         throw new NotFoundException(`Income record with ID ${id} not found`);
-      }
-      
-      if (existingIncome.taxReturnId !== taxReturnId) {
-        throw new NotFoundException(
-          `Income record with ID ${id} does not belong to tax return with ID ${taxReturnId}`
-        );
       }
       
       // Delete the income record
@@ -507,35 +464,11 @@ export class SkattskilController {
     }
   }
 
-  // Get All Assets by TaxReturn ID
-  @Get('/tax-returns/:taxReturnId/assets')
-  @Documentation({
-    description: 'Retrieve all assets for a tax return',
-    response: { status: 200, type: [AssetsDTO] },
-    request: {
-      params: {
-        taxReturnId: {
-          type: 'string',
-          description: 'ID of the tax return to retrieve assets for',
-        },
-      }
-    },
-  })
-  async getAllAssetsByTaxReturnId(@Param('taxReturnId') taxReturnId: string): Promise<AssetsDTO[]> {
-    try {
-      const assets = await this.skattskilService.getAllAssetsByTaxReturnId(taxReturnId).catch(() => []);
-      
-      return assets;
-    } catch (error) {
-      throw new InternalServerErrorException('An unexpected error occurred');
-    }
-  }
-
   // Get Real Estate Assets by TaxReturn ID
   @Get('/tax-returns/:taxReturnId/assets/real-estate')
   @Documentation({
     description: 'Retrieve real estate assets for a tax return',
-    response: { status: 200, type: [AssetsDTO] },
+    response: { status: 200, type: [RealEstateDTO] },
     request: {
       params: {
         taxReturnId: {
@@ -545,7 +478,7 @@ export class SkattskilController {
       }
     },
   })
-  async getRealEstateAssetsByTaxReturnId(@Param('taxReturnId') taxReturnId: string): Promise<AssetsDTO[]> {
+  async getRealEstateAssetsByTaxReturnId(@Param('taxReturnId') taxReturnId: string): Promise<RealEstateDTO[]> {
     try {
       const assets = await this.skattskilService.getRealEstateAssetsByTaxReturnId(taxReturnId).catch(() => []);
       return assets;
@@ -558,7 +491,7 @@ export class SkattskilController {
   @Get('/tax-returns/:taxReturnId/assets/vehicles')
   @Documentation({
     description: 'Retrieve vehicle assets for a tax return',
-    response: { status: 200, type: [AssetsDTO] },
+    response: { status: 200, type: [VehicleDTO] },
     request: {
       params: {
         taxReturnId: {
@@ -568,7 +501,7 @@ export class SkattskilController {
       }
     },
   })
-  async getVehicleAssetsByTaxReturnId(@Param('taxReturnId') taxReturnId: string): Promise<AssetsDTO[]> {
+  async getVehicleAssetsByTaxReturnId(@Param('taxReturnId') taxReturnId: string): Promise<VehicleDTO[]> {
     try {
       const assets = await this.skattskilService.getVehicleAssetsByTaxReturnId(taxReturnId).catch(() => []);
       return assets;

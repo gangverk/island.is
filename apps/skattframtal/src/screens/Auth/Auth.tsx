@@ -16,7 +16,6 @@ const Auth = () => {
   const [rememberPhone, setRememberPhone] = useState(false)
 
   const handleAuthenticate = () => {
-    // Handle authentication logic here
     router.push('/skattframtol/application')
   }
 

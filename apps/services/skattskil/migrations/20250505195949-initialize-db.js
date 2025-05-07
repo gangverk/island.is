@@ -20,6 +20,10 @@ module.exports = {
       email: {
         type: Sequelize.STRING,
         allowNull: true,
+      },
+      bank_account_number: {
+        type: Sequelize.STRING,
+        allowNull: true,
       }
     });
 

@@ -7,7 +7,8 @@ import { Income } from './models/income.model'
 import { Assets } from './models/assets.model'
 import { Liabilities } from './models/liabilities.model'
 import { ResidentialLoan } from './models/residentialLoan.model'
-import { TaxPayerDTO, TaxReturnDTO, IncomeDTO, AssetsDTO, LiabilitiesDTO, ResidentialLoanDTO } from './dto/skattskil.response'
+import { TaxPayerDTO, TaxReturnDTO, IncomeDTO, AssetsDTO, LiabilitiesDTO, ResidentialLoanDTO, RealEstateDTO, VehicleDTO } from './dto/skattskil.response'
+import { ThjodskraService } from '../thjodskra/thjodskra.service'
 
 @Injectable()
 export class SkattskilService {
@@ -24,6 +25,7 @@ export class SkattskilService {
     private readonly liabilitiesModel: typeof Liabilities,
     @InjectModel(ResidentialLoan)
     private readonly residentialLoanModel: typeof ResidentialLoan,
+    private thjodskra: ThjodskraService
   ) {}
 
   // Get TaxPayer by ID
@@ -32,11 +34,20 @@ export class SkattskilService {
     if (!taxPayer) {
       return null
     }
+    // Fetch additional data from Thjodskra
+    const person = await this.thjodskra.getPersonById(taxPayer.personId)
+    if (!person) {
+      return null
+    }
+
     return {
       id: taxPayer.id,
+      name: person.name,
       personId: taxPayer.personId,
-      phone: taxPayer.phone,
-      email: taxPayer.email,
+      address: `${person.legalDomicile}, ${person.postalCode} ${person.city}`,
+      phoneNumber: taxPayer.phone,
+      emailAddress: taxPayer.email,
+      bankAccountNumber: person.bankAccountNumber,
     }
   }
 
@@ -46,11 +57,20 @@ export class SkattskilService {
     if (!taxPayer) {
       return null
     }
+    // Fetch additional data from Thjodskra
+    const person = await this.thjodskra.getPersonById(taxPayer.personId)
+    if (!person) {
+      return null
+    }
+
     return {
       id: taxPayer.id,
+      name: person.name,
       personId: taxPayer.personId,
-      phone: taxPayer.phone,
-      email: taxPayer.email,
+      address: `${person.legalDomicile}, ${person.postalCode} ${person.city}`,
+      phoneNumber: taxPayer.phone,
+      emailAddress: taxPayer.email,
+      bankAccountNumber: person.bankAccountNumber,
     }
   }
 
@@ -68,6 +88,21 @@ export class SkattskilService {
       fiscalYear: taxReturn.fiscalYear,
       completed: taxReturn.completed,
     }
+  }
+
+  // Get all TaxReturns by TaxPayer ID
+  async getTaxReturnsByTaxPayerId(taxPayerId: string): Promise<TaxReturnDTO[]> {
+    const taxReturns = await this.taxReturnModel.findAll({
+      where: { taxPayerId },
+      include: [TaxPayer],
+    });
+    
+    return taxReturns.map(taxReturn => ({
+      id: taxReturn.id,
+      taxPayerId: taxReturn.taxPayerId,
+      fiscalYear: taxReturn.fiscalYear,
+      completed: taxReturn.completed,
+    }));
   }
 
   // Get Income by TaxReturn ID
@@ -131,7 +166,6 @@ export class SkattskilService {
   async updateIncome(
     id: string, 
     incomeData: { 
-      taxReturnId: string; 
       category: string; 
       description?: string; 
       amount: number; 
@@ -173,32 +207,60 @@ export class SkattskilService {
   }
 
   // Get Assets by TaxReturn ID
-  async getAllAssetsByTaxReturnId(taxReturnId: string): Promise<AssetsDTO[]> {
-    const assets = await this.assetsModel.findAll({ where: { taxReturnId } })
-    return assets.map((asset) => ({
-      id: asset.id,
-      taxReturnId: asset.taxReturnId,
-      assetId: asset.assetId,
-    }))
-  }
-
-  // Get Assets by TaxReturn ID
-  async getRealEstateAssetsByTaxReturnId(taxReturnId: string): Promise<AssetsDTO[]> {
+  async getRealEstateAssetsByTaxReturnId(taxReturnId: string): Promise<RealEstateDTO[]> {
     const assets = await this.assetsModel.findAll({ where: { taxReturnId, assetType: "real_estate"  } })
-    return assets.map((asset) => ({
-      id: asset.id,
-      taxReturnId: asset.taxReturnId,
-      assetId: asset.assetId,
-    }))
+    const realEstates = await this.thjodskra.getPropertiesByIds(assets.map((asset) => asset.assetId))
+    if (!realEstates) {
+      return []
+    }
+
+    const propertyMap = realEstates.reduce((map, property) => {
+      map[property.propertyNumber] = property;
+      return map;
+    }, {} as Record<string, any>);
+
+    return assets.map(asset => {
+      const property = propertyMap[asset.assetId];
+
+      if (!property) {
+        return null;
+      }
+      
+      return {
+        realEstateAssetId: asset.assetId,
+        address: property.address,
+        estimatedValue: property.appraisal,
+      };
+    })
+    .filter((vehicle): vehicle is RealEstateDTO => vehicle !== null);;
   }
 
-  async getVehicleAssetsByTaxReturnId(taxReturnId: string): Promise<AssetsDTO[]> {
+  async getVehicleAssetsByTaxReturnId(taxReturnId: string): Promise<VehicleDTO[]> {
     const assets = await this.assetsModel.findAll({ where: { taxReturnId, assetType: "vehicle" } })
-    return assets.map((asset) => ({
-      id: asset.id,
-      taxReturnId: asset.taxReturnId,
-      assetId: asset.assetId,
-    }))
+    const vehicles = await this.thjodskra.getVehiclesByIds(assets.map(asset => asset.assetId));
+
+    const vehicleMap = vehicles.reduce((map, vehicle) => {
+      map[vehicle.licensePlateNumber] = vehicle;
+      return map;
+    }, {} as Record<string, any>);
+
+
+    return assets
+      .map(asset => {
+        const vehicle = vehicleMap[asset.assetId];
+
+        if (!vehicle) {
+          return null;
+        }
+        
+        return {
+          vehicleAssetId: asset.assetId,
+          registrationNumber: vehicle.licensePlateNumber,
+          yearOfPurchase: vehicle.purchaseYear,
+          purchaseAmount: vehicle.purchasePrice,
+        };
+      })
+      .filter((vehicle): vehicle is VehicleDTO => vehicle !== null);
   }
 
   // Get Liabilities by TaxReturn ID
@@ -229,17 +291,6 @@ export class SkattskilService {
     }))
   }
   /*
-  // Create a new TaxPayer
-  async createTaxPayer(data: TaxPayerDTO): Promise<TaxPayerDTO> {
-    const taxPayer = await this.taxPayerModel.create(data)
-    return {
-      id: taxPayer.id,
-      personId: taxPayer.personId,
-      phone: taxPayer.phone,
-      email: taxPayer.email,
-    }
-  }
-
   // Update an existing TaxPayer
   async updateTaxPayer(id: string, data: Partial<TaxPayerDTO>): Promise<TaxPayerDTO | null> {
     const taxPayer = await this.taxPayerModel.findByPk(id)

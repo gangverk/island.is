@@ -2,24 +2,20 @@ import React from 'react'
 import FormScreenLayout from '../../../../components/FormScreenLayout'
 import { Text } from '@island.is/island-ui/core'
 import { useRouter } from 'next/router'
-import { useParams } from 'next/navigation'
 import { stepKeys, stepLabels, goToStep } from '../../../../constants/formSteps'
 
 export default function Introduction() {
   const router = useRouter()
-  const params = useParams() as Record<string, string | string[]> | undefined
-  const year = (params?.year ||
-    params?.id ||
-    router.query.year ||
-    router.query.id ||
-    '') as string
+  const taxReturnId = router.query.taxReturnId as string
   const currentStepIndex = 0
 
   return (
     <FormScreenLayout
       currentStep={currentStepIndex}
       stepLabels={stepKeys.map((key) => stepLabels[key])}
-      onStepChange={(stepIdx) => goToStep(router, year, stepIdx, stepKeys)}
+      onStepChange={(stepIdx) =>
+        goToStep(router, taxReturnId, stepIdx, stepKeys)
+      }
     >
       <Text variant="h1" as="h1" marginBottom={4}>
         {stepLabels.introduction}

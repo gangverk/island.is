@@ -27,12 +27,10 @@ const navigationItems = [
 ]
 
 export default function Applications() {
-  const kennitala = '123456789'
-  // Using useQuery with TypedDocumentNode gives us full type safety
   const { loading, error, data } = useQuery(
     QUERIES.GET_ALL_TAX_RETURNS_BY_KENNITALA,
     {
-      variables: { kennitala },
+      variables: { kennitala: '1203894569' },
     },
   )
 
@@ -172,9 +170,13 @@ export default function Applications() {
                 </Text>
               </Box>
               <Box>
-                <Button size="medium" nowrap variant="primary">
-                  Hefja skattframtal
-                </Button>
+                <NextLink
+                  href={`/skattframtol/application/${taxReturn.taxReturnID}/introduction`}
+                >
+                  <Button size="medium" nowrap variant="primary">
+                    Hefja skattframtal
+                  </Button>
+                </NextLink>
               </Box>
             </Box>
           ))}
