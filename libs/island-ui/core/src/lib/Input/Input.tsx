@@ -1,15 +1,16 @@
 import cn from 'classnames'
-import React, { forwardRef, useLayoutEffect, useRef, useState } from 'react'
+import type React from 'react'
+import { forwardRef, useLayoutEffect, useRef, useState } from 'react'
 import { VisuallyHidden } from 'reakit'
 import { resolveResponsiveProp } from '../../utils/responsiveProp'
 import { Box } from '../Box/Box'
-import { UseBoxStylesProps } from '../Box/useBoxStyles'
+import type { UseBoxStylesProps } from '../Box/useBoxStyles'
 import { Icon } from '../IconRC/Icon'
 import { Tooltip } from '../Tooltip/Tooltip'
 import { ErrorMessage } from './ErrorMessage'
 
 import * as styles from './Input.css'
-import {
+import type {
   AriaError,
   InputBackgroundColor,
   InputComponentProps,
@@ -110,7 +111,7 @@ export const Input = forwardRef(
           input.removeEventListener('input', handler)
         }
       }
-    }, [autoExpand?.maxHeight, autoExpand?.on, inputRef])
+    }, [autoExpand?.maxHeight, autoExpand?.on])
 
     return (
       <div>

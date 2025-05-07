@@ -9,12 +9,10 @@ import {
   GetTaxPayerIncomeByTaxReturnIdQueryVariables,
   GetTaxPayerLiabilitiesByTaxReturnIdQuery,
   GetTaxPayerLiabilitiesByTaxReturnIdQueryVariables,
-  GetTaxPayerRealEstateAssetsByTaxReturnIdQuery,
-  GetTaxPayerRealEstateAssetsByTaxReturnIdQueryVariables,
+  GetTaxPayerRealEstateAssetsAndVehiclesByTaxReturnIdQuery,
+  GetTaxPayerRealEstateAssetsAndVehiclesByTaxReturnIdQueryVariables,
   GetTaxPayerResidentialLoansByTaxReturnIdQuery,
   GetTaxPayerResidentialLoansByTaxReturnIdQueryVariables,
-  GetTaxPayerVehicleAssetsByTaxReturnIdQuery,
-  GetTaxPayerVehicleAssetsByTaxReturnIdQueryVariables,
 } from './schema'
 
 // Using TypedDocumentNode to provide type safety for the query
@@ -69,9 +67,9 @@ export const GET_TAX_PAYER_INCOME_BY_TAX_RETURN_ID: TypedDocumentNode<
   }
 `
 
-export const GET_TAX_PAYER_REAL_ESTATE_ASSETS_BY_TAX_RETURN_ID: TypedDocumentNode<
-  GetTaxPayerRealEstateAssetsByTaxReturnIdQuery,
-  GetTaxPayerRealEstateAssetsByTaxReturnIdQueryVariables
+export const GET_TAX_PAYER_REAL_ESTATE_ASSETS_AND_VEHICLES_BY_TAX_RETURN_ID: TypedDocumentNode<
+  GetTaxPayerRealEstateAssetsAndVehiclesByTaxReturnIdQuery,
+  GetTaxPayerRealEstateAssetsAndVehiclesByTaxReturnIdQuery
 > = gql`
   query GetTaxPayerRealEstateAssetsByTaxReturnId($taxReturnId: String!) {
     taxReturnById(taxReturnId: $taxReturnId) {
@@ -83,17 +81,6 @@ export const GET_TAX_PAYER_REAL_ESTATE_ASSETS_BY_TAX_RETURN_ID: TypedDocumentNod
           amount
         }
       }
-    }
-  }
-`
-
-export const GET_TAX_PAYER_VEHICLE_ASSETS_BY_TAX_RETURN_ID: TypedDocumentNode<
-  GetTaxPayerVehicleAssetsByTaxReturnIdQuery,
-  GetTaxPayerVehicleAssetsByTaxReturnIdQueryVariables
-> = gql`
-  query GetTaxPayerVehicleAssetsByTaxReturnId($taxReturnId: String!) {
-    taxReturnById(taxReturnId: $taxReturnId) {
-      taxReturnID
       vehicleAssets {
         vehicleAssetID
         registrationNumber
@@ -158,8 +145,7 @@ export const QUERIES = {
   GET_ALL_TAX_RETURNS_BY_KENNITALA,
   GET_TAX_PAYER_BY_KENNITALA,
   GET_TAX_PAYER_INCOME_BY_TAX_RETURN_ID,
-  GET_TAX_PAYER_REAL_ESTATE_ASSETS_BY_TAX_RETURN_ID,
-  GET_TAX_PAYER_VEHICLE_ASSETS_BY_TAX_RETURN_ID,
+  GET_TAX_PAYER_REAL_ESTATE_ASSETS_AND_VEHICLES_BY_TAX_RETURN_ID,
   GET_TAX_PAYER_RESIDENTIAL_LOANS_BY_TAX_RETURN_ID,
   GET_TAX_PAYER_LIABILITIES_BY_TAX_RETURN_ID,
 }
