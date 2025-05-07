@@ -1,6 +1,5 @@
 import { Inject } from '@nestjs/common'
 import {
-  ThjodskraApi,
   SkattskilApi,
 } from '../../gen/fetch/apis'
 import { SkattskilClientConfig } from './SkattskilClientConfig'
@@ -77,7 +76,7 @@ export class SkattskilClientService {
   }
 
   addTaxReturnPerDiemIncome(taxReturnId: string, description: string, amount: number, payer: string) {
-    return this.skattskilApi.skattskilControllerCreatePerDiemIncome({
+    return this.skattskilApi.skattskilControllerCreateBenefitIncome({
       taxReturnId,
       incomeInputDTO: {
         description: description,
@@ -98,8 +97,8 @@ export class SkattskilClientService {
     })
   }
 
-  updateTaxReturnPerDiemIncome(incomeId: string, description: string, amount: number, payer: string) {
-    return this.skattskilApi.skattskilControllerUpdatePerDiemIncome({
+  updateTaxReturnBenefitIncome(incomeId: string, description: string, amount: number, payer: string) {
+    return this.skattskilApi.skattskilControllerUpdateBenefitIncome({
       id: incomeId,
       incomeInputDTO: {
         description: description,

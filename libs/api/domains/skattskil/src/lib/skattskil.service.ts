@@ -101,10 +101,10 @@ export class SkattskilService {
           switch (cat) {
             case 'salary':
               return TaxReturnIncomeCategory.SALARY
-            case 'investment':
+            case 'grant':
               return TaxReturnIncomeCategory.GRANT
-            case 'per_diem':
-              return TaxReturnIncomeCategory.PER_DIEM
+            case 'benefit':
+              return TaxReturnIncomeCategory.BENEFIT
             default:
               throw new Error(`Unknown income category: ${cat}`)
           }
@@ -191,11 +191,11 @@ export class SkattskilService {
     }
   }
 
-  async addTaxReturnPerDiemIncome(taxReturnId: string, input: TaxReturnIncomeInput): Promise<TaxReturnIncome> {
+  async addTaxReturnBenefitIncome(taxReturnId: string, input: TaxReturnIncomeInput): Promise<TaxReturnIncome> {
     const income = await this.skattskilClientService.addTaxReturnPerDiemIncome(taxReturnId, input.description, input.amount.amount, input.payer)
     return {
       incomeID: income.id,
-      category: TaxReturnIncomeCategory.PER_DIEM,
+      category: TaxReturnIncomeCategory.BENEFIT,
       description: income.description || '',
       amount: { amount: income.amount },
       payer: income.payer,
@@ -220,10 +220,10 @@ export class SkattskilService {
           amount: { amount: income.amount },
           payer: income.payer,
         }))
-      case TaxReturnIncomeCategory.PER_DIEM:
-        return await this.skattskilClientService.updateTaxReturnPerDiemIncome(incomeId, input.description, input.amount.amount, input.payer).then((income) => ({
+      case TaxReturnIncomeCategory.BENEFIT:
+        return await this.skattskilClientService.updateTaxReturnBenefitIncome(incomeId, input.description, input.amount.amount, input.payer).then((income) => ({
           incomeID: income.id,
-          category: TaxReturnIncomeCategory.PER_DIEM,
+          category: TaxReturnIncomeCategory.BENEFIT,
           description: income.description || '',
           amount: { amount: income.amount },
           payer: income.payer,

@@ -95,8 +95,8 @@ export class TaxReturnIncomeResolver {
         return await this.skattskilService.addTaxReturnSalaryIncome(taxReturnId, input)
       case TaxReturnIncomeCategory.GRANT:
         return await this.skattskilService.addTaxReturnGrantIncome(taxReturnId, input)
-      case TaxReturnIncomeCategory.PER_DIEM:
-        return await this.skattskilService.addTaxReturnPerDiemIncome(taxReturnId, input)
+      case TaxReturnIncomeCategory.BENEFIT:
+        return await this.skattskilService.addTaxReturnBenefitIncome(taxReturnId, input)
       default:
         throw new Error('Invalid income category')
     }

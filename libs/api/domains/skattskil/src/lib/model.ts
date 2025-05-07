@@ -23,8 +23,8 @@ export class MoneyInput {
 // Enums
 export enum TaxReturnIncomeCategory {
   SALARY = 'SALARY',
-  PER_DIEM = 'PER_DIEM',
   GRANT = 'GRANT',
+  BENEFIT = 'BENEFIT',
 }
 
 registerEnumType(TaxReturnIncomeCategory, {
