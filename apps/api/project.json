@@ -67,7 +67,11 @@
     "dev-init": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": [],
+        "commands": [
+          "yarn nx run services-skattskil:dev-services",
+          "yarn nx run services-skattskil:migrate",
+          "yarn nx run services-skattskil:seed"
+        ],
         "parallel": false
       }
     },
@@ -80,7 +84,10 @@
     "dev": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["yarn start api"],
+        "commands": [
+          "yarn start services-skattskil",
+          "yarn start api"
+        ],
         "parallel": true
       }
     },
