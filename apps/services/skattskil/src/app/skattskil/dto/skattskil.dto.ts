@@ -56,9 +56,6 @@ export class AssetsDTO {
   taxReturnId!: string
 
   @ApiProperty()
-  assetType!: string
-
-  @ApiProperty()
   assetId!: string
 }
 
@@ -99,13 +96,10 @@ export class ResidentialLoanDTO {
   remainingTermYears!: number
 
   @ApiProperty()
-  amountPaidInFiscalYear!: number
+  interestPaidInFiscalYear!: number
 
   @ApiProperty()
-  interestComponent!: number
-
-  @ApiProperty()
-  principalComponent!: number
+  principalPaidInFiscalYear!: number
 
   @ApiProperty()
   remainingPrincipal!: number

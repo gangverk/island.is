@@ -1,3 +1,5 @@
+import { ApiProperty } from '@nestjs/swagger'
+import { InferAttributes, InferCreationAttributes } from 'sequelize'
 import { Table, Column, Model, DataType, PrimaryKey, ForeignKey, HasMany, BelongsTo } from 'sequelize-typescript'
 import { TaxPayer } from './taxPayer.model'
 import { Income } from './income.model'
@@ -9,7 +11,11 @@ import { ResidentialLoan } from './residentialLoan.model'
   tableName: 'tax_return',
   timestamps: false,
 })
-export class TaxReturn extends Model {
+export class TaxReturn extends Model<
+  InferAttributes<TaxReturn>,
+  InferCreationAttributes<TaxReturn>
+> {
+  @ApiProperty()
   @PrimaryKey
   @Column({
     type: DataType.UUID,
@@ -17,19 +23,24 @@ export class TaxReturn extends Model {
   })
   id!: string
 
+  @ApiProperty()
   @ForeignKey(() => TaxPayer)
   @Column({
     type: DataType.UUID,
     allowNull: false,
+    field: 'tax_payer_id',
   })
   taxPayerId!: string
 
+  @ApiProperty()
   @Column({
     type: DataType.SMALLINT,
     allowNull: false,
+    field: 'fiscal_year',
   })
   fiscalYear!: number
 
+  @ApiProperty()
   @Column({
     type: DataType.BOOLEAN,
     allowNull: false,
@@ -38,17 +49,24 @@ export class TaxReturn extends Model {
   completed!: boolean
 
   @BelongsTo(() => TaxPayer)
+  @ApiProperty({ type: () => TaxPayer })
   taxPayer?: TaxPayer
 
-  @HasMany(() => Income)
+  @HasMany(() => Income, 'taxReturnId')
+  @ApiProperty({ type: Income, isArray: true })
   incomes?: Income[]
 
-  @HasMany(() => Assets)
+  @HasMany(() => Assets, 'taxReturnId')
+  @ApiProperty({ type: Assets, isArray: true })
   assets?: Assets[]
 
-  @HasMany(() => Liabilities)
+  @HasMany(() => Liabilities, 'taxReturnId')
+  @ApiProperty({ type: Liabilities, isArray: true })
   liabilities?: Liabilities[]
 
-  @HasMany(() => ResidentialLoan)
+  @HasMany(() => ResidentialLoan, 'taxReturnId')
+  @ApiProperty({ type: ResidentialLoan, isArray: true })
   residentialLoans?: ResidentialLoan[]
 }
+
+export type TaxReturnAttributes = InferAttributes<TaxReturn>
