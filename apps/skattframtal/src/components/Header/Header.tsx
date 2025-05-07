@@ -16,16 +16,19 @@ import {
   ResponsiveSpace,
   Button,
   Link,
+  UserAvatar,
 } from '@island.is/island-ui/core'
 
 interface HeaderProps {
   buttonColorScheme?: ButtonTypes['colorScheme']
+  authenticated?: boolean
 }
 
 const marginLeft = [1, 1, 1, 2] as ResponsiveSpace
 
 export const Header: FC<React.PropsWithChildren<HeaderProps>> = ({
   buttonColorScheme = 'default',
+  authenticated = false,
   children,
 }) => {
   const { colorScheme } = useContext(ColorSchemeContext)
@@ -65,34 +68,58 @@ export const Header: FC<React.PropsWithChildren<HeaderProps>> = ({
                       display={['none', 'none', 'block']}
                     >
                       <Link href="/minarsidur/" skipTab>
-                        <Button
-                          colorScheme={buttonColorScheme}
-                          variant="utility"
-                          icon="person"
-                        >
-                          Mínar síður
-                        </Button>
+                        {authenticated ? (
+                          <Button
+                            colorScheme={buttonColorScheme}
+                            variant="utility"
+                            size="small"
+                          >
+                            <Box
+                              display="flex"
+                              alignItems="center"
+                              columnGap={1}
+                            >
+                              <UserAvatar size="small" username="J þ" />
+                              Jökull Þórðarson
+                            </Box>
+                          </Button>
+                        ) : (
+                          <Button
+                            colorScheme={buttonColorScheme}
+                            variant="utility"
+                            icon="person"
+                          >
+                            Mínar síður
+                          </Button>
+                        )}
                       </Link>
                     </Box>
 
-                    <Box
-                      marginLeft={marginLeft}
-                      display={['none', 'none', 'none', 'block']}
-                    >
-                      <Button colorScheme={buttonColorScheme} variant="utility">
-                        EN
-                      </Button>
-                    </Box>
-                    <Box marginLeft={marginLeft}>
-                      <Button
-                        variant="utility"
-                        icon="menu"
-                        colorScheme={buttonColorScheme}
-                        data-testid="frontpage-burger-button"
+                    {!authenticated && (
+                      <Box
+                        marginLeft={marginLeft}
+                        display={['none', 'none', 'none', 'block']}
                       >
-                        Valmynd
-                      </Button>
-                    </Box>
+                        <Button
+                          colorScheme={buttonColorScheme}
+                          variant="utility"
+                        >
+                          EN
+                        </Button>
+                      </Box>
+                    )}
+                    {!authenticated && (
+                      <Box marginLeft={marginLeft}>
+                        <Button
+                          variant="utility"
+                          icon="menu"
+                          colorScheme={buttonColorScheme}
+                          data-testid="frontpage-burger-button"
+                        >
+                          Valmynd
+                        </Button>
+                      </Box>
+                    )}
                   </Box>
                 </Column>
               </Columns>

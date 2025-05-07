@@ -15,7 +15,13 @@ const CustomApp = ({ Component, pageProps, router }: AppProps) => {
         <Head>
           <title>Welcome to skattframtal!</title>
         </Head>
-        {router.pathname !== '/auth' && <Header />}
+        {router.pathname !== '/auth' && (
+          <Header
+            authenticated={router.pathname.startsWith(
+              '/skattframtol/application',
+            )}
+          />
+        )}
         <main className="app">
           <Component {...pageProps} />
         </main>
