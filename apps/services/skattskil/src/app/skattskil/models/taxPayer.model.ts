@@ -41,6 +41,13 @@ export class TaxPayer extends Model<
   })
   email?: string
 
+  @ApiProperty()
+  @Column({
+    type: DataType.STRING,
+    field: 'bank_account_number',
+  })
+  bankAccountNumber?: string
+
   @HasMany(() => TaxReturn, 'taxPayerId')
   @ApiProperty({ type: TaxReturn, isArray: true })
   taxReturns?: TaxReturn[]

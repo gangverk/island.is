@@ -51,13 +51,6 @@ export class Thjodskra extends Model<
   @ApiProperty()
   @Column({ type: DataType.STRING })
   city!: string
-
-  @ApiProperty()
-  @Column({
-    type: DataType.STRING,
-    field: 'bank_account_number',
-  })
-  bankAccountNumber!: string
 }
 
 export type ThjodskraAttributes = InferAttributes<Thjodskra>
