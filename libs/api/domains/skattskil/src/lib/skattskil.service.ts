@@ -5,14 +5,18 @@ import {
   TaxReturnIcelandicRealEstate,
   TaxReturnVehicle,
   TaxReturnIncome,
+  TaxReturnIncomeInput,
   TaxReturnIncomeCategory,
   TaxReturnResidentialLoan,
   TaxReturnGenericLiability,
 } from './model'
+
+import { SkattskilClientService } from '@island.is/clients/skattskil'
 import { uuid } from 'uuidv4'
 
 @Injectable()
 export class SkattskilService {
+  constructor(private readonly skattskilClientService: SkattskilClientService) {}
   async helloWorld(): Promise<string> {
     return 'Hello world'
   }
@@ -42,7 +46,16 @@ export class SkattskilService {
     return [
       {
         taxReturnID: uuid(),
-        fiscalYear: '2023',
+        fiscalYear: '2025',
+        income: [],
+        realEstateAssets: [],
+        vehicleAssets: [],
+        residentialLoans: [],
+        liabilities: [],
+      },
+      {
+        taxReturnID: uuid(),
+        fiscalYear: '2024',
         income: [],
         realEstateAssets: [],
         vehicleAssets: [],
@@ -50,6 +63,19 @@ export class SkattskilService {
         liabilities: [],
       },
     ]
+  }
+
+  async getTaxReturnById(taxReturnId: string): Promise<TaxReturn> {
+    // Implement your logic to fetch tax return by ID
+    return {
+      taxReturnID: taxReturnId,
+      fiscalYear: '2025',
+      income: [],
+      realEstateAssets: [],
+      vehicleAssets: [],
+      residentialLoans: [],
+      liabilities: [],
+    }
   }
 
   async getIncome(taxReturnId: string): Promise<TaxReturnIncome[]> {
@@ -116,5 +142,28 @@ export class SkattskilService {
         description: 'Credit Card Debt',
       },
     ]
+  }
+
+  async addTaxReturnIncome(taxReturnId: string, input: TaxReturnIncomeInput): Promise<TaxReturnIncome> {
+    // Implement your logic to add taxable income
+    return {
+      ...input,
+      amount: { amount: input.amount },
+      incomeID: uuid(),
+    }
+  }
+
+  async updateTaxReturnIncome(incomeId: string, input: TaxReturnIncomeInput): Promise<TaxReturnIncome> {
+    // Implement your logic to update taxable income
+    return {
+      ...input,
+      amount: { amount: input.amount },
+      incomeID: incomeId,
+    }
+  }
+
+  async deleteTaxReturnIncome(incomeId: string): Promise<boolean> {
+    // Implement your logic to delete taxable income
+    return true
   }
 }

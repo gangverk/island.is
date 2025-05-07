@@ -9,19 +9,15 @@ import {
   Navigation,
 } from '@island.is/island-ui/core'
 import SidebarLayout from '../../../screens/Layouts/SidebarLayout'
-
+import { useQuery } from '@apollo/client'
 import NextLink from 'next/link'
+import { QUERIES } from '../../../graphql/queries'
 
 const navigationItems = [
   {
     title: 'Nýjasta framtal',
     href: '/skattframtol/application',
     active: true,
-  },
-  {
-    title: 'Framtöl í vinnslu',
-    href: '/skattframtol/application/in-progress',
-    active: false,
   },
   {
     title: 'Eldri framtöl',
@@ -31,6 +27,19 @@ const navigationItems = [
 ]
 
 export default function Applications() {
+  const kennitala = '123456789'
+  // Using useQuery with TypedDocumentNode gives us full type safety
+  const { loading, error, data } = useQuery(
+    QUERIES.GET_ALL_TAX_RETURNS_BY_KENNITALA,
+    {
+      variables: { kennitala },
+    },
+  )
+
+  const taxReturns = data?.taxPayerByKennitala?.taxReturns.filter(
+    (taxReturn) => taxReturn.fiscalYear === new Date().getFullYear().toString(),
+  )
+
   return (
     <>
       <SidebarLayout
@@ -138,35 +147,37 @@ export default function Applications() {
             </Text>
           </Stack>
 
-          <Box
-            display="flex"
-            justifyContent="spaceBetween"
-            alignItems="center"
-            padding={3}
-            columnGap={4}
-            borderColor="blue200"
-            border="standard"
-            borderRadius="large"
-            flexWrap="wrap"
-            flexDirection={['column', 'column', 'row']}
-            rowGap={[3, 3, 0]}
-          >
-            <Box>
-              <Text variant="h3">Skattaframtal 2025</Text>
-              <Text>Skattframtal 2025 er núna opið til skila</Text>
+          {loading && <Text>Hleður gögnum...</Text>}
+          {error && <Text>Villa kom upp: {error.message}</Text>}
+
+          {taxReturns?.map((taxReturn) => (
+            <Box
+              key={taxReturn.taxReturnID}
+              display="flex"
+              justifyContent="spaceBetween"
+              alignItems="center"
+              padding={3}
+              columnGap={4}
+              borderColor="blue200"
+              border="standard"
+              borderRadius="large"
+              flexWrap="wrap"
+              flexDirection={['column', 'column', 'row']}
+              rowGap={[3, 3, 0]}
+            >
+              <Box>
+                <Text variant="h3">Skattframtal {taxReturn.fiscalYear}</Text>
+                <Text>
+                  Skattframtal {taxReturn.fiscalYear} er núna opið til skila
+                </Text>
+              </Box>
+              <Box>
+                <Button size="medium" nowrap variant="primary">
+                  Hefja skattframtal
+                </Button>
+              </Box>
             </Box>
-            <Box>
-              <Button
-                size="medium"
-                icon="open"
-                iconType="outline"
-                nowrap
-                variant="primary"
-              >
-                Hefja skattframtal
-              </Button>
-            </Box>
-          </Box>
+          ))}
         </Box>
       </SidebarLayout>
     </>
