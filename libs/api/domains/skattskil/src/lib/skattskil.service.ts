@@ -9,6 +9,7 @@ import {
   TaxReturnIncomeCategory,
   TaxReturnResidentialLoan,
   TaxReturnGenericLiability,
+  MutationSuccess,
 } from './model'
 
 import { SkattskilClientService } from '@island.is/clients/skattskil'
@@ -22,26 +23,46 @@ export class SkattskilService {
   }
 
   async getTaxPayer(id: string): Promise<TaxPayer> {
-    // Implement your logic to fetch the tax payer by id
-    return {
-      taxPayerID: id,
-      kennitala: '1234567890',
-      name: 'John Doe',
-      taxReturns: [],
-    }
+    return await this.skattskilClientService.getTaxPayerById(id).then((taxPayer) => {
+      return {
+        taxPayerID: taxPayer.id,
+        name: taxPayer.name,
+        kennitala: taxPayer.personId,
+        emailAddress: taxPayer.emailAddress,
+        phoneNumber: taxPayer.phoneNumber,
+        bankAccountNumber: taxPayer.bankAccountNumber,
+        taxReturns: [],
+      }
+    })
   }
 
   async getTaxPayerByKennitala(kennitala: string): Promise<TaxPayer> {
     return await this.skattskilClientService.getTaxPayerByKennitala(kennitala).then((taxPayer) => {
       return {
         taxPayerID: taxPayer.id,
+        name: taxPayer.name,
         kennitala: taxPayer.personId,
         emailAddress: taxPayer.emailAddress,
         phoneNumber: taxPayer.phoneNumber,
-        name: taxPayer.name,
+        bankAccountNumber: taxPayer.bankAccountNumber,
         taxReturns: [],
       }
     })
+  }
+
+  async updateTaxPayer(id: string, phoneNumber: string, emailAddress: string, bankAccountNumber: string): Promise<TaxPayer> {
+    const taxPayer = await this.skattskilClientService.updateTaxPayer(id, phoneNumber, emailAddress, bankAccountNumber).then((taxPayer) => {
+      return {
+        taxPayerID: taxPayer.id,
+        name: taxPayer.name,
+        kennitala: taxPayer.personId,
+        emailAddress: taxPayer.emailAddress,
+        phoneNumber: taxPayer.phoneNumber,
+        bankAccountNumber: taxPayer.bankAccountNumber,
+        taxReturns: [],
+      }
+    })
+    return taxPayer
   }
 
   async getTaxReturnsByTaxPayerId(taxPayerId: string): Promise<TaxReturn[]> {
@@ -212,8 +233,11 @@ export class SkattskilService {
     }
   }
 
-  async deleteTaxReturnIncome(incomeId: string): Promise<boolean> {
-    // Implement your logic to delete taxable income
-    return true
+  async deleteTaxReturnIncome(incomeId: string): Promise<MutationSuccess> {
+    return await this.skattskilClientService.deleteTaxReturnIncome(incomeId).then((_) => {
+      return {
+        success: true,
+      }
+    })
   }
 }
