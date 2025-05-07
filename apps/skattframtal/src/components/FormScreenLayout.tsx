@@ -10,6 +10,8 @@ import {
   Section,
 } from '@island.is/island-ui/core'
 
+type NextButtonIcon = 'arrowForward' | 'checkmark'
+
 interface FormScreenLayoutProps {
   currentStep: number
   stepLabels: string[]
@@ -17,6 +19,8 @@ interface FormScreenLayoutProps {
   onNext?: () => void
   onStepChange?: (stepIdx: number) => void
   children: React.ReactNode
+  nextButtonLabel?: string
+  nextButtonIcon?: NextButtonIcon
 }
 
 const FormScreenLayout: React.FC<FormScreenLayoutProps> = ({
@@ -26,6 +30,8 @@ const FormScreenLayout: React.FC<FormScreenLayoutProps> = ({
   onNext,
   onStepChange,
   children,
+  nextButtonLabel = 'Halda áfram',
+  nextButtonIcon = 'arrowForward',
 }) => {
   const handleBack = () => {
     if (onStepChange) {
@@ -101,11 +107,11 @@ const FormScreenLayout: React.FC<FormScreenLayoutProps> = ({
                     Til baka
                   </Button>
                   <Button
-                    icon="arrowForward"
+                    icon={nextButtonIcon}
                     iconType="filled"
                     onClick={handleNext}
                   >
-                    Halda áfram
+                    {nextButtonLabel}
                   </Button>
                 </Box>
               </Box>
@@ -131,11 +137,11 @@ const FormScreenLayout: React.FC<FormScreenLayoutProps> = ({
                     Til baka
                   </Button>
                   <Button
-                    icon="arrowForward"
+                    icon={nextButtonIcon}
                     iconType="filled"
                     onClick={handleNext}
                   >
-                    Halda áfram
+                    {nextButtonLabel}
                   </Button>
                 </Box>
               </Box>

@@ -456,6 +456,12 @@ const DebtsAndInterestPage = () => {
       onNext={() => {
         goToStep(router, String(year), currentStep + 1, stepKeys)
       }}
+      nextButtonLabel={
+        currentStep === stepKeys.length - 1 ? 'Senda inn framtal' : undefined
+      }
+      nextButtonIcon={
+        currentStep === stepKeys.length - 1 ? 'checkmark' : undefined
+      }
     >
       <Text as="h1" variant="h1" marginBottom={6}>
         Skuldir og vaxtagjöld

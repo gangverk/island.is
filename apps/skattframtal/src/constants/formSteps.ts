@@ -6,8 +6,6 @@ export const stepKeys = [
   'income',
   'assetsAndLiabilities',
   'debtsAndInterest',
-  'review',
-  'confirmAndSubmit',
 ] as const
 
 export const stepLabels: Record<typeof stepKeys[number], string> = {
@@ -16,16 +14,14 @@ export const stepLabels: Record<typeof stepKeys[number], string> = {
   income: 'Tekjur',
   assetsAndLiabilities: 'Eignir og skuldir',
   debtsAndInterest: 'Skuldir',
-  review: 'Yfirfara',
-  confirmAndSubmit: 'Staðfesta og senda',
 }
 
-export function goToStep(
+export const goToStep = (
   router: NextRouter,
   year: string,
   stepIdx: number,
   stepKeys: readonly string[],
-) {
+) => {
   if (stepIdx >= 0 && stepIdx < stepKeys.length) {
     const stepKey = stepKeys[stepIdx]
     let path = `/skattframtol/application/${year}/`
