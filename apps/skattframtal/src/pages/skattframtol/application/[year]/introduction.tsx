@@ -1,34 +1,25 @@
 import React from 'react'
 import FormScreenLayout from '../../../../components/FormScreenLayout'
 import { Text } from '@island.is/island-ui/core'
-
-const stepKeys = [
-  'introduction',
-  'personalInfo',
-  'income',
-  'assetsAndLiabilities',
-  'liabilities',
-  'review',
-  'confirmAndSubmit',
-]
-
-const stepLabels: Record<string, string> = {
-  introduction: 'Inngangur',
-  personalInfo: 'Mínar upplýsingar',
-  income: 'Tekjur',
-  assetsAndLiabilities: 'Eignir og skuldir',
-  liabilities: 'Skuldir',
-  review: 'Yfirfara',
-  confirmAndSubmit: 'Staðfesta og senda',
-}
+import { useRouter } from 'next/router'
+import { useParams } from 'next/navigation'
+import { stepKeys, stepLabels, goToStep } from '../../../../constants/formSteps'
 
 export default function Introduction() {
+  const router = useRouter()
+  const params = useParams() as Record<string, string | string[]> | undefined
+  const year = (params?.year ||
+    params?.id ||
+    router.query.year ||
+    router.query.id ||
+    '') as string
+  const currentStepIndex = 0
+
   return (
     <FormScreenLayout
-      currentStep={0}
+      currentStep={currentStepIndex}
       stepLabels={stepKeys.map((key) => stepLabels[key])}
-      onBack={() => undefined}
-      onNext={() => undefined}
+      onStepChange={(stepIdx) => goToStep(router, year, stepIdx, stepKeys)}
     >
       <Text variant="h1" as="h1" marginBottom={4}>
         {stepLabels.introduction}

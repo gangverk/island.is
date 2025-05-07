@@ -13,8 +13,9 @@ import {
 interface FormScreenLayoutProps {
   currentStep: number
   stepLabels: string[]
-  onBack: () => void
-  onNext: () => void
+  onBack?: () => void
+  onNext?: () => void
+  onStepChange?: (stepIdx: number) => void
   children: React.ReactNode
 }
 
@@ -23,8 +24,23 @@ const FormScreenLayout: React.FC<FormScreenLayoutProps> = ({
   stepLabels,
   onBack,
   onNext,
+  onStepChange,
   children,
 }) => {
+  const handleBack = () => {
+    if (onStepChange) {
+      onStepChange(currentStep - 1)
+    } else if (onBack) {
+      onBack()
+    }
+  }
+  const handleNext = () => {
+    if (onStepChange) {
+      onStepChange(currentStep + 1)
+    } else if (onNext) {
+      onNext()
+    }
+  }
   return (
     <Box
       background="purple100"
@@ -81,13 +97,13 @@ const FormScreenLayout: React.FC<FormScreenLayoutProps> = ({
                   justifyContent="spaceBetween"
                   marginTop={14}
                 >
-                  <Button variant="ghost" onClick={onBack}>
+                  <Button variant="ghost" onClick={handleBack}>
                     Til baka
                   </Button>
                   <Button
                     icon="arrowForward"
                     iconType="filled"
-                    onClick={onNext}
+                    onClick={handleNext}
                   >
                     Halda áfram
                   </Button>
@@ -111,13 +127,13 @@ const FormScreenLayout: React.FC<FormScreenLayoutProps> = ({
                   justifyContent="spaceBetween"
                   marginTop={14}
                 >
-                  <Button variant="ghost" onClick={onBack}>
+                  <Button variant="ghost" onClick={handleBack}>
                     Til baka
                   </Button>
                   <Button
                     icon="arrowForward"
                     iconType="filled"
-                    onClick={onNext}
+                    onClick={handleNext}
                   >
                     Halda áfram
                   </Button>
