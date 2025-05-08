@@ -54,7 +54,7 @@ const AssetsAndLiabilitiesPage = () => {
           </Text>
         </Box>
       ),
-      right: formatMoney(asset.estimatedValue),
+      rightValue: formatMoney(asset.estimatedValue),
     }),
   )
 
@@ -99,6 +99,7 @@ const AssetsAndLiabilitiesPage = () => {
         </Text>
       </Box>
     ),
+    rightValue: formatMoney(asset.purchaseAmount),
   }))
 
   const vehicleSection = {
