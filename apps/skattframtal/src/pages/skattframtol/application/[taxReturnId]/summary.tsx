@@ -2,7 +2,7 @@ import { Box, Text, Button, Stack } from '@island.is/island-ui/core'
 import React from 'react'
 import { useRouter } from 'next/router'
 import FormScreenLayout from '../../../../components/FormScreenLayout'
-import { stepKeys, stepLabels, goToStep } from '../../../../constants/formSteps'
+import { stepKeys, stepLabels } from '../../../../constants/formSteps'
 import { useQuery } from '@apollo/client'
 import { QUERIES } from '../../../../graphql/queries'
 
@@ -19,7 +19,6 @@ const dummySummary = {
 
 const SummaryPage = () => {
   const router = useRouter()
-  const taxReturnId = router.query.taxReturnId as string
   const currentStep = stepKeys.indexOf('summary')
   const stepLabelList = stepKeys.map((key) => stepLabels[key])
 
