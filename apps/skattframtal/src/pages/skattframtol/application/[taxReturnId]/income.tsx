@@ -41,7 +41,7 @@ const IncomePage = () => {
     (acc, income) => ({
       amount: acc.amount + income.amount.amount,
     }),
-    { amount: 0 } satisfies Money,
+    { amount: 0 } as Money,
   )
 
   const perDiemSection = income?.filter(
@@ -51,7 +51,7 @@ const IncomePage = () => {
     (acc, income) => ({
       amount: acc.amount + income.amount.amount,
     }),
-    { amount: 0 } satisfies Money,
+    { amount: 0 } as Money,
   )
 
   const grantsSection = income?.filter(
@@ -61,7 +61,7 @@ const IncomePage = () => {
     (acc, income) => ({
       amount: acc.amount + income.amount.amount,
     }),
-    { amount: 0 } satisfies Money,
+    { amount: 0 } as Money,
   )
 
   const tableData = [
@@ -152,7 +152,7 @@ const IncomePage = () => {
           rightValue: formatMoney(income.amount),
           middleValue: '',
         },
-      ] satisfies TableRowData<TaxReturnIncome>[])).flat() || [],
+      ] as TableRowData<TaxReturnIncome>[])).flat() || [],
       sum: grantsSectionSum ? formatMoney(grantsSectionSum) : '0',
     },
   ]

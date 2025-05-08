@@ -147,7 +147,7 @@ describe('Okutaekjaskra Model', () => {
       
       expect(vehicle.purchasePrice).toBe(5000000)
       expect(typeof vehicle.purchasePrice).toBe('number')
-      expect(getDataValueSpy).toHaveBeenCalledWith('purchase_price')
+      expect(getDataValueSpy).toHaveBeenCalledWith('purchasePrice')
     })
     
     it('should handle null values', () => {
