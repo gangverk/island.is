@@ -15,7 +15,8 @@ const Auth = () => {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [rememberPhone, setRememberPhone] = useState(false)
 
-  const handleAuthenticate = () => {
+  const handleAuthenticate = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     router.push('/skattframtol/application')
   }
 
@@ -62,7 +63,7 @@ const Auth = () => {
           </Box>
 
           <Box width="full" marginTop={4}>
-            <form>
+            <form onSubmit={handleAuthenticate}>
               <Box marginBottom={2}>
                 <Input
                   id="phonenumber"
@@ -92,7 +93,7 @@ const Auth = () => {
                   disabled={phoneNumber.length !== 8}
                   variant="primary"
                   fluid
-                  onClick={handleAuthenticate}
+                  type="submit"
                 >
                   Auðkenna
                 </Button>

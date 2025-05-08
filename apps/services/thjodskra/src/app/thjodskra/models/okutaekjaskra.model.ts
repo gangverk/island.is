@@ -39,11 +39,10 @@ export class Okutaekjaskra extends Model<
     type: DataType.BIGINT,
     field: 'purchase_price',
     get() {
-        const rawValue = this.getDataValue('counter')
+      const rawValue = this.getDataValue('purchase_price')
   
-        // Be explicit about the return type since BIGINT can be handled as a string
-        return Number(rawValue)
-      },
+      return Number(rawValue)
+    },
   })
   purchasePrice!: number
 }

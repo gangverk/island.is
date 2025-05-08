@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import TableSection from './TableSection'
 import TableRow from './TableRow'
 import TableSumRow from './TableSumRow'
@@ -6,8 +6,8 @@ import AddLineButton from './AddLineButton'
 import MultiColumnRow from './MultiColumnRow'
 import { BoxProps } from '@island.is/island-ui/core'
 
-export interface TableRowData {
-  id: string
+export interface TableRowData<T> {
+  rawData?: T
   backgroundColor?: BoxProps['background']
   left?: React.ReactNode
   leftValue: string
@@ -22,42 +22,63 @@ export interface TableRowData {
     key?: string | number
   }>
   isNew?: boolean
+  onDelete?: () => void
 }
 
-export interface TableSectionData {
+export interface TableSectionData<T> {
   section: {
     title: string
     sectionNumber: string
   }
-  rows: TableRowData[]
+  defaultRawData?: Partial<T>
+  rows: TableRowData<T>[]
   sum?: string | number
 }
 
-interface TableProps {
-  data: TableSectionData[]
+interface TableProps<T> {
+  data: TableSectionData<T>[]
   onChange?: (values: {
-    id: string
+    rawData: T
     left: string
     middle: string
     right: string
   }) => void
 }
 
-const Table = ({ data, onChange }: TableProps) => {
-  const [sections, setSections] = useState<TableSectionData[]>(data)
+const Table = <T extends Record<string, unknown>>({
+  data,
+  onChange,
+}: TableProps<T>) => {
+  const [sections, setSections] = useState<TableSectionData<T>[]>(data)
+
+  useEffect(() => {
+    setSections(data)
+  }, [data])
+
+  const handleDeleteRow = (sectionIdx: number, rowIdx: number) => {
+    setSections((prev) => {
+      const newSections = [...prev]
+      newSections[sectionIdx].rows.splice(rowIdx, 1)
+      return newSections
+    })
+  }
 
   const handleAddRow = (sectionIdx: number) => {
     setSections((prev) => {
       const newSections = [...prev]
       const rows = [...newSections[sectionIdx].rows]
       rows.push({
+        rawData: {
+          ...(newSections[sectionIdx].defaultRawData as T),
+        },
         left: '',
         leftValue: '',
         rightValue: '',
         middle: '',
         middleValue: '',
         isNew: true,
-        id: '',
+        backgroundColor: 'blue100',
+        onDelete: () => handleDeleteRow(sectionIdx, rows.length - 1),
       })
       newSections[sectionIdx] = { ...newSections[sectionIdx], rows }
       return newSections
@@ -65,10 +86,10 @@ const Table = ({ data, onChange }: TableProps) => {
   }
 
   const handleChange = (
-    id: string,
+    rawData: T | undefined,
     values: { left: string; middle: string; right: string },
   ) => {
-    onChange?.({ id, ...values })
+    onChange?.({ rawData: rawData || ({} as T), ...values })
   }
 
   return (
@@ -99,7 +120,8 @@ const Table = ({ data, onChange }: TableProps) => {
                 hideRightValue={row.hideRightValue}
                 background={row.backgroundColor}
                 isNew={row.isNew}
-                onChange={(values) => handleChange(row.id, values)}
+                onChange={(values) => handleChange(row.rawData, values)}
+                onDelete={row.onDelete}
               />
             )
           })}
