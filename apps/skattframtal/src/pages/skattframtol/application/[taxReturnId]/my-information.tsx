@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import FormScreenLayout from '../../../../components/FormScreenLayout'
-import { Text, Box, Button, Input } from '@island.is/island-ui/core'
+import { Text, Box, Button, Input, toast } from '@island.is/island-ui/core'
 import { useRouter } from 'next/router'
 import { stepKeys, stepLabels, goToStep } from '../../../../constants/formSteps'
 import { useMutation, useQuery } from '@apollo/client'
@@ -31,6 +31,7 @@ export default function MyInformation() {
       onCompleted: () => {
         // Clear edit state after successful update
         setEditField(null)
+        toast.success('Upplýsingar vistaðar')
       },
       refetchQueries: [
         {
