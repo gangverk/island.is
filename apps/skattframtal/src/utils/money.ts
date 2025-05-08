@@ -21,5 +21,5 @@ export const formatMoney = (money: Money) => {
  */
 export const parseMoney = (money: string) => {
   const cleanedMoney = money.replace(/[^0-9]/g, '')
-  return { amount: parseInt(cleanedMoney) * 100 }
+  return { amount: parseInt(cleanedMoney, 10) * 100 }
 }

@@ -18,4 +18,7 @@ describe('parseMoney', () => {
   it('should parse money correctly', () => {
     expect(parseMoney('12.346')).toEqual({ amount: 1234600 })
   })
+  it('should parse money correctly', () => {
+    expect(parseMoney('0')).toEqual({ amount: 0 })
+  })
 })
