@@ -136,6 +136,7 @@ import { PaymentScheduleClientConfig } from '@island.is/clients/payment-schedule
 import { RegulationsClientConfig } from '@island.is/clients/regulations'
 import { RegulationsAdminClientConfig } from '@island.is/clients/regulations-admin'
 import { SkattskilClientConfig } from '@island.is/clients/skattskil'
+import { ThjodskraClientConfig } from '@island.is/clients/thjodskra'
 import { CompanyRegistryConfig } from '@island.is/clients/rsk/company-registry'
 import { SessionsApiClientConfig } from '@island.is/clients/sessions'
 import { PaymentsApiClientConfig } from '@island.is/clients/payments'
@@ -392,6 +393,7 @@ const environment = getConfig
         RegulationsAdminClientConfig,
         RegulationsClientConfig,
         SkattskilClientConfig,
+        ThjodskraClientConfig,
         IdsClientConfig,
         NationalRegistryClientConfig,
         SyslumennClientConfig,

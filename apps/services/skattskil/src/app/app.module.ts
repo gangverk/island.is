@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common'
 import { SequelizeModule } from '@nestjs/sequelize'
+import { ConfigModule } from '@nestjs/config'
 import { LoggingModule } from '@island.is/logging'
 import { SkattskilModule } from './skattskil/skattskil.module'
-import { ThjodskraModule } from './thjodskra/thjodskra.module'
+import { ThjodskraClientConfig } from '@island.is/clients/thjodskra'
 import { SequelizeConfigService } from '../sequelizeConfig.service'
 
 
@@ -11,9 +12,14 @@ import { SequelizeConfigService } from '../sequelizeConfig.service'
     SequelizeModule.forRootAsync({
       useClass: SequelizeConfigService,
     }),
-    LoggingModule, 
+    LoggingModule,
     SkattskilModule,
-    ThjodskraModule
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [
+        ThjodskraClientConfig,
+      ],
+    }),
   ],
 })
 export class AppModule {}

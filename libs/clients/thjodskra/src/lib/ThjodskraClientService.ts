@@ -17,4 +17,16 @@ export class ThjodskraClientService {
       id,
     })
   }
+
+  getPropertyById(id: string) {
+    return this.thjodskraApi.thjodskraControllerGetProperty({
+      id,
+    })
+  }
+
+  getVehicleById(id: string) {
+    return this.thjodskraApi.thjodskraControllerGetVehicle({
+      id,
+    })
+  }
 }
