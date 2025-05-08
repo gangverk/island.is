@@ -6,9 +6,9 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     // Create UUIDs to use for relationships
     const taxPayerId1 = uuidv4();
-    
+
     const taxReturnId1 = uuidv4();
-    
+
     // Seed data for Tax Payer
     await queryInterface.bulkInsert('tax_payer', [
       {
@@ -26,6 +26,18 @@ module.exports = {
         tax_payer_id: taxPayerId1,
         fiscal_year: 2024,
         completed: false,
+      },
+      {
+        id: uuidv4(),
+        tax_payer_id: taxPayerId1,
+        fiscal_year: 2023,
+        completed: true,
+      },
+      {
+        id: uuidv4(),
+        tax_payer_id: taxPayerId1,
+        fiscal_year: 2022,
+        completed: true,
       },
     ]);
 
@@ -101,7 +113,7 @@ module.exports = {
         tax_return_id: taxReturnId1,
         description: 'Aukalán',
         interest_paid: 8600000,
-        amount_remaining: 98000000 
+        amount_remaining: 98000000
       },
       {
         id: uuidv4(),
