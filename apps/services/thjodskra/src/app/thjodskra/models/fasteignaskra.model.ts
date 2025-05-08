@@ -39,11 +39,10 @@ export class Fasteignaskra extends Model<
     type: DataType.BIGINT,
     allowNull: false,
     get() {
-        const rawValue = this.getDataValue('counter')
+      const rawValue = this.getDataValue('appraisal')
   
-        // Be explicit about the return type since BIGINT can be handled as a string
-        return Number(rawValue)
-      },
+      return Number(rawValue)
+    },
   })
   appraisal!: number
 }

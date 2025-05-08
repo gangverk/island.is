@@ -316,16 +316,38 @@ export class SkattskilService {
   // Get Residential Loans by TaxReturn ID
   async getResidentialLoansByTaxReturnId(taxReturnId: string): Promise<ResidentialLoanDTO[]> {
     const loans = await this.residentialLoanModel.findAll({ where: { taxReturnId } })
-    return loans.map((loan) => ({
-      id: loan.id,
-      taxReturnId: loan.taxReturnId,
-      assetId: loan.assetId,
-      lenderId: loan.lenderId,
-      issueDate: loan.issueDate,
-      remainingTermYears: loan.remainingTermYears,
-      interestPaidInFiscalYear: loan.interestPaidInFiscalYear,
-      principalPaidInFiscalYear: loan.principalPaidInFiscalYear,
-      remainingPrincipal: loan.remainingPrincipal,
-    }))
+    // FIXME: refactor to use allSettled
+    const realEstates = await Promise.all(loans.map(async (loan) => (
+      await this.thjodskra.getPropertyById(loan.assetId)
+    )))
+    const lenders = await Promise.all(loans.map(async (loan) => (
+      await this.thjodskra.getPersonById(loan.lenderId)
+    )))
+
+    return loans.map(loan => {
+      const property = realEstates.find((property) => property.propertyNumber === loan.assetId);
+      const lender = lenders.find((lender) => lender.kennitala === loan.lenderId);
+    
+      if (!property || !lender) {
+        return null;
+      }
+    
+      return {
+        id: loan.id,
+        taxReturnId: loan.taxReturnId,
+        purchaseYear: loan.purchaseYear.toString(),
+        address: property.address,
+        loanId: loan.loanId,
+        lenderId: loan.lenderId,
+        lenderName: lender.name,
+        issueDate: loan.issueDate,
+        remainingTermYears: loan.remainingTermYears.toString(),
+        totalAmountPaidInFiscalYear: loan.interestPaidInFiscalYear + loan.principalPaidInFiscalYear,
+        interestPaidInFiscalYear: loan.interestPaidInFiscalYear,
+        principalPaidInFiscalYear: loan.principalPaidInFiscalYear,
+        remainingPrincipal: loan.remainingPrincipal,
+      };
+    })
+    .filter((loan): loan is ResidentialLoanDTO => loan !== null);
   }
 }
