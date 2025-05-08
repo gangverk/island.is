@@ -144,6 +144,7 @@ export default function MyInformation() {
                 value={data.taxPayerByKennitala.kennitala}
                 action={null}
                 isLast={false}
+                inputType="number"
               />
               <TableRow
                 label="Lögheimili"
@@ -168,6 +169,7 @@ export default function MyInformation() {
                 isEditing={editField === 'emailAddress'}
                 editValue={fieldValue}
                 onEditValueChange={setFieldValue}
+                inputType="email"
                 action={
                   editField === 'emailAddress' ? (
                     renderEditButtons()
@@ -198,6 +200,7 @@ export default function MyInformation() {
                 isEditing={editField === 'phoneNumber'}
                 editValue={fieldValue}
                 onEditValueChange={setFieldValue}
+                inputType="tel"
                 action={
                   editField === 'phoneNumber' ? (
                     renderEditButtons()
@@ -228,6 +231,7 @@ export default function MyInformation() {
                 isEditing={editField === 'bankAccountNumber'}
                 editValue={fieldValue}
                 onEditValueChange={setFieldValue}
+                inputType="number"
                 action={
                   editField === 'bankAccountNumber' ? (
                     renderEditButtons()
@@ -260,13 +264,14 @@ export default function MyInformation() {
 
 interface TableRowProps {
   label: string
-  value: string
-  action: React.ReactNode
+  value: string | null
+  action?: React.ReactNode
   isLast: boolean
   isEditing?: boolean
   editValue?: string
   onEditValueChange?: (value: string) => void
   loading?: boolean
+  inputType?: 'number' | 'text' | 'email' | 'tel' | 'password'
 }
 
 const TableRow = ({
@@ -278,6 +283,7 @@ const TableRow = ({
   editValue,
   onEditValueChange,
   loading,
+  inputType,
 }: TableRowProps) => {
   const cellStyle = {
     borderBottom: isLast ? undefined : '1px solid #F2F7FF',
@@ -307,6 +313,7 @@ const TableRow = ({
             onChange={(e) => onEditValueChange(e.target.value)}
             disabled={loading}
             size="sm"
+            {...(inputType ? { type: inputType } : {})}
           />
         ) : (
           <Text>{value}</Text>
