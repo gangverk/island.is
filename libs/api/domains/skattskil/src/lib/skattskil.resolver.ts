@@ -9,12 +9,6 @@ import {
 @Resolver()
 export class SkattskilResolver {
   constructor(private skattskilService: SkattskilService) {}
-
-  @Query(() => String)
-  async helloWorld(
-  ): Promise<string> {
-    return this.skattskilService.helloWorld()
-  }
 }
 
 @Resolver(() => TaxPayer)
