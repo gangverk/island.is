@@ -1,23 +1,27 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import TableSection from './TableSection'
 import TableRow from './TableRow'
 import TableSumRow from './TableSumRow'
 import AddLineButton from './AddLineButton'
-import AnimatedTableRowWrapper from './AnimatedTableRowWrapper'
 import MultiColumnRow from './MultiColumnRow'
 import { BoxProps } from '@island.is/island-ui/core'
 
 export interface TableRowData {
+  id: string
   backgroundColor?: BoxProps['background']
   left?: React.ReactNode
-  right?: React.ReactNode
+  leftValue: string
+  rightValue: string
+  hideRightValue?: boolean
   middle?: React.ReactNode
+  middleValue: string
   multi?: Array<{
     content: React.ReactNode
     width?: string
     textAlign?: 'left' | 'center' | 'right'
     key?: string | number
   }>
+  isNew?: boolean
 }
 
 export interface TableSectionData {
@@ -31,26 +35,40 @@ export interface TableSectionData {
 
 interface TableProps {
   data: TableSectionData[]
-  onChange?: (data: TableSectionData[]) => void
+  onChange?: (values: {
+    id: string
+    left: string
+    middle: string
+    right: string
+  }) => void
 }
 
 const Table = ({ data, onChange }: TableProps) => {
   const [sections, setSections] = useState<TableSectionData[]>(data)
-  const [animatingRow, setAnimatingRow] = useState<{
-    sectionIdx: number
-    rowIdx: number
-  } | null>(null)
 
   const handleAddRow = (sectionIdx: number) => {
     setSections((prev) => {
       const newSections = [...prev]
       const rows = [...newSections[sectionIdx].rows]
-      rows.push({ left: '', right: '' })
+      rows.push({
+        left: '',
+        leftValue: '',
+        rightValue: '',
+        middle: '',
+        middleValue: '',
+        isNew: true,
+        id: '',
+      })
       newSections[sectionIdx] = { ...newSections[sectionIdx], rows }
-      setAnimatingRow({ sectionIdx, rowIdx: rows.length - 1 })
-      if (onChange) onChange(newSections)
       return newSections
     })
+  }
+
+  const handleChange = (
+    id: string,
+    values: { left: string; middle: string; right: string },
+  ) => {
+    onChange?.({ id, ...values })
   }
 
   return (
@@ -62,10 +80,6 @@ const Table = ({ data, onChange }: TableProps) => {
             sectionNumber={section.section.sectionNumber}
           />
           {section.rows.map((row, rIdx) => {
-            const isNew =
-              animatingRow &&
-              animatingRow.sectionIdx === sectionIdx &&
-              animatingRow.rowIdx === rIdx
             if (row.multi) {
               return (
                 <MultiColumnRow
@@ -75,17 +89,18 @@ const Table = ({ data, onChange }: TableProps) => {
               )
             }
             return (
-              <AnimatedTableRowWrapper
+              <TableRow
                 key={`${section.section.sectionNumber}-${rIdx}`}
-                animate={!!isNew}
-              >
-                <TableRow
-                  left={row.left}
-                  middle={row.middle}
-                  right={row.right}
-                  background={row.backgroundColor}
-                />
-              </AnimatedTableRowWrapper>
+                left={row.left}
+                leftValue={row.leftValue}
+                middle={row.middle}
+                middleValue={row.middleValue}
+                rightValue={row.rightValue}
+                hideRightValue={row.hideRightValue}
+                background={row.backgroundColor}
+                isNew={row.isNew}
+                onChange={(values) => handleChange(row.id, values)}
+              />
             )
           })}
           {section.sum !== undefined && section.sum !== null && (

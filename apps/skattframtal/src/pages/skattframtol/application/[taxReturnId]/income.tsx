@@ -4,13 +4,15 @@ import { useRouter } from 'next/router'
 import FormScreenLayout from '../../../../components/FormScreenLayout'
 import Table, { TableRowData } from '../../../../components/table/Table'
 import { stepKeys, stepLabels, goToStep } from '../../../../constants/formSteps'
-import { useQuery } from '@apollo/client'
+import { useApolloClient, useMutation, useQuery } from '@apollo/client'
 import { QUERIES } from '../../../../graphql/queries'
 import { Money, TaxReturnIncomeCategory } from '../../../../graphql/schema'
-import { formatMoney } from '../../../../utils/money'
+import { formatMoney, parseMoney } from '../../../../utils/money'
+import { MUTATIONS } from '../../../../graphql/mutations'
 
 const IncomePage = () => {
   const router = useRouter()
+  const client = useApolloClient()
   const taxReturnId = router.query.taxReturnId as string
   const currentStep = stepKeys.indexOf('income')
   const stepLabelList = stepKeys.map((key) => stepLabels[key])
@@ -22,6 +24,15 @@ const IncomePage = () => {
   } = useQuery(QUERIES.GET_TAX_PAYER_INCOME_BY_TAX_RETURN_ID, {
     variables: { taxReturnId },
     skip: !taxReturnId,
+  })
+
+  console.log('incomeData', incomeData)
+
+  const [updateIncome] = useMutation(MUTATIONS.UPDATE_TAX_RETURN_INCOME, {
+    refetchQueries: [QUERIES.GET_TAX_PAYER_INCOME_BY_TAX_RETURN_ID],
+  })
+  const [addIncome] = useMutation(MUTATIONS.ADD_TAX_RETURN_INCOME, {
+    refetchQueries: [QUERIES.GET_TAX_PAYER_INCOME_BY_TAX_RETURN_ID],
   })
 
   const income = incomeData?.taxReturnById.income
@@ -36,8 +47,10 @@ const IncomePage = () => {
     { amount: 0 } satisfies Money,
   )
 
+  console.log('incomeSectionSum', incomeSectionSum)
+
   const perDiemSection = income?.filter(
-    (income) => income.category === TaxReturnIncomeCategory.PerDiem,
+    (income) => income.category === TaxReturnIncomeCategory.Benefit,
   )
   const perDiemSectionSum = perDiemSection?.reduce(
     (acc, income) => ({
@@ -63,6 +76,7 @@ const IncomePage = () => {
         sectionNumber: '2.1',
       },
       rows: incomeSection?.map((income) => ({
+        id: income.incomeID,
         left: (
           <Box>
             <Box display="flex" alignItems="center">
@@ -73,7 +87,9 @@ const IncomePage = () => {
             </Text>
           </Box>
         ),
-        right: formatMoney(income.amount),
+        leftValue: income.payer,
+        rightValue: formatMoney(income.amount),
+        middleValue: income.description,
       })) || [],
       sum: incomeSectionSum ? formatMoney(incomeSectionSum) : '0',
     },
@@ -83,6 +99,7 @@ const IncomePage = () => {
         sectionNumber: '2.2',
       },
       rows: perDiemSection?.map((income) => ({
+        id: income.incomeID,
         left: (
           <Box>
             <Box display="flex" alignItems="center">
@@ -93,7 +110,9 @@ const IncomePage = () => {
             </Text>
           </Box>
           ),
-          right: formatMoney(income.amount),
+        leftValue: income.payer,
+        rightValue: formatMoney(income.amount),
+        middleValue: income.description,
       })) || [],
       sum: perDiemSectionSum ? formatMoney(perDiemSectionSum) : '0',
     },
@@ -106,26 +125,61 @@ const IncomePage = () => {
       rows: grantsSection?.map((income) => (
       [
         {
+          id: income.incomeID,
           backgroundColor: 'purple100',
+          leftValue: income.payer,
           left: (
             <Box>
               <Text>{income.payer}</Text>
             </Box>
           ),
-          right: null,
+          rightValue: '',
+          hideRightValue: true,
+          middleValue: '',
         },
         {
+          id: income.incomeID,
           left: (
             <Box display="flex" alignItems="center">
               <Text>{income.description}</Text>
             </Box>
           ),
-          right: formatMoney(income.amount),
+          leftValue: '',
+          rightValue: formatMoney(income.amount),
+          middleValue: '',
         },
       ] satisfies TableRowData[])).flat() || [],
       sum: grantsSectionSum ? formatMoney(grantsSectionSum) : '0',
     },
   ]
+
+  const handleChange = async (values: { id: string, left: string; middle: string; right: string }) => {
+    if (values.id) {
+      await updateIncome({
+        variables: {
+          incomeId: values.id,
+          input: {
+            amount: parseMoney(values.right),
+            category: TaxReturnIncomeCategory.Salary,
+            description: values.middle,
+            payer: values.left,
+          },
+        },
+      })
+    } else {
+      await addIncome({
+        variables: {
+          taxReturnId,
+          input: {
+            amount: parseMoney(values.right),
+            category: TaxReturnIncomeCategory.Benefit,
+            description: values.middle,
+            payer: values.left,
+          },
+        },
+      })
+    }
+  }
 
   return (
     <FormScreenLayout
@@ -140,7 +194,7 @@ const IncomePage = () => {
       </Text>
       {loading && <Text>Hleður gögnum...</Text>}
       {error && <Text>Villa kom upp: {error.message}</Text>}
-      {incomeData && <Table data={tableData} />}
+      {incomeData && <Table key={incomeSectionSum?.amount} data={tableData} onChange={handleChange} />}
     </FormScreenLayout>
   )
 }
