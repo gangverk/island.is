@@ -134,7 +134,7 @@ export default function Applications() {
 
         <Box display="flex" flexDirection="column" rowGap={8}>
           <Stack space={4}>
-            <Text variant="h1" as="h1">
+            <Text variant="h3" as="h1">
               Nýjasta framtal
             </Text>
 

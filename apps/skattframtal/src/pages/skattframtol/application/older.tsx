@@ -136,7 +136,7 @@ export default function ApplicationsOlder() {
 
         <Box display="flex" flexDirection="column" marginBottom={8}>
           <Stack space={4}>
-            <Text variant="h1" as="h1">
+            <Text variant="h3" as="h1">
               Eldri framtöl
             </Text>
 
