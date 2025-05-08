@@ -50,9 +50,7 @@ const SummaryPage = () => {
           <Text color="blue400" fontWeight="semiBold" marginBottom={1}>
             {dummySummary.date}
           </Text>
-          <Text color="dark300" marginBottom={2}>
-            Móttökunúmer: {dummySummary.receipt}
-          </Text>
+          <Text marginBottom={2}>Móttökunúmer: {dummySummary.receipt}</Text>
           <Text marginBottom={4}>{dummySummary.status}</Text>
           <Box
             borderBottomWidth="standard"
