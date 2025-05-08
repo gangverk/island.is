@@ -35,12 +35,6 @@ export class SkattskilClientService {
     })
   }
 
-  getIncomeByTaxReturnId(taxReturnId: string) {
-    return this.skattskilApi.skattskilControllerGetIncomeByTaxReturnId({
-      taxReturnId,
-    })
-  }
-
   getTaxReturnById(id: string) {
     return this.skattskilApi.skattskilControllerGetTaxReturnById({
       id,
@@ -50,6 +44,12 @@ export class SkattskilClientService {
   getTaxReturnsByTaxPayerId(taxPayerId: string) {
     return this.skattskilApi.skattskilControllerGetTaxReturnsByTaxPayerId({
       taxPayerId,
+    })
+  }
+
+  getIncomeByTaxReturnId(taxReturnId: string) {
+    return this.skattskilApi.skattskilControllerGetIncomeByTaxReturnId({
+      taxReturnId,
     })
   }
 
@@ -122,6 +122,30 @@ export class SkattskilClientService {
   deleteTaxReturnIncome(incomeId: string) {
     return this.skattskilApi.skattskilControllerDeleteIncome({
       id: incomeId,
+    })
+  }
+
+  getRealEstateAssetsByTaxReturnId(taxReturnId: string) {
+    return this.skattskilApi.skattskilControllerGetRealEstateAssetsByTaxReturnId({
+      taxReturnId,
+    })
+  }
+
+  getVehicleAssetsByTaxReturnId(taxReturnId: string) {
+    return this.skattskilApi.skattskilControllerGetVehicleAssetsByTaxReturnId({
+      taxReturnId,
+    })
+  }
+
+  getResidentialLoansByTaxReturnId(taxReturnId: string) {
+    return this.skattskilApi.skattskilControllerGetResidentialLoansByTaxReturnId({
+      taxReturnId,
+    })
+  }
+
+  getLiabilitiesByTaxReturnId(taxReturnId: string) {
+    return this.skattskilApi.skattskilControllerGetLiabilitiesByTaxReturnId({
+      taxReturnId,
     })
   }
 }

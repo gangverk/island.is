@@ -2,8 +2,12 @@ import { gql, TypedDocumentNode } from '@apollo/client'
 import {
   AddTaxReturnIncomeMutation,
   AddTaxReturnIncomeMutationVariables,
+  UpdateTaxPayerMutation,
+  UpdateTaxPayerMutationVariables,
   UpdateTaxReturnIncomeMutation,
   UpdateTaxReturnIncomeMutationVariables,
+  // UpdateTaxPayerMutation,
+  // UpdateTaxPayerMutationVariables,
 } from './schema'
 
 const ADD_TAX_RETURN_INCOME: TypedDocumentNode<
@@ -34,7 +38,32 @@ const UPDATE_TAX_RETURN_INCOME: TypedDocumentNode<
   }
 `
 
+const UPDATE_TAX_PAYER: TypedDocumentNode<
+  UpdateTaxPayerMutation,
+  UpdateTaxPayerMutationVariables
+> = gql`
+  mutation UpdateTaxPayer(
+    $id: String!
+    $phoneNumber: String!
+    $emailAddress: String!
+    $bankAccountNumber: String!
+  ) {
+    updateTaxPayer(
+      id: $id
+      phoneNumber: $phoneNumber
+      emailAddress: $emailAddress
+      bankAccountNumber: $bankAccountNumber
+    ) {
+      bankAccountNumber
+      emailAddress
+      phoneNumber
+      taxPayerID
+    }
+  }
+`
+
 export const MUTATIONS = {
   ADD_TAX_RETURN_INCOME,
   UPDATE_TAX_RETURN_INCOME,
+  UPDATE_TAX_PAYER,
 }
