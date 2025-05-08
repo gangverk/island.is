@@ -44,8 +44,6 @@ const IncomePage = () => {
     { amount: 0 } satisfies Money,
   )
 
-  console.log('incomeSectionSum', incomeSectionSum)
-
   const perDiemSection = income?.filter(
     (income) => income.category === TaxReturnIncomeCategory.Benefit,
   )
