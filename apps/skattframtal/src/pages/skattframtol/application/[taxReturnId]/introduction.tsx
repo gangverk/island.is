@@ -16,6 +16,7 @@ export default function Introduction() {
       onStepChange={(stepIdx) =>
         goToStep(router, taxReturnId, stepIdx, stepKeys)
       }
+      onGoBack={() => router.push('/skattframtol/application')}
       secondaryButton={null}
     >
       <Text variant="h1" as="h1" marginBottom={4}>

@@ -14,6 +14,7 @@ interface FormScreenLayoutProps {
   currentStep: number
   stepLabels: string[]
   onStepChange: (stepIdx: number) => void
+  onGoBack?: () => void
   children: React.ReactNode
   primaryButton?: React.ReactNode
   secondaryButton?: React.ReactNode
@@ -23,6 +24,7 @@ const FormScreenLayout: React.FC<FormScreenLayoutProps> = ({
   currentStep,
   stepLabels,
   onStepChange,
+  onGoBack,
   children,
   primaryButton,
   secondaryButton,
@@ -105,7 +107,7 @@ const FormScreenLayout: React.FC<FormScreenLayoutProps> = ({
               >
                 <Box flexGrow={1}>{children}</Box>
                 <FormActionBar
-                  onBack={handleBack}
+                  onBack={onGoBack ?? handleBack}
                   onNext={handleNext}
                   primaryButton={primaryButton}
                   secondaryButton={secondaryButton}
