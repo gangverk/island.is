@@ -3,13 +3,9 @@ import { TestApp, testServer, useDatabase } from '@island.is/testing/nest'
 import { AppModule } from '../app.module'
 import { ThjodskraService } from './thjodskra.service'
 import { SequelizeConfigService } from '../../sequelizeConfig.service'
-import { Sequelize } from 'sequelize-typescript'
-import { Type } from '@nestjs/common'
-import { getConnectionToken, getModelToken } from '@nestjs/sequelize'
 
 describe('ThjodskraController', () => {
   let app: TestApp
-  let sequelize: Sequelize
   let server: request.SuperTest<request.Test>
   let thjodskraService: ThjodskraService
 
@@ -21,7 +17,6 @@ describe('ThjodskraController', () => {
         useDatabase({ type: 'postgres', provider: SequelizeConfigService }),
       ],
     })
-    sequelize = await app.resolve(getConnectionToken() as Type<Sequelize>)
     server = request(app.getHttpServer())
     thjodskraService = app.get<ThjodskraService>(ThjodskraService)
 
@@ -69,6 +64,26 @@ describe('ThjodskraController', () => {
         city: 'Reykjavik',
       })
     })
+
+    it('should return 404 when person is not found', async () => {
+      jest.spyOn(thjodskraService, 'getPersonById').mockResolvedValueOnce(null)
+      
+      const response = await server.get('/v1/thjodskra/person/1234567890')
+      
+      expect(response.status).toBe(404)
+      expect(response.body.message).toContain('not found')
+    })
+
+    it('should return 500 when an unexpected error occurs', async () => {
+      jest.spyOn(thjodskraService, 'getPersonById').mockImplementationOnce(() => {
+        throw new Error('Database connection error')
+      })
+      
+      const response = await server.get('/v1/thjodskra/person/1234567890')
+      
+      expect(response.status).toBe(500)
+      expect(response.body.message).toBe('An unexpected error occurred')
+    })
   })
 
   describe('GET /thjodskra/property/:id', () => {
@@ -82,6 +97,26 @@ describe('ThjodskraController', () => {
         appraisal: 50000000,
       })
     })
+
+    it('should return 404 when property is not found', async () => {
+      jest.spyOn(thjodskraService, 'getPropertyById').mockResolvedValueOnce(null)
+      
+      const response = await server.get('/v1/thjodskra/property/nonexistent')
+      
+      expect(response.status).toBe(404)
+      expect(response.body.message).toContain('not found')
+    })
+
+    it('should return 500 when an unexpected error occurs', async () => {
+      jest.spyOn(thjodskraService, 'getPropertyById').mockImplementationOnce(() => {
+        throw new Error('Database connection error')
+      })
+      
+      const response = await server.get('/v1/thjodskra/property/PROP123')
+      
+      expect(response.status).toBe(500)
+      expect(response.body.message).toBe('An unexpected error occurred')
+    })
   })
 
   describe('GET /thjodskra/vehicle/:id', () => {
@@ -94,6 +129,26 @@ describe('ThjodskraController', () => {
         purchaseYear: "2020",
         purchasePrice: 3000000,
       })
+    })
+
+    it('should return 404 when vehicle is not found', async () => {
+      jest.spyOn(thjodskraService, 'getVehicleById').mockResolvedValueOnce(null)
+      
+      const response = await server.get('/v1/thjodskra/vehicle/nonexistent')
+      
+      expect(response.status).toBe(404)
+      expect(response.body.message).toContain('not found')
+    })
+
+    it('should return 500 when an unexpected error occurs', async () => {
+      jest.spyOn(thjodskraService, 'getVehicleById').mockImplementationOnce(() => {
+        throw new Error('Database connection error')
+      })
+      
+      const response = await server.get('/v1/thjodskra/vehicle/ABC123')
+      
+      expect(response.status).toBe(500)
+      expect(response.body.message).toBe('An unexpected error occurred')
     })
   })
 })

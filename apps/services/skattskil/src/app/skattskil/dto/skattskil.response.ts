@@ -118,16 +118,28 @@ export class ResidentialLoanDTO {
   taxReturnId!: string
 
   @ApiProperty()
-  assetId!: string
+  purchaseYear!: string
+
+  @ApiProperty()
+  address!: string
+
+  @ApiProperty()
+  loanId!: string
 
   @ApiProperty()
   lenderId!: string
 
   @ApiProperty()
+  lenderName!: string
+
+  @ApiProperty()
   issueDate!: Date
 
   @ApiProperty()
-  remainingTermYears!: number
+  remainingTermYears!: string
+
+  @ApiProperty()
+  totalAmountPaidInFiscalYear!: number
 
   @ApiProperty()
   interestPaidInFiscalYear!: number

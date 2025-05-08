@@ -10,9 +10,17 @@ module.exports = {
         id: uuidv4(),
         name: 'Jökull Þórðarson',
         kennitala_id: '1203894569',
-        legal_domicile: 'Reykjavik',
+        legal_domicile: 'Bláfjallagata 12',
         postal_code: '105',
-        city: 'Reykjavik',
+        city: 'Reykjavík',
+      },
+      {
+        id: uuidv4(),
+        name: 'Íslandsbanki hf',
+        kennitala_id: '4910080160',
+        legal_domicile: 'Hagasmára 3',
+        postal_code: '201',
+        city: 'Kópavogi',
       },
     ]);
 

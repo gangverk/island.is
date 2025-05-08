@@ -1,5 +1,5 @@
 import { Box, Button, Input, useBreakpoint } from '@island.is/island-ui/core'
-import { useState, type ReactNode } from 'react'
+import { useState, useEffect, type ReactNode } from 'react'
 import type { BoxProps } from '@island.is/island-ui/core'
 
 interface TableRowProps {
@@ -14,6 +14,7 @@ interface TableRowProps {
   className?: string
   isNew?: boolean
   onChange?: (values: { left: string; middle: string; right: string }) => void
+  onDelete?: () => void
 }
 
 const TableRow = ({
@@ -28,6 +29,7 @@ const TableRow = ({
   className,
   isNew,
   onChange,
+  onDelete,
 }: TableRowProps) => {
   const { md } = useBreakpoint()
   const isMobile = !md
@@ -37,11 +39,48 @@ const TableRow = ({
     right: rightValue,
   })
 
+  const [errors, setErrors] = useState({
+    left: false,
+    middle: false,
+    right: false,
+  })
+
+  useEffect(() => {
+    setValues({
+      left: leftValue,
+      middle: middleValue,
+      right: rightValue,
+    })
+  }, [leftValue, middleValue, rightValue])
+
   const handleChange = (key: keyof typeof values, value: string) => {
+    if (key === 'right') {
+      // Remove all non-numeric characters
+      value = value.replace(/[^0-9]/g, '')
+    }
     setValues((prev) => ({ ...prev, [key]: value }))
   }
 
   const handleBlur = () => {
+    if (values.right === '') {
+      setValues((prev) => ({ ...prev, right: '0' }))
+    }
+    if (!values.left) {
+      return
+    }
+    onChange?.(values)
+  }
+
+  const handleNew = () => {
+    setErrors((prev) => ({ ...prev, left: false, right: false }))
+    if (values.right === '') {
+      setErrors((prev) => ({ ...prev, right: true }))
+      return
+    }
+    if (!values.left) {
+      setErrors((prev) => ({ ...prev, left: true }))
+      return
+    }
     onChange?.(values)
   }
 
@@ -63,34 +102,52 @@ const TableRow = ({
       rowGap={isMobile ? 1 : undefined}
     >
       {isNew ? (
-        <Box background="blue100">
-          <Input
-            name={`table-row-${left}`}
-            id={`table-row-${left}`}
-            value={values.left}
-            onChange={(e) => handleChange('left', e.target.value)}
-            rightAlign
-            size="sm"
-          />
-          <Input
-            name={`table-row-${middle}`}
-            id={`table-row-${middle}`}
-            value={values.middle}
-            onChange={(e) => handleChange('middle', e.target.value)}
-            rightAlign
-            size="sm"
-          />
-          <Input
-            name={`table-row-${rightValue}`}
-            id={`table-row-${rightValue}`}
-            value={values.right}
-            onChange={(e) => handleChange('right', e.target.value)}
-            rightAlign
-            size="sm"
-          />
-          <Button variant="text" size="small" onClick={handleBlur}>
-            Bæta við
-          </Button>
+        <Box display="flex" flexDirection="column" rowGap={2} paddingRight={2}>
+          <Box
+            display="flex"
+            flexDirection={['column', 'column', 'column', 'row']}
+            rowGap={1}
+            columnGap={1}
+            width="full"
+          >
+            <Input
+              name={`table-row-${left}`}
+              id={`table-row-${left}`}
+              value={values.left}
+              onChange={(e) => handleChange('left', e.target.value)}
+              label="Greiðandi"
+              size="sm"
+              required
+              errorMessage={errors.left ? 'Greiðandi er krafist' : undefined}
+            />
+            <Input
+              name={`table-row-${middle}`}
+              id={`table-row-${middle}`}
+              value={values.middle}
+              onChange={(e) => handleChange('middle', e.target.value)}
+              label="Lýsing"
+              size="sm"
+            />
+            <Input
+              name={`table-row-${rightValue}`}
+              id={`table-row-${rightValue}`}
+              value={values.right}
+              onChange={(e) => handleChange('right', e.target.value)}
+              label="Upphæð"
+              size="sm"
+              type="number"
+              required
+              errorMessage={errors.right ? 'Upphæð er krafist' : undefined}
+            />
+          </Box>
+          <Box display="flex" columnGap={2}>
+            <Button variant="ghost" size="small" onClick={onDelete}>
+              Hætta við
+            </Button>
+            <Button variant="primary" size="small" onClick={handleNew}>
+              Bæta við
+            </Button>
+          </Box>
         </Box>
       ) : (
         <>

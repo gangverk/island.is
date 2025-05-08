@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { FC, useContext } from 'react'
 
 import {
@@ -70,7 +69,7 @@ export const Header: FC<React.PropsWithChildren<HeaderProps>> = ({
                       marginLeft={marginLeft}
                       display={['none', 'none', 'block']}
                     >
-                      <Link href="#" skipTab>
+                      <Link href="/skattframtol/application" skipTab>
                         {authenticated ? (
                           <Button
                             colorScheme={buttonColorScheme}
