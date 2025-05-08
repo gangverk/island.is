@@ -141,21 +141,20 @@ export class SkattskilService {
   }
 
   async getResidentialLoans(taxReturnId: string): Promise<TaxReturnResidentialLoan[]> {
-    // Implement your logic to fetch residential loans by tax return ID
-    return [
-      {
-        residentialLoanID: uuid(),
-        amountPaidInFiscalYear: { amount: 300000 },
-        yearOfPurchase: '2018',
-        address: '456 Elm St',
-        dateOfIssuance: '2018-03-01',
-        interestPaidInFiscalYear: { amount: 1500 },
-        lenderKennitala: "0987654321",
-        lenderName: "Lender A",
-        loanNumber: "45678123",
-        remainingTermYears: "15",
-      },
-    ]
+    return await this.skattskilClientService.getResidentialLoansByTaxReturnId(taxReturnId).then((residentialLoans) => {
+      return residentialLoans.map((residentialLoan) => ({
+        residentialLoanID: residentialLoan.id,
+        amountPaidInFiscalYear: { amount: residentialLoan.totalAmountPaidInFiscalYear },
+        yearOfPurchase: residentialLoan.purchaseYear,
+        address: residentialLoan.address,
+        dateOfIssuance: residentialLoan.issueDate.toISOString().slice(0,10),
+        interestPaidInFiscalYear: { amount: residentialLoan.interestPaidInFiscalYear },
+        lenderKennitala: residentialLoan.lenderId,
+        lenderName: residentialLoan.lenderName,
+          loanNumber: residentialLoan.loanId,
+        remainingTermYears: residentialLoan.remainingTermYears,
+      }))
+    })
   }
 
   async getLiabilities(taxReturnId: string): Promise<TaxReturnGenericLiability[]> {
