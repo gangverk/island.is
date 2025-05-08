@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 import FormScreenLayout from '../../../../components/FormScreenLayout'
 import { Text, Box, Button, Input, toast } from '@island.is/island-ui/core'
 import { useRouter } from 'next/router'
@@ -6,6 +7,11 @@ import { stepKeys, stepLabels, goToStep } from '../../../../constants/formSteps'
 import { useMutation, useQuery } from '@apollo/client'
 import { QUERIES } from '../../../../graphql/queries'
 import { MUTATIONS } from '../../../../graphql/mutations'
+import {
+  formatKennitala,
+  formatPhoneNumber,
+  formatBankAccountNumber,
+} from '../../../../utils/formatters'
 
 type EditableField = 'emailAddress' | 'phoneNumber' | 'bankAccountNumber' | null
 
@@ -53,7 +59,13 @@ export default function MyInformation() {
 
   const handleSave = () => {
     if (editField && data?.taxPayerByKennitala) {
-      const variables: any = {
+      type UpdateTaxPayerInput = {
+        id: string
+        phoneNumber: string
+        emailAddress: string
+        bankAccountNumber: string
+      }
+      const variables: UpdateTaxPayerInput = {
         id: data.taxPayerByKennitala.taxPayerID,
         phoneNumber: data.taxPayerByKennitala.phoneNumber || '',
         emailAddress: data.taxPayerByKennitala.emailAddress || '',
@@ -141,7 +153,7 @@ export default function MyInformation() {
               />
               <TableRow
                 label="Kennitala"
-                value={data.taxPayerByKennitala.kennitala}
+                value={formatKennitala(data.taxPayerByKennitala.kennitala)}
                 action={null}
                 isLast={false}
                 inputType="number"
@@ -196,7 +208,9 @@ export default function MyInformation() {
               {/* Phone number - editable */}
               <TableRow
                 label="Símanúmer"
-                value={data.taxPayerByKennitala.phoneNumber || ''}
+                value={formatPhoneNumber(
+                  data.taxPayerByKennitala.phoneNumber || '',
+                )}
                 isEditing={editField === 'phoneNumber'}
                 editValue={fieldValue}
                 onEditValueChange={setFieldValue}
@@ -227,7 +241,9 @@ export default function MyInformation() {
               {/* Bank account - editable */}
               <TableRow
                 label="Bankaupplýsingar"
-                value={data.taxPayerByKennitala.bankAccountNumber || ''}
+                value={formatBankAccountNumber(
+                  data.taxPayerByKennitala.bankAccountNumber || '',
+                )}
                 isEditing={editField === 'bankAccountNumber'}
                 editValue={fieldValue}
                 onEditValueChange={setFieldValue}
