@@ -156,7 +156,7 @@ const TableRow = ({
             flexGrow={isMobile ? undefined : 1}
             textAlign="left"
           >
-            {left}
+            <label htmlFor={`table-row-${rightValue}`}>{left}</label>
           </Box>
           {middle && (
             <Box
