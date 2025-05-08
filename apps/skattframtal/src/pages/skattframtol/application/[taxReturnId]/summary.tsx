@@ -9,12 +9,9 @@ import { QUERIES } from '../../../../graphql/queries'
 // Dummy values for fields not available in the tax payer query
 const dummySummary = {
   year: 2025,
-  income: '12.000.000',
-  assets: '50.000.000',
-  liabilities: '10.000.000',
   status: 'Skattframtali 2025 vegna tekna ársins 2024 hefur verið skilað',
   date: '14.03.2025 – 22:10:44',
-  receipt: '000000',
+  receipt: '144535',
 }
 
 const SummaryPage = () => {
@@ -68,12 +65,6 @@ const SummaryPage = () => {
           <Text>{data.taxPayerByKennitala.kennitala}</Text>
         </Box>
       )}
-      <Stack space={2}>
-        <Text variant="h4">Yfirlit</Text>
-        <Text>Tekjur: {dummySummary.income} kr.</Text>
-        <Text>Eignir: {dummySummary.assets} kr.</Text>
-        <Text>Skuldir: {dummySummary.liabilities} kr.</Text>
-      </Stack>
     </FormScreenLayout>
   )
 }
