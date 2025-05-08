@@ -167,6 +167,7 @@ export default function ApplicationsOlder() {
                 flexWrap="wrap"
                 flexDirection={['column', 'column', 'row']}
                 rowGap={[3, 3, 0]}
+                marginBottom={2}
               >
                 <Box>
                   <Text variant="h3">Skattframtal {taxReturn.fiscalYear}</Text>

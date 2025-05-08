@@ -97,22 +97,9 @@ export default function Skattframtal() {
               Skattframtöl
             </Text>
             <Text>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-              ultrices tempus dui, cursus sollicitudin lectus maximus volutpat.
-              Duis nec sem a lorem auctor facilisis. Proin auctor gravida
-              consectetur. Vivamus sed condimentum mauris. Aenean mi ipsum,
-              sodales sit amet turpis eu, ultricies semper erat. Vivamus
-              suscipit porta feugiat. Praesent quis sem ac velit gravida
-              blandit. Curabitur viverra quis tortor at consequat. Maecenas a
-              enim risus.
-            </Text>
-            <Text>
-              Sed aliquam facilisis mauris, ac fermentum risus rhoncus id. Cras
-              vitae pulvinar sapien. Ut sed dictum tortor, nec consectetur
-              felis. Curabitur sollicitudin nisl purus, sed aliquam arcu
-              suscipit quis. Curabitur auctor laoreet dui sit amet mollis.
-              Integer porttitor bibendum commodo. Maecenas accumsan justo purus,
-              a vestibulum justo aliquam at. Nulla mattis vulputate fermentum.
+              Skattframtöl eru nauðsynleg fyrir alla einstaklinga sem hafa
+              tekjur á Íslandi. Þau tryggja að skattar séu rétt reiknaðir og að
+              einstaklingar fái skattaafslátt ef þeir uppfylla skilyrði.
             </Text>
           </Stack>
 
@@ -151,7 +138,7 @@ export default function Skattframtal() {
               Spurt og svarað um skattframtal
             </Text>
             <Accordion>
-              <AccordionItem id="faq1" label="Lorem ipsum dolor sit amet?">
+              <AccordionItem id="faq1" label="Álagningarseðill og forsendur">
                 <Text>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
                   ultrices tempus dui, cursus sollicitudin lectus maximus
@@ -163,7 +150,7 @@ export default function Skattframtal() {
                   Maecenas a enim risus.
                 </Text>
               </AccordionItem>
-              <AccordionItem id="faq2" label="Vivamus sed condimentum mauris?">
+              <AccordionItem id="faq2" label="Framtalsleiðbeiningar 2024">
                 <Text>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
                   ultrices tempus dui, cursus sollicitudin lectus maximus
@@ -175,10 +162,7 @@ export default function Skattframtal() {
                   Maecenas a enim risus.
                 </Text>
               </AccordionItem>
-              <AccordionItem
-                id="faq3"
-                label="Phasellus maximus pharetra velit a porttitor?"
-              >
+              <AccordionItem id="faq3" label="Að lesa úr álagningunni">
                 <Text>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
                   ultrices tempus dui, cursus sollicitudin lectus maximus
@@ -190,7 +174,7 @@ export default function Skattframtal() {
                   Maecenas a enim risus.
                 </Text>
               </AccordionItem>
-              <AccordionItem id="faq4" label="Cras vitae pulvinar sapien?">
+              <AccordionItem id="faq4" label="Rafræn skilríki og veflyklar">
                 <Text>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
                   ultrices tempus dui, cursus sollicitudin lectus maximus

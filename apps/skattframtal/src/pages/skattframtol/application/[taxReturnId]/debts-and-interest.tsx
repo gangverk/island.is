@@ -182,6 +182,7 @@ const DebtsAndInterestPage = () => {
           </Text>
         </>
       ),
+      hideRightValue: true,
     },
     {
       multi: [
