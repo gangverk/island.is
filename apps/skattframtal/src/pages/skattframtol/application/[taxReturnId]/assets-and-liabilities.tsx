@@ -1,4 +1,4 @@
-import { Box, Text, Tooltip, Icon } from '@island.is/island-ui/core'
+import { Box, Text } from '@island.is/island-ui/core'
 import React from 'react'
 import { useRouter } from 'next/router'
 import FormScreenLayout from '../../../../components/FormScreenLayout'
@@ -24,7 +24,7 @@ const AssetsAndLiabilitiesPage = () => {
     loading,
     error,
   } = useQuery(
-    QUERIES.GET_TAX_PAYER_RESIDENTIAL_LOANS_AND_LIABILITIES_BY_TAX_RETURN_ID,
+    QUERIES.GET_TAX_PAYER_REAL_ESTATE_ASSETS_AND_VEHICLES_BY_TAX_RETURN_ID,
     {
       variables: { taxReturnId },
       skip: !taxReturnId,
@@ -33,17 +33,13 @@ const AssetsAndLiabilitiesPage = () => {
 
   const realEstateAssets = assetsData?.taxReturnById?.realEstateAssets ?? []
   const vehicleAssets = assetsData?.taxReturnById?.vehicleAssets ?? []
+
   const realEstateRows = realEstateAssets.map(
     (asset: TaxReturnIcelandicRealEstate) => ({
       left: (
         <Box>
           <Box display="flex" alignItems="center">
             <Text>Fastanúmer</Text>
-            <Box marginLeft={1}>
-              <Tooltip text="Sérstakt númer fasteignar.">
-                <Icon icon="informationCircle" color="dark200" size="small" />
-              </Tooltip>
-            </Box>
           </Box>
           <Text color="dark400" variant="small">
             {asset.realEstateAssetID?.slice(0, 8)}
