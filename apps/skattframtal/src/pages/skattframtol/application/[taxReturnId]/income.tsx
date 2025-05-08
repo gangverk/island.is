@@ -1,10 +1,10 @@
-import { Box, Text, Tooltip, Icon } from '@island.is/island-ui/core'
+import { Box, Text } from '@island.is/island-ui/core'
 import React from 'react'
 import { useRouter } from 'next/router'
 import FormScreenLayout from '../../../../components/FormScreenLayout'
 import Table, { TableRowData } from '../../../../components/table/Table'
 import { stepKeys, stepLabels, goToStep } from '../../../../constants/formSteps'
-import { useApolloClient, useMutation, useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { QUERIES } from '../../../../graphql/queries'
 import { Money, TaxReturnIncomeCategory } from '../../../../graphql/schema'
 import { formatMoney, parseMoney } from '../../../../utils/money'
@@ -12,7 +12,6 @@ import { MUTATIONS } from '../../../../graphql/mutations'
 
 const IncomePage = () => {
   const router = useRouter()
-  const client = useApolloClient()
   const taxReturnId = router.query.taxReturnId as string
   const currentStep = stepKeys.indexOf('income')
   const stepLabelList = stepKeys.map((key) => stepLabels[key])
@@ -25,8 +24,6 @@ const IncomePage = () => {
     variables: { taxReturnId },
     skip: !taxReturnId,
   })
-
-  console.log('incomeData', incomeData)
 
   const [updateIncome] = useMutation(MUTATIONS.UPDATE_TAX_RETURN_INCOME, {
     refetchQueries: [QUERIES.GET_TAX_PAYER_INCOME_BY_TAX_RETURN_ID],
