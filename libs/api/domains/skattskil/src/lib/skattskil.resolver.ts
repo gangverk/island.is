@@ -110,7 +110,7 @@ export class TaxReturnIncomeResolver {
     return this.skattskilService.updateTaxReturnIncome(incomeId, input)
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => MutationSuccess)
   async deleteTaxReturnIncome(
     @Args('incomeId') incomeId: string,
   ): Promise<MutationSuccess> {
