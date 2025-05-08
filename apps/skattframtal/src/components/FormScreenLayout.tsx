@@ -40,19 +40,24 @@ const FormScreenLayout: React.FC<FormScreenLayoutProps> = ({
     <Box
       background="purple100"
       style={{ minHeight: '100vh' }}
-      paddingY={[2, 4, 8]}
+      paddingBottom={[4, 8]}
+      paddingTop={[0, 0, 4]}
     >
       <GridContainer>
         <GridRow>
-          <GridColumn span={['12/12', '12/12', '4/12']} order={[0, 0, 1]}>
+          <GridColumn span={['12/12', '12/12', '3/12']} order={[0, 0, 1]}>
             <Box
               display={['block', 'block', 'block']}
-              marginBottom={[6, 6, 0]}
               marginTop={[0, 0, 8]}
+              paddingLeft={[0, 0, 1]}
+              position="sticky"
+              top="gutter"
             >
-              <Text variant="h4" fontWeight="semiBold" marginBottom={4}>
-                Framtal
-              </Text>
+              <Box display={['none', 'none', 'block']}>
+                <Text variant="h4" fontWeight="semiBold">
+                  Framtal
+                </Text>
+              </Box>
               <FormStepperV2
                 sections={stepLabels.map((label, idx) => (
                   <Section
@@ -66,11 +71,7 @@ const FormScreenLayout: React.FC<FormScreenLayoutProps> = ({
               />
             </Box>
           </GridColumn>
-          <GridColumn
-            span={['12/12', '8/12', '8/12']}
-            offset={['0', '2/12', '0']}
-            order={[1, 1, 0]}
-          >
+          <GridColumn span={['12/12', '12/12', '9/12']} order={[1, 1, 0]}>
             <Box
               marginX="auto"
               style={{ maxWidth: '480px' }}
@@ -79,8 +80,7 @@ const FormScreenLayout: React.FC<FormScreenLayoutProps> = ({
               <Box
                 background="white"
                 borderRadius="large"
-                padding={[4, 8, 8]}
-                paddingX={[2, 6, 12]}
+                padding={[2, 4]}
                 width="full"
                 display="flex"
                 flexDirection="column"
@@ -168,8 +168,8 @@ const FormScreenLayout: React.FC<FormScreenLayoutProps> = ({
               <Box
                 background="white"
                 borderRadius="large"
-                padding={[4, 8, 8]}
-                paddingX={[2, 6, 12]}
+                padding={[2, 4]}
+                paddingY={[4, 8]}
                 width="full"
                 display="flex"
                 flexDirection="column"
