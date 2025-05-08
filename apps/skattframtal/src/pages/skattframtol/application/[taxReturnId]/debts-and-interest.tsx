@@ -1,4 +1,4 @@
-import { Box, Text, Icon, Input } from '@island.is/island-ui/core'
+import { Box, Text, Icon, Input, Button } from '@island.is/island-ui/core'
 import React from 'react'
 import { useRouter } from 'next/router'
 import FormScreenLayout from '../../../../components/FormScreenLayout'
@@ -237,11 +237,17 @@ const DebtsAndInterestPage = () => {
       onStepChange={(stepIdx) =>
         goToStep(router, taxReturnId, stepIdx, stepKeys)
       }
-      nextButtonLabel={
-        currentStep === stepKeys.length - 1 ? 'Senda inn framtal' : undefined
-      }
-      nextButtonIcon={
-        currentStep === stepKeys.length - 1 ? 'checkmark' : undefined
+      primaryButton={
+        <Button
+          icon="checkmark"
+          iconType="filled"
+          onClick={() =>
+            goToStep(router, taxReturnId, currentStep + 1, stepKeys)
+          }
+          fluid={true}
+        >
+          Senda inn framtal
+        </Button>
       }
     >
       <Text as="h1" variant="h1" marginBottom={6}>

@@ -26,6 +26,7 @@ export default function MyInformation() {
       onStepChange={(stepIdx) =>
         goToStep(router, taxReturnId, stepIdx, stepKeys)
       }
+      secondaryButton={null}
     >
       <Text variant="h1" as="h1" marginBottom={3}>
         Mínar upplýsingar

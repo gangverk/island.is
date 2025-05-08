@@ -1,11 +1,5 @@
-import {
-  Box,
-  Button,
-  Input,
-  toast,
-  useBreakpoint,
-} from '@island.is/island-ui/core'
-import { useEffect, useState, type ReactNode } from 'react'
+import { Box, Button, Input, useBreakpoint } from '@island.is/island-ui/core'
+import { useState, useEffect, type ReactNode } from 'react'
 import type { BoxProps } from '@island.is/island-ui/core'
 
 interface TableRowProps {
