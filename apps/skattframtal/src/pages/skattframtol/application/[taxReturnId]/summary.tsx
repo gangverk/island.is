@@ -50,7 +50,7 @@ const SummaryPage = () => {
           <Text color="blue400" fontWeight="semiBold" marginBottom={1}>
             {dummySummary.date}
           </Text>
-          <Text color="dark200" marginBottom={2}>
+          <Text color="dark300" marginBottom={2}>
             Móttökunúmer: {dummySummary.receipt}
           </Text>
           <Text marginBottom={4}>{dummySummary.status}</Text>
