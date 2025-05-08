@@ -203,7 +203,7 @@ const IncomePage = () => {
         goToStep(router, taxReturnId, stepIdx, stepKeys)
       }
     >
-      <Text as="h1" variant="h1" marginBottom={6}>
+      <Text as="h1" variant="h3" marginBottom={6}>
         Tekjur ársins 2024
       </Text>
       {error && <Text>Villa kom upp: {error.message}</Text>}

@@ -250,7 +250,7 @@ const DebtsAndInterestPage = () => {
         </Button>
       }
     >
-      <Text as="h1" variant="h1" marginBottom={6}>
+      <Text as="h1" variant="h3" marginBottom={6}>
         Skuldir og vaxtagjöld
       </Text>
       {loading && <Text>Hleður gögnum...</Text>}

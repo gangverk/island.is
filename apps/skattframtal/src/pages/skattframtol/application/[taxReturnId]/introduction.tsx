@@ -19,7 +19,7 @@ export default function Introduction() {
       onGoBack={() => router.push('/skattframtol/application')}
       secondaryButton={null}
     >
-      <Text variant="h1" as="h1" marginBottom={4}>
+      <Text variant="h3" as="h1" marginBottom={4}>
         {stepLabels.introduction}
       </Text>
       <Text>

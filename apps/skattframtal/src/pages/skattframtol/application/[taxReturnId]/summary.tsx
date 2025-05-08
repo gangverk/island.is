@@ -40,7 +40,7 @@ const SummaryPage = () => {
         </Button>
       }
     >
-      <Text variant="h1" as="h1" marginBottom={3}>
+      <Text variant="h3" as="h1" marginBottom={3}>
         Kvittun fyrir skilum á skattframtali {dummySummary.year}
       </Text>
       {loading && <Text>Hleður gögnum...</Text>}

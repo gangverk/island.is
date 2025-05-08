@@ -131,7 +131,7 @@ const AssetsAndLiabilitiesPage = () => {
         goToStep(router, taxReturnId, stepIdx, stepKeys)
       }
     >
-      <Text as="h1" variant="h1" marginBottom={6}>
+      <Text as="h1" variant="h3" marginBottom={6}>
         Eignir í árslok
       </Text>
       {loading && <Text>Hleður gögnum...</Text>}

@@ -101,7 +101,7 @@ export default function MyInformation() {
       }
       secondaryButton={null}
     >
-      <Text variant="h1" as="h1" marginBottom={3}>
+      <Text variant="h3" as="h1" marginBottom={3}>
         Mínar upplýsingar
       </Text>
       <Text marginBottom={7}>
