@@ -44,29 +44,6 @@ export class ThjodskraService {
     }
   }
 
-  async getPropertiesByIds(propertyNumbers: string[]): Promise<GetPropertyDTO[]> {
-    // If no property numbers provided, return empty array
-    if (!propertyNumbers || propertyNumbers.length === 0) {
-      return [];
-    }
-  
-    // Find all properties with matching property numbers
-    const properties = await this.fasteignaskraModel.findAll({
-      where: {
-        propertyNumber: {
-          [Op.in]: propertyNumbers
-        }
-      }
-    });
-  
-    // Map to DTOs
-    return properties.map(property => ({
-      propertyNumber: property.propertyNumber,
-      address: property.address,
-      appraisal: property.appraisal,
-    }));
-  }
-
   async getVehicleById(licensePlateNumber: string): Promise<GetVehicleDTO | null> {
     const vehicle = await this.okutaekjaskraModel.findOne({ where : { licensePlateNumber } })
     if (!vehicle) {
@@ -77,28 +54,5 @@ export class ThjodskraService {
       purchaseYear: vehicle.purchaseYear,
       purchasePrice: vehicle.purchasePrice,
     }
-  }
-
-  async getVehiclesByIds(licensePlateNumbers: string[]): Promise<GetVehicleDTO[]> {
-    // If no license plate numbers provided, return empty array
-    if (!licensePlateNumbers || licensePlateNumbers.length === 0) {
-      return [];
-    }
-  
-    // Find all vehicles with matching license plate numbers
-    const vehicles = await this.okutaekjaskraModel.findAll({
-      where: {
-        licensePlateNumber: {
-          [Op.in]: licensePlateNumbers
-        }
-      }
-    });
-  
-    // Map to DTOs
-    return vehicles.map(vehicle => ({
-      licensePlateNumber: vehicle.licensePlateNumber,
-      purchaseYear: vehicle.purchaseYear,
-      purchasePrice: vehicle.purchasePrice,
-    }));
   }
 }

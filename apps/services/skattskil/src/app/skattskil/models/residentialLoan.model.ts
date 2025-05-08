@@ -46,6 +46,22 @@ export class ResidentialLoan extends Model<
 
   @ApiProperty()
   @Column({
+    type: DataType.STRING,
+    allowNull: false,
+    field: 'loan_id',
+  })
+  loanId!: string
+
+  @ApiProperty()
+  @Column({
+    type: DataType.SMALLINT,
+    allowNull: false,
+    field: 'purchase_year',
+  })
+  purchaseYear!: number
+
+  @ApiProperty()
+  @Column({
     type: DataType.DATEONLY,
     allowNull: false,
     field: 'issue_date',
@@ -65,6 +81,11 @@ export class ResidentialLoan extends Model<
     type: DataType.BIGINT,
     allowNull: false,
     field: 'interest_paid_in_fiscal_year',
+    get() {
+      const rawValue = this.getDataValue('interestPaidInFiscalYear')
+  
+      return Number(rawValue)
+    },
   })
   interestPaidInFiscalYear!: number
 
@@ -73,6 +94,12 @@ export class ResidentialLoan extends Model<
     type: DataType.BIGINT,
     allowNull: false,
     field: 'principal_paid_in_fiscal_year',
+    get() {
+      const rawValue = this.getDataValue('principalPaidInFiscalYear')
+  
+      return Number(rawValue)
+    },
+    
   })
   principalPaidInFiscalYear!: number
 
@@ -81,6 +108,11 @@ export class ResidentialLoan extends Model<
     type: DataType.BIGINT,
     allowNull: false,
     field: 'remaining_principal',
+    get() {
+      const rawValue = this.getDataValue('remainingPrincipal')
+  
+      return Number(rawValue)
+    },
   })
   remainingPrincipal!: number
 

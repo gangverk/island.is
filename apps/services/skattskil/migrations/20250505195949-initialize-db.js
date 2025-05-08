@@ -159,6 +159,14 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      loan_id: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      purchase_year: {
+        type: Sequelize.SMALLINT,
+        allowNull: false
+      },
       lender_id: {
         type: Sequelize.STRING,
         allowNull: false
